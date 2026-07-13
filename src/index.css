@@ -1,0 +1,42 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+*{
+    font-family: Tahoma;
+}
+:root {
+    --bg-main: #f9fafb;
+    --bg-card: #ffffff;
+    --bg-sidebar: #ffffff;
+    --bg-input: #f3f4f6;
+    --border: #e5e7eb;
+    --text-main: #111827;
+    --text-secondary: #6b7280;
+    --text-muted: #9ca3af;
+    --accent: #367EFA;
+    --accent-hover: #295cb5;
+}
+
+.dark {
+    --bg-main: #2c2c2c;
+    --bg-card: #2a2a2a;
+    --bg-sidebar: #252525;
+    --bg-input: #222222;
+    --border: #3d3d3d;
+    --text-main: #e8e8e8;
+    --text-secondary: #aaaaaa;
+    --text-muted: #888888;
+    --accent: #367EFA;
+    --accent-hover: #2e68cf;
+}
+#registerForm input{
+    margin-top: 5%;
+    border-radius: 15px;
+    height: 55px;
+    background: #dddddd;
+    padding-left: 15px;
+    color: black;
+}
+#registerForm input::placeholder {
+    color: black;
+}
