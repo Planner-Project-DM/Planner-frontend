@@ -9,8 +9,8 @@ export default function RegisterScreen() {
                     <div id="aboutSection" className={"flex p-12 w-full"}>
                         <div id="registerAbout" className={" w-full"}>
                             <div id="registerTitle" className={"text-white mt-12 font-semibold "}>PLANER PODRÓŻY - REJESTRACJA</div>
-                            <div id="registerText" className={"text-white font-bold text-8xl mt-5 "}>Zaplanuj <br/> <i className={"text-yellow-500"}>podróż</i> życia</div>
-                            <div id="registerDesc"><p className={"text-white font-semibold text-2xl mt-10"}>Twórz trasy, śledź rezerwacje i odkrywaj <br/>
+                            <div id="registerText" className={"text-white font-bold text-8xl mt-5 "}>Zaplanuj <br/> <i className={"text-yellow-500 m-5"}>podróż</i> życia</div>
+                            <div id="registerDesc"><p className={"text-white font-semibold text-xl mt-10"}>Twórz trasy, śledź rezerwacje i odkrywaj <br/>
                             miejsca, o których jeszcze nie wiesz, że <br/>
                                 chcesz odwiedzić.</p>
                             </div>
