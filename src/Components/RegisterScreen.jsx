@@ -3,19 +3,32 @@
 export default function RegisterScreen() {
 
     return (
-        <div className={"flex"}>
-        <div id="registerSide" className={"bg-[url('/public/loginScreen.png')] bg-cover  w-full"}>
-            <div id="registerCover" className="bg-primary backdrop-blur-sm  bg-gray-400/5 h-full">
-                <div id="registerAbout">
-                    <div id="registerTitle">PLANER PODRÓŻY - REJESTRACJA</div>
-                    <div id="registerText"></div>
-                    <div id="registerDesc"></div>
-                    <p className={"flex items-center justify-center gap-3"}>️🛫 <hr className={"border-1 border-dashed w-11/12"}/> <p>USA</p></p>
+        <div className={"flex flex-row"}>
+        <div id="registerSide" className={"bg-[url('/loginScreen.png')] bg-cover w-full h-screen"}>
+            <div id="registerCover" className="bg-primary backdrop-blur-sm  bg-black/60 h-full">
+                <div id="aboutSection" className={"flex p-12 w-full"}>
+                    <div id="registerAbout" className={" w-full"}>
+                        <div id="registerTitle" className={"text-white mt-12 font-semibold "}>PLANER PODRÓŻY - REJESTRACJA</div>
+                        <div id="registerText" className={"text-white font-bold text-8xl mt-5 "}>Zaplanuj <br/> <i className={"text-yellow-500"}>podróż</i> życia</div>
+                        <div id="registerDesc"><p className={"text-white font-semibold text-2xl mt-10"}>Twórz trasy, śledź rezerwacje i odkrywaj <br/>
+                        miejsca, o których jeszcze nie wiesz, że <br/>
+                            chcesz odwiedzić.</p>
+                        </div>
+                    </div>
+                    <div id="regLogPhoto" className={"w-1/2 flex items-center justify-center"}>
+                        <img src="/reg_logPhoto.png" alt="Vacation Photo" className={"w-72 mt-5"}/>
+                    </div>
                 </div>
+                <div className={"flex justify-center items-center gap-3 mt-10"}>
+                    <img src="/airplanePhoto.png" alt="Airplane Photo" className={"w-16"}/>
+                    <hr className={"border-2 border-dashed w-9/12"}/>
+                    <img src="/usFlag.png" alt="USA Flag" className={"w-12"}/>
+                </div>
+
             </div>
         </div>
         <div id={'registerMain'} className="bg-bg-main w-1/2 h-screen">
-                <div id='registerCard' className="flex flex-col p-8 bg-cyan-900 h-176 w-full h-full">
+                <div id='registerCard' className="flex flex-col p-8 bg-cyan-900 w-full h-full">
                     <p className="flex text-3xl font-bold text-[#FFFFFF] flex-col items-center justify-center">
                         Rejestracja
                     </p>
@@ -25,7 +38,7 @@ export default function RegisterScreen() {
                             <input type="text" id="registerLName" placeholder="Nazwisko" className={"w-1/2"}/>
                         </div>
                         <input type="text" id="registerMail" placeholder="Adres E-mail"/>
-                        <input type="text" id="registerPswd" placeholder="Hasło"/>
+                        <input type="password" id="registerPswd" placeholder="Hasło (Minimum 8 znaków)"/>
                         <div id="registerQSection" className={"flex flex-col mt-10"}>
                             <div id="remember" className={"flex items-center gap-2"}>
                                 <div id="rememberCheck" className={"flex items-center"}>
