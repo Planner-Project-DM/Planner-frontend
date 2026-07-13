@@ -28,7 +28,10 @@ export default {
         '176': '44rem',
         '192': '48rem',
         '208': '52rem',
-      }
+      },
+      fontFamily: {
+        playpen: ['"Playpen Sans"', 'cursive'],
+      },
     }
   },
   plugins: [],
