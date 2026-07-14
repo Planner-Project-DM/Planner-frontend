@@ -1,7 +1,42 @@
-// import {useState} from 'react';
-
+import {useState} from 'react';
+import axios from 'axios';
 export default function RegisterScreen() {
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [errorMessage, setErrorMessage] = useState('');
+    const [success, setSuccess] = useState(false)
 
+    const handleRegister = async (e) => {
+        e.preventDefault();
+        setErrorMessage('');
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if(!emailRegex.test(email)) {
+            setErrorMessage('Podaj poprawny adres e-mail.');
+            return;
+        }
+        const passwordRegex = /^(?=.*[A-Z])(?=.*[!@#$%^&*]).{8,}$/;
+        if(!passwordRegex.test(password)) {
+            setErrorMessage('Hasło musi mieć min. 8 znaków, jedną dużą literę i znak specjalny.');
+            return;
+        }
+        try {
+            await axios.post('backend',{
+                    firstName: firstName,
+                    lastName: lastName,
+                    email:email,
+                    password:password,
+                });
+            setSuccess(true);
+        } catch (error){
+            if (error.response && error.response.data) {
+                setErrorMessage(error.response.data.message || "Wystąpił błąd podczas rejestracji.");
+            } else {
+                setErrorMessage("Brak połączenia z serwerem. Spróbuj ponownie.");
+            }
+        }
+    }
     return (
         <div className={"flex flex-row font-playpen"}>
             <div className={"bg-[url('/loginScreen.png')] bg-cover w-full h-screen"}>
@@ -39,13 +74,35 @@ export default function RegisterScreen() {
                     <p className="flex text-3xl font-bold text-[#FFFFFF] flex-col items-center justify-center">
                         Rejestracja
                     </p>
-                    <form id="registerForm" className={"flex flex-col text-white gap-5"}>
+                    <form id="registerForm" onSubmit={handleRegister} className={"flex flex-col text-white gap-5" }>
                         <div className={"flex gap-5"}>
-                            <input type="text" id="registerFName" placeholder="Imię" className={"w-1/2"}/>
-                            <input type="text" id="registerLName" placeholder="Nazwisko" className={"w-1/2"}/>
+                            <input type="text" id="registerFName"
+                                   // value={firstName}
+                                   onChange={e => setFirstName(e.target.value)} placeholder="Imię"
+                                   className={"w-1/2"}/>
+                            <input type="text" id="registerLName" placeholder="Nazwisko"
+                                   value={lastName}
+                                   onChange={e => setLastName(e.target.value)}
+                                   className={"w-1/2"}/>
                         </div>
-                        <input type="text" id="registerMail" placeholder="Adres E-mail"/>
-                        <input type="password" id="registerPswd" placeholder="Hasło (Minimum 8 znaków)"/>
+                        <input type="email" id="registerMail"
+                               value={email}
+                               onChange={e => setEmail(e.target.value)}
+                               placeholder="Adres E-mail"/>
+                        <input type="password" id="registerPswd"
+                               value={password}
+                               onChange={e => setPassword(e.target.value)}
+                               placeholder="Hasło (Minimum 8 znaków)"/>
+                        {errorMessage && (
+                            <div className="bg-red-500 text-white p-3 rounded-md mb-4 w-full text-center">
+                                {errorMessage}
+                            </div>
+                        )}
+                        {success && (
+                            <div className="bg-green-500 text-white p-3 rounded-md mb-4 w-full text-center">
+                                Rejestracja przebiegła pomyślnie! Witaj, {firstName}.
+                            </div>
+                        )}
                         <div className={"flex flex-col mt-10"}>
                             <div id="remember" className={"flex items-center gap-2"}>
                                 <div className={"flex items-center"}>
