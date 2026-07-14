@@ -1,6 +1,7 @@
 import {useState} from 'react';
 import axios from 'axios';
 export default function RegisterScreen() {
+
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [email, setEmail] = useState('');
