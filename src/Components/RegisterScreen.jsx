@@ -48,7 +48,7 @@ export default function RegisterScreen() {
                                 REJESTRACJA
                             </div>
                             <div className={"text-white font-bold text-8xl mt-5 "}>Zaplanuj <br/> <i
-                                className={"text-yellow-500 m-5"}>podróż</i> życia
+                                className={"text-yellow-500 m-10"}>podróż</i>życia
                             </div>
                             <div><p className={"text-white font-semibold text-xl mt-10"}>Twórz trasy,
                                 śledź rezerwacje i odkrywaj <br/>
