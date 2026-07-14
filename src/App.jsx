@@ -1,9 +1,11 @@
 // import { useState } from 'react'
 import RegisterScreen from './Components/RegisterScreen.jsx';
+import LoginScreen from "./Components/loginScreen.jsx";
 function App() {
   return (
       <div>
-          <RegisterScreen />
+          {/*<RegisterScreen />*/}
+          <LoginScreen />
       </div>
   );
 }
