@@ -78,7 +78,7 @@ export default function RegisterScreen() {
                     <form id="registerForm" onSubmit={handleRegister} className={"flex flex-col text-white gap-5" }>
                         <div className={"flex gap-5"}>
                             <input type="text" id="registerFName"
-                                   // value={firstName}
+                                   value={firstName}
                                    onChange={e => setFirstName(e.target.value)} placeholder="Imię"
                                    className={"w-1/2"}/>
                             <input type="text" id="registerLName" placeholder="Nazwisko"
