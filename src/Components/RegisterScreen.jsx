@@ -23,7 +23,7 @@ export default function RegisterScreen() {
             return;
         }
         try {
-            await axios.post('backend',{
+            await axios.post('http://localhost:8080/auth/register',{
                     firstName: firstName,
                     lastName: lastName,
                     email:email,
@@ -65,9 +65,9 @@ export default function RegisterScreen() {
                         <hr className={"border-2 border-dashed w-9/12"}/>
                         <img src="/esFlag.png" alt="USA Flag" className={"w-12"}/>
                     </div>
-                    <div className={"flex items-center pl-16 mt-5"}>
-                        <img src="/ticketPhoto.png" alt="Ticket Photo" className={"h-72 max-h-72"}/>
-                    </div>
+                        <div className="pl-36 max-h-80">
+                            <img src="/ticketPhoto.png" alt="Ticket Photo" className="h-80 max-h-80"/>
+                        </div>
                 </div>
             </div>
             <div className="bg-bg-main w-1/2 h-screen">
