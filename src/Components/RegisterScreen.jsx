@@ -66,7 +66,7 @@ export default function RegisterScreen() {
                         <img src="/esFlag.png" alt="USA Flag" className={"w-12"}/>
                     </div>
                         <div className="pl-36 max-h-80">
-                            <img src="/ticketPhoto.png" alt="Ticket Photo" className="h-80 max-h-80"/>
+                            <img src="/ticketPhoto.png" alt="Ticket Photo" className="h-64 max-h-72"/>
                         </div>
                 </div>
             </div>
