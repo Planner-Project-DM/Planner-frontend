@@ -1,10 +1,12 @@
 import {useState} from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 export default function LoginScreen() {
-
+    const navigate = useNavigate();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
+    const [rememberMe, setRememberMe] = useState(false);
 
     const handleRegister = async (e) => {
         e.preventDefault();
@@ -14,16 +16,19 @@ export default function LoginScreen() {
             setErrorMessage('Podaj poprawny adres e-mail.');
             return;
         }
-        const passwordRegex = /^(?=.*[A-Z])(?=.*[!@#$%^&*]).{8,}$/;
-        if(!passwordRegex.test(password)) {
-            setErrorMessage('Hasło musi mieć min. 8 znaków, jedną dużą literę i znak specjalny.');
-            return;
-        }
         try {
-            await axios.post('http://localhost:8080/auth/register',{
+            const response = await axios.post('http://localhost:8080/auth/register',{
                 email:email,
                 password:password,
+                rememberMe: rememberMe,
             });
+            const token = response.data.token;
+
+            if(rememberMe){
+                localStorage.setItem('userToken', token);
+            } else {
+                sessionStorage.setItem('userToken', token);
+            }
         } catch (error){
             if (error.response && error.response.data) {
                 setErrorMessage(error.response.data.message || "Wystąpił błąd podczas rejestracji.");
@@ -33,7 +38,7 @@ export default function LoginScreen() {
         }
     }
     return (
-        <div className={"flex flex-row-reverse font-playpen"}>
+        <div className={"flex flex-row font-playpen"}>
             <div className={"bg-[url('/loginScreen.png')] bg-cover w-full h-screen"}>
                 <div className="bg-primary backdrop-blur-sm  bg-black/60 h-full">
                     <div className={"flex p-12 w-full"}>
@@ -56,7 +61,9 @@ export default function LoginScreen() {
                     </div>
                     <div className={"flex justify-center items-center gap-3 mt-10"}>
                         <img src="/airplanePhoto.png" alt="Airplane Photo" className={"w-16"}/>
-                        <hr className={"border-2 border-dashed w-9/12"}/>
+                        <svg viewBox="0 0 100 40" preserveAspectRatio="none" className="w-9/12 h-16">
+                            <path d="M 0 20 Q 50 0, 100 20" stroke="white" strokeWidth="4" fill="transparent" strokeDasharray="8 8" className="animate-marching" vectorEffect="non-scaling-stroke"/>
+                        </svg>
                         <img src="/esFlag.png" alt="USA Flag" className={"w-12"}/>
                     </div>
                     <div className="pl-36 max-h-80">
@@ -89,9 +96,13 @@ export default function LoginScreen() {
                         <div className={"flex flex-col mt-10"}>
                             <div id="remember" className={"flex items-center gap-2"}>
                                 <div className={"flex items-center"}>
-                                    <input type="checkbox" id="registerRemember"/>
+                                    <input type="checkbox" id="registerRemember"
+                                           checked={rememberMe}
+                                           onChange={e => setRememberMe(e.target.checked)}
+                                    />
                                 </div>
                                 <label htmlFor="registerRemember">Zapamiętaj mnie</label>
+
                             </div>
                             <button type={"submit"}
                                     className={"bg-accent hover:bg-accent-hover b rounded-2xl h-12 font-bold text-xl"}>Zaloguj
@@ -106,7 +117,7 @@ export default function LoginScreen() {
                             <p className={"font-semibold"}>Kontynuuj przez konto Google</p>
                         </button>
                     </div>
-                    <button className={"text-white mt-20 font-bold flex items-center justify-center"}>Nie masz konta?
+                    <button type={"button"}  onClick={() => navigate('/register')} className={"text-white mt-20 font-bold flex items-center justify-center"}>Nie masz konta?
                         <p className={"ml-2 text-accent"}>Zarejestruj się</p>
                     </button>
                 </div>

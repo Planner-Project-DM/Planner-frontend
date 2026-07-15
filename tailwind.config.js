@@ -32,6 +32,15 @@ export default {
       fontFamily: {
         playpen: ['"Playpen Sans"', 'cursive'],
       },
+      keyframes: {
+        marching: {
+          '0%': { strokeDashoffset: '16' },
+          '100%': { strokeDashoffset: '0' },
+        },
+      },
+      animation: {
+        marching: 'marching 1s linear infinite',
+      },
     }
   },
   plugins: [],
