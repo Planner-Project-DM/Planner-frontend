@@ -1,6 +1,6 @@
 import {useState} from 'react';
-import axios from 'axios';
 import {useNavigate} from "react-router-dom";
+import api from '../api/axios.js';
 
 export default function RegisterScreen() {
     const navigate = useNavigate();
@@ -25,7 +25,7 @@ export default function RegisterScreen() {
             return;
         }
         try {
-            await axios.post('http://localhost:8080/auth/register',{
+            await api.post('/auth/register',{
                     firstName: firstName,
                     lastName: lastName,
                     email:email,

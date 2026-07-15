@@ -1,5 +1,7 @@
 export default function Dashboard(){
     return (
-        <h1>Test</h1>
+        <div className={"h-screen w-screen bg-bg-main"}>
+
+        </div>
     )
 }
