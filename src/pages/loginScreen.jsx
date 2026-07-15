@@ -17,7 +17,7 @@ export default function LoginScreen() {
             return;
         }
         try {
-            const response = await api.post('http://localhost:8080/auth/register',{
+            const response = await api.post('/auth/login',{
                 email:email,
                 password:password,
                 rememberMe: rememberMe,
