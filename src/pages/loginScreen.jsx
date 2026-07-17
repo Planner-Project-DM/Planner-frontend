@@ -1,7 +1,7 @@
 import {useState} from 'react';
 import api from '../api/axios.js';
 import { useNavigate } from 'react-router-dom';
-export default function LoginScreen() {
+export default function LoginScreen({setIsLoggedIn}) {
     const navigate = useNavigate();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -22,13 +22,15 @@ export default function LoginScreen() {
                 password:password,
                 rememberMe: rememberMe,
             });
-            const token = response.data.token;
+            const token = response.data.data.token;
 
             if(rememberMe){
                 localStorage.setItem('userToken', token);
             } else {
                 sessionStorage.setItem('userToken', token);
             }
+            setIsLoggedIn(true);
+            navigate('/dashboard');
         } catch (error){
             if (error.response && error.response.data) {
                 setErrorMessage(error.response.data.message || "Wystąpił błąd podczas rejestracji.");

@@ -42,3 +42,6 @@
 #registerForm input::placeholder {
     color: black;
 }
+img {
+    pointer-events: none;
+}

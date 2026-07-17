@@ -32,6 +32,9 @@ export default function RegisterScreen() {
                     password:password,
                 });
             setSuccess(true);
+            setTimeout(() =>{
+                navigate('/login');
+            }, 1000)
         } catch (error){
             if (error.response && error.response.data) {
                 setErrorMessage(error.response.data.message || "Wystąpił błąd podczas rejestracji.");
