@@ -9,7 +9,6 @@
 :root {
     --bg-main: #f9fafb;
     --bg-card: #ffffff;
-    --bg-sidebar: #ffffff;
     --bg-input: #f3f4f6;
     --border: #e5e7eb;
     --text-main: #111827;
@@ -21,8 +20,7 @@
 
 .dark {
     --bg-main: #2c2c2c;
-    --bg-card: #2a2a2a;
-    --bg-sidebar: #252525;
+    --bg-card: #252525;
     --bg-input: #222222;
     --border: #3d3d3d;
     --text-main: #e8e8e8;
