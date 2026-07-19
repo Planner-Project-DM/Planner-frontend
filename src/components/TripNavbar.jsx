@@ -8,7 +8,7 @@ export default function TripNavbar (){
                 <h1 className={"h-5"}>ZAKŁADKI</h1>
                 <div className={"h-3/4"}>
                     <ul>
-                        <li>Nygerek xD</li>
+                        <li></li>
                     </ul>
                 </div>
             </div>
