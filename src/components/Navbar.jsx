@@ -18,7 +18,7 @@ export default function Navbar(){
                     <FaSearch className="absolute left-3 top-1/2 -translate-y-1/2" />
                     <input className={"pl-8 bg-bg-input flex items-center h-12 w-full rounded-2xl p-5 border border-b-border-col"} placeholder="Szukaj miejsc, tras..." />
                 </div>
-                <button className={"border-2 h-12 border-accent border-dashed text-accent bg-bg-input rounded-2xl w-44"}>
+                <button className={"border-2 h-12 border-accent border-dashed text-accent bg-bg-input rounded-2xl w-44 hover:text-bg-input hover:bg-accent "}>
                     <p> + Nowa podróż</p>
                 </button>
             </div>

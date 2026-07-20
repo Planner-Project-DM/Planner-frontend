@@ -8,7 +8,7 @@ export default function TripNavbar (){
                 <h1 className={" flex justify-center text-xl items-center "}>ZAKŁADKI</h1>
                 <hr className={"border"}/>
                 <div className={"h-3/4 mb-5"}>
-                    <ul id="bookmarks">
+                    <ul id="bookmarks" className={""}>
                         <li>Mapa</li>
                         <li>Plan dnia</li>
                         <li>Podsumowanie</li>

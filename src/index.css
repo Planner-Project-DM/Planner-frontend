@@ -64,3 +64,14 @@ img {
     color: white;
     cursor: pointer;
 }
+#groupList li {
+    display: flex;
+    min-height: 60px;
+    width: 100%;
+    align-items: center;
+    background: var(--bg-main);
+    border: 1px solid var(--border);
+    border-radius: 15px;
+    padding-left: 10px;
+    gap: 10%;
+}
