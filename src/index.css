@@ -43,3 +43,24 @@
 img {
     pointer-events: none;
 }
+#bookmarks {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+#bookmarks li {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg-main);
+    border: 1px solid var(--border);
+    height: 50px;
+    border-radius: 20px;
+    color: var(--text-main);
+}
+#bookmarks li:hover {
+    background: var(--accent);
+    border: 1px solid var(--accent-hover);
+    color: white;
+    cursor: pointer;
+}
