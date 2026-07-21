@@ -1,5 +1,5 @@
 import {useState, useEffect} from 'react';
-
+import LinearProgress from '@mui/material/LinearProgress';
 export default function TripNavbar() {
 
     return (
@@ -10,26 +10,23 @@ export default function TripNavbar() {
                 </div>
                 <div className="flex-1 overflow-y-scroll max-h-114 [&::-webkit-scrollbar]:hidden">
                     <ul id="groupList" className="flex flex-col gap-5">
-                        <li><p>Inicjały</p> ANDRZEJ DRZEWKO</li>
-                        <li><p>Inicjały</p> ANDRZEJ DRZEWKO</li>
-                        <li><p>Inicjały</p> ANDRZEJ DRZEWKO</li>
-                        <li><p>Inicjały</p> ANDRZEJ DRZEWKO</li>
-                        <li><p>Inicjały</p> ANDRZEJ DRZEWKO</li>
-                        <li><p>Inicjały</p> ANDRZEJ DRZEWKO</li>
-                        <li><p>Inicjały</p> ANDRZEJ DRZEWKO</li>
-                        <li><p>Inicjały</p> ANDRZEJ DRZEWKO</li>
-                        <li><p>Inicjały</p> ANDRZEJ DRZEWKO</li>
-                        <li><p>Inicjały</p> ANDRZEJ DRZEWKO</li>
-                        <li><p>Inicjały</p> ANDRZEJ DRZEWKO</li>
-                        <li><p>Inicjały</p> ANDRZEJ DRZEWKO</li>
-                        <li><p>Inicjały</p> ANDRZEJ DRZEWKO</li>
-                        <li><p>Inicjały</p> ANDRZEJ DRZEWKO</li>
-                        <li><p>Inicjały</p> ANDRZEJ DRZEWKO</li>
-                        <li><p>Inicjały</p> ANDRZEJ DRZEWKO</li>
-                        <li><p>Inicjały</p> ANDRZEJ DRZEWKO</li>
-                        <li><p>Inicjały</p> ANDRZEJ DRZEWKO</li>
-                        <li><p>Inicjały</p> ANDRZEJ DRZEWKO</li>
-                        <li><p>Inicjały</p> ANDRZEJ DRZEWKO</li>
+                        <li>Inicjały <p>ANDRZEJ DRZEWKO</p></li>
+                        <li>Inicjały <p>ANDRZEJ DRZEWKO</p></li>
+                        <li>Inicjały <p>ANDRZEJ DRZEWKO</p></li>
+                        <li>Inicjały <p>ANDRZEJ DRZEWKO</p></li>
+                        <li>Inicjały <p>ANDRZEJ DRZEWKO</p></li>
+                        <li>Inicjały <p>ANDRZEJ DRZEWKO</p></li>
+                        <li>Inicjały <p>ANDRZEJ DRZEWKO</p></li>
+                        <li>Inicjały <p>ANDRZEJ DRZEWKO</p></li>
+                        <li>Inicjały <p>ANDRZEJ DRZEWKO</p></li>
+                        <li>Inicjały <p>ANDRZEJ DRZEWKO</p></li>
+                        <li>Inicjały <p>ANDRZEJ DRZEWKO</p></li>
+                        <li>Inicjały <p>ANDRZEJ DRZEWKO</p></li>
+                        <li>Inicjały <p>ANDRZEJ DRZEWKO</p></li>
+                        <li>Inicjały <p>ANDRZEJ DRZEWKO</p></li>
+                        <li>Inicjały <p>ANDRZEJ DRZEWKO</p></li>
+                        <li>Inicjały <p>ANDRZEJ DRZEWKO</p></li>
+
                     </ul>
                 </div>
                 <div className="p-5 flex justify-center items-center h-24 pt-20">
@@ -51,7 +48,12 @@ export default function TripNavbar() {
                         <p className={"text-accent font-bold"}>4500 PLN</p>
                     </div>
                 </div>
-                <hr className={"border-4 rounded"}/>
+                <LinearProgress variant="determinate" value={50}
+                sx={{height: 10, borderRadius: 4, backgroundColor: 'var(--bg-input)',
+                    '& .MuiLinearProgress-bar': {
+                        backgroundColor: '#367EFA',
+                        borderRadius: 4,
+                    }}}/>
             </div>
         </main>
     )

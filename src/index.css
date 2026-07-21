@@ -75,3 +75,28 @@ img {
     padding-left: 10px;
     gap: 10%;
 }
+#tripsList {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    overflow-y: scroll;
+    max-height: 500px;
+    scrollbar-width: none;
+}
+
+#tripsList li {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    background: var(--bg-main);
+    border: 1px solid var(--border);
+    color: var(--text-main);
+    min-height: 70px;
+    max-height: 70px;
+    border-radius: 20px;
+    padding: 5px;
+}
+#tripsList li:hover {
+    background: var(--bg-input);
+    cursor: pointer;
+}

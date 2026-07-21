@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import LoginScreen from "./pages/loginScreen.jsx";
 import RegisterScreen from "./pages/RegisterScreen.jsx";
+
 import Dashboard from "./pages/Dashboard.jsx";
 // function isTokenValid() {
 //     const token = localStorage.getItem('userToken') || sessionStorage.getItem('userToken');
