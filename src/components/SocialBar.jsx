@@ -48,7 +48,7 @@ export default function TripNavbar() {
                         <p className={"text-accent font-bold"}>4500 PLN</p>
                     </div>
                 </div>
-                <LinearProgress variant="determinate" value={50}
+                <LinearProgress variant="determinate" value={90}
                 sx={{height: 10, borderRadius: 4, backgroundColor: 'var(--bg-input)',
                     '& .MuiLinearProgress-bar': {
                         backgroundColor: '#367EFA',
