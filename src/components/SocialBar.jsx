@@ -31,7 +31,7 @@ export default function TripNavbar() {
                 </div>
                 <div className="p-5 flex justify-center items-center h-24 pt-20">
                     <button className="h-12 w-64 border-2 border-accent border-dashed text-accent bg-bg-input rounded-2xl
-                     hover:text-bg-input hover:bg-accent font-bold">+ Dodaj członka grupy
+                     hover:text-bg-input hover:bg-accent font-bold transition duration-150 ease-out hover:ease-in">+ Dodaj członka grupy
                     </button>
                 </div>
             </div>
@@ -48,7 +48,7 @@ export default function TripNavbar() {
                         <p className={"text-accent font-bold"}>4500 PLN</p>
                     </div>
                 </div>
-                <LinearProgress variant="determinate" value={90}
+                <LinearProgress variant="determinate" value={55}
                 sx={{height: 10, borderRadius: 4, backgroundColor: 'var(--bg-input)',
                     '& .MuiLinearProgress-bar': {
                         backgroundColor: '#367EFA',

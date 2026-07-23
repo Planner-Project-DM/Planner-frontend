@@ -2,8 +2,7 @@ import {useState, useEffect} from 'react';
 import {CgProfile} from "react-icons/cg";
 import {BsBell} from "react-icons/bs";
 import {FaSearch} from "react-icons/fa";
-
-export default function Navbar({showTrips, showNotif, showSettings}) {
+export default function Navbar({showTrips, showNotif, showSettings, addNewTrip}) {
 
     return (
         <main className={"flex h-full items-center  bg-bg-card w-full  font-bold text-text-main "}>
@@ -20,8 +19,9 @@ export default function Navbar({showTrips, showNotif, showSettings}) {
                     <input className={"pl-8 bg-bg-input flex items-center h-12 w-full rounded-2xl " +
                         "p-5 border border-b-border-col"} placeholder="Szukaj miejsc, tras..."/>
                 </div>
-                <button className={"border-2 h-12 border-accent border-dashed text-accent bg-bg-input " +
-                    "rounded-2xl w-44 hover:text-bg-input hover:bg-accent "}>
+                <button onClick={(e) => {e.stopPropagation(); addNewTrip();}}
+                        className={"border-2 h-12 border-accent border-dashed text-accent bg-bg-input " +
+                    "rounded-2xl w-44 hover:text-bg-input hover:bg-accent transition duration-150 ease-out hover:ease-in"}>
                     <p> + Nowa podróż</p>
                 </button>
             </div>
@@ -32,7 +32,7 @@ export default function Navbar({showTrips, showNotif, showSettings}) {
                         e.stopPropagation();
                         showTrips();
                     }} className={"bg-bg-input flex items-center h-12 w-full rounded-2xl " +
-                             "p-5 justify-between border border-b-border-col hover:bg-bg-main"}>
+                             "p-5 justify-between border border-b-border-col hover:bg-bg-main "}>
                         <p>Moje podróże</p><p>▾</p>
                     </div>
                 </button>

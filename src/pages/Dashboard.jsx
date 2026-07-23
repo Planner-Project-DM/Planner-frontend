@@ -2,29 +2,45 @@ import Navbar from "../components/Navbar.jsx";
 import TripNavbar from "../components/TripNavbar.jsx";
 import MainBar from "../components/MainBar.jsx";
 import SocialBar from "../components/SocialBar.jsx"
+import NewTripForm from "../components/NewTripForm.jsx";
+import UserTripsWindow from "../components/UserTripsWindow.jsx";
+import UserNotifications from "../components/UserNotifications.jsx";
+import UserSettings from "../components/UserSettings.jsx"
 import {useEffect, useState} from "react";
+
 
 export default function Dashboard(){
     const [myTrips, setMyTrips] = useState(false);
     const [myNotif, setMyNotif] = useState(false);
     const [mySettings, setMySettings] = useState(false);
-
+    const [newTrip, setNewTrip] = useState(false);
     function showTrips (){
         setMyTrips(!myTrips);
         setMyNotif(false);
         setMySettings(false);
+        setNewTrip(false);
     }
     function showNotif (){
         setMyNotif(!myNotif);
         setMyTrips(false);
         setMySettings(false);
+        setNewTrip(false);
     }
     function showSettings (){
         setMySettings(!mySettings);
         setMyTrips(false);
         setMyNotif(false)
+        setNewTrip(false);
     }
-
+    function addNewTrip (){
+        setNewTrip(true);
+        setMySettings(false);
+        setMyTrips(false);
+        setMyNotif(false)
+    }
+    function closeTripForm (){
+        setNewTrip(!newTrip);
+    }
     useEffect(() => {
         function handleClick() {
             setMyTrips(false);
@@ -36,9 +52,10 @@ export default function Dashboard(){
     }, []);
 
     return (
-        <div className={"h-screen flex flex-col bg-bg-main font-playpen"}>
+        <div className={"h-screen flex flex-col bg-bg-main font-playpen relative"}>
+
             <header className={"h-24 max-h-28 border-b-2 border-b-border-col"}>
-                <Navbar showTrips={showTrips} showNotif={showNotif} showSettings={showSettings}/>
+                <Navbar showTrips={showTrips} showNotif={showNotif} showSettings={showSettings} addNewTrip={addNewTrip} />
             </header>
             <main className={"flex-1 flex flex-row relative"}>
                 <aside className={"w-5/12 border-r-2 border-b-border-col"}>
@@ -48,39 +65,21 @@ export default function Dashboard(){
                     <MainBar />
                 </div>
                 {myTrips && (
-                    <div className="bg-bg-card border-2 border-accent border-t-0 text-white rounded-xl
-                    absolute text-center w-114 min-h-114 right-52  shadow-gray-500 shadow-md rounded-t">
-                        <div className={"w-full text-text-main flex justify-around h-12 items-center font-bold mt-2 mb-2"}>
-                            <button onClick={(e) => e.stopPropagation()} className={"h-10 w-36 bg-accent rounded-xl text-white hover:bg-accent-hover border border-accent-hover "}>Aktywne</button>
-                            <button onClick={(e) => e.stopPropagation()} className={"h-10 w-36 rounded-xl text-text-secondary bg-bg-main hover:bg-bg-input border border-border-col"}>Zakończone</button>
-                        </div>
-                        <hr className={""}/>
-                        <div className={"text-text-main"}>
-                            <ul id={"tripsList"} className={"p-5"}>
-                                <li>
-                                    <div>Nazwa tripa</div>
-                                    <div>[DataPocz.] - [DataKonc.]</div>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
+                    <UserTripsWindow />
                 )}
                 {myNotif && (
-                    <div className="bg-bg-card border-2 border-accent border-t-0 text-white rounded-xl absolute text-center w-80 min-h-114
-                    right-20 shadow-gray-500 shadow-md  rounded-t-0">
-
-                    </div>
+                    <UserNotifications />
                 )}
                 {mySettings && (
-                    <div className="bg-bg-card border-2 border-accent border-t-0 text-white rounded-xl absolute text-center w-80 min-h-160
-                    right-0 shadow-gray-500 shadow-md border-r-0 rounded-t ">
-
-                    </div>
+                    <UserSettings />
                 )}
                 <aside className={"w-5/12 border-l-2 border-b-border-col"}>
                     <SocialBar />
                 </aside>
             </main>
+            {newTrip &&(
+                <NewTripForm closeTripForm={closeTripForm} />
+            )}
         </div>
     )
 }
