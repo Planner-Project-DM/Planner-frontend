@@ -6,7 +6,7 @@ import 'dayjs/locale/pl';
 import {useState} from "react";
 import api from '../api/axios.js';
 
-export default function NewTripForm({closeTripForm} ) {
+export default function NewTripForm({closeTripForm, getTrips}) {
     const [tripForm, setTripForm] = useState({
         name: "",
         destination: "",
@@ -22,6 +22,7 @@ export default function NewTripForm({closeTripForm} ) {
                     'Authorization': `Bearer ${token}`
                 }
             });
+            getTrips();
             closeTripForm();
         } catch(error) {
             console.error(error);
@@ -51,11 +52,14 @@ export default function NewTripForm({closeTripForm} ) {
                             label="Wybierz datę początkową"
                             value={tripForm.startDate}
                             onChange={(newValue) => setTripForm({...tripForm, startDate: newValue})}
+                            disablePast
                         />
                         <DatePicker
                             label="Wybierz datę końcową"
                             value={tripForm.endDate}
                             onChange={(newValue) => setTripForm({...tripForm, endDate: newValue})}
+                            minDate={tripForm.startDate}
+                            disablePast
                         />
                     </LocalizationProvider>
                 </div>

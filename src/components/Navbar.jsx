@@ -38,7 +38,7 @@ export default function Navbar({showTrips, showNotif, showSettings, addNewTrip})
                 </button>
                 <div className={"flex gap-5"}>
                     <button onClick={(e) => {
-                        e.stopPropagation();showNotif();}} className={"w-12"}><BsBell size={25}/>
+                        e.stopPropagation(); showNotif();}} className={"w-12"}><BsBell size={25}/>
                     </button>
                     <button onClick={(e) => {
                         e.stopPropagation();

@@ -1,11 +1,42 @@
 import {useState, useEffect} from 'react';
+import Map from '../components/Map.jsx';
+import DaySchedule from '../components/DaySchedule.jsx';
+import Summary from '../components/Summary.jsx';
+import Funds from '../components/Funds.jsx';
+import Stay from '../components/Stay.jsx';
+import Weather from '../components/Weather.jsx';
+import Notes from '../components/Notes.jsx';
 
-export default function TripNavbar (){
 
-    return(
-        <main className={"bg-bg-main w-full h-full"}>
-            <div>
-            </div>
-        </main>
-    )
+export default function TripNavbar({activeMark}) {
+    if (activeMark === "map") {
+        return (
+            <Map/>
+        )
+    } else if (activeMark === "dayschedule") {
+        return (
+            <DaySchedule/>
+        )
+    }else if (activeMark === "summary") {
+        return (
+            <Summary/>
+        )
+    }else if (activeMark === "funds") {
+        return (
+            <Funds/>
+        )
+    }else if (activeMark === "stay") {
+        return (
+            <Stay/>
+        )
+    }else if (activeMark === "weather") {
+        return (
+            <Weather/>
+        )
+    }else if (activeMark === "notes") {
+        return (
+            <Notes/>
+        )
+    }
+
 }

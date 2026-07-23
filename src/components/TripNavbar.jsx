@@ -1,22 +1,22 @@
 import {useState, useEffect} from 'react';
+import TabButton from './TabButton';
+export default function TripNavbar({activeMark, setActiveMark}) {
 
-export default function TripNavbar (){
-
-    return(
+    return (
         <main className={"bg-bg-card w-full h-full "}>
             <div className={"p-10 flex flex-col gap-10 h-5/6"}>
                 <h1 className={" flex justify-center text-xl items-center "}>ZAKŁADKI</h1>
                 <hr className={"border"}/>
                 <div className={"h-3/4 mb-5"}>
-                    <ul id="bookmarks" className={""}>
-                        <li>Mapa</li>
-                        <li>Plan dnia</li>
-                        <li>Podsumowanie</li>
-                        <li>Fundusze</li>
-                        <li>Noclegi</li>
-                        <li>Pogoda</li>
-                        <li>Notatki</li>
-                    </ul>
+                    <div className={"flex flex-col gap-5"}>
+                        <TabButton label="Mapa" tabName="map" activeMark={activeMark} setActiveMark={setActiveMark} />
+                        <TabButton label="Plan dnia" tabName="dayschedule" activeMark={activeMark} setActiveMark={setActiveMark} />
+                        <TabButton label="Podsumowanie" tabName="summary" activeMark={activeMark} setActiveMark={setActiveMark} />
+                        <TabButton label="Fundusze" tabName="funds" activeMark={activeMark} setActiveMark={setActiveMark} />
+                        <TabButton label="Noclegi" tabName="stay" activeMark={activeMark} setActiveMark={setActiveMark} />
+                        <TabButton label="Pogoda" tabName="weather" activeMark={activeMark} setActiveMark={setActiveMark} />
+                        <TabButton label="Notatki" tabName="notes" activeMark={activeMark} setActiveMark={setActiveMark} />
+                    </div>
                 </div>
                 <hr className={"border"}/>
             </div>

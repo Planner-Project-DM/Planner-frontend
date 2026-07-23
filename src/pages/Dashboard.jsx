@@ -6,6 +6,7 @@ import NewTripForm from "../components/NewTripForm.jsx";
 import UserTripsWindow from "../components/UserTripsWindow.jsx";
 import UserNotifications from "../components/UserNotifications.jsx";
 import UserSettings from "../components/UserSettings.jsx"
+import api from "../api/axios.js";
 import {useEffect, useState} from "react";
 
 
@@ -14,6 +15,31 @@ export default function Dashboard(){
     const [myNotif, setMyNotif] = useState(false);
     const [mySettings, setMySettings] = useState(false);
     const [newTrip, setNewTrip] = useState(false);
+
+    const [userTrips, setUserTrips] = useState([]);
+
+    const [activeMark, setActiveMark] = useState("map");
+
+    async function getTrips(){
+        try {
+            const token = localStorage.getItem('userToken') || sessionStorage.getItem('userToken');
+
+            const resp = await api.get('/api/trips', {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+            setUserTrips(resp.data.data);
+        }
+        catch (error) {
+            console.log(error)
+        }
+    }
+    useEffect(()=>{
+        // eslint-disable-next-line react-hooks/exhaustive-deps, react-hooks/set-state-in-effect
+        getTrips();
+    }, [])
+
     function showTrips (){
         setMyTrips(!myTrips);
         setMyNotif(false);
@@ -59,13 +85,13 @@ export default function Dashboard(){
             </header>
             <main className={"flex-1 flex flex-row relative"}>
                 <aside className={"w-5/12 border-r-2 border-b-border-col"}>
-                    <TripNavbar />
+                    <TripNavbar activeMark={activeMark} setActiveMark={setActiveMark} />
                 </aside >
                 <div id="mainWindow" className={"w-full"} >
-                    <MainBar />
+                    <MainBar activeMark={activeMark}/>
                 </div>
                 {myTrips && (
-                    <UserTripsWindow />
+                    <UserTripsWindow userTrips={userTrips} />
                 )}
                 {myNotif && (
                     <UserNotifications />
@@ -78,7 +104,7 @@ export default function Dashboard(){
                 </aside>
             </main>
             {newTrip &&(
-                <NewTripForm closeTripForm={closeTripForm} />
+                <NewTripForm closeTripForm={closeTripForm} getTrips={getTrips} />
             )}
         </div>
     )
