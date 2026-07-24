@@ -15,7 +15,9 @@ export default function Dashboard(){
     const [myNotif, setMyNotif] = useState(false);
     const [mySettings, setMySettings] = useState(false);
     const [newTrip, setNewTrip] = useState(false);
-
+    const [loading, setLoading] = useState(false);
+    const [selectedHotel, setSelectedHotel] = useState(null);
+    const [hotels, setHotels] = useState([]);
     const [userTrips, setUserTrips] = useState([]);
 
     const [activeMark, setActiveMark] = useState("map");
@@ -33,6 +35,27 @@ export default function Dashboard(){
         }
         catch (error) {
             console.log(error)
+        }
+    }
+    async function getCityMap (city){
+        try {
+            const token = localStorage.getItem('userToken') || sessionStorage.getItem('userToken');
+
+            const resp = await api.get(`/api/hotels/city/${city}`,{
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+            const sorted = resp.data.data.sort((a,b) => b.stars - a.stars)
+            setHotels(sorted);
+        }
+        catch (error) {
+            console.log(error)
+        }
+        finally {
+            {
+                setLoading(false)
+            }
         }
     }
     useEffect(()=>{
@@ -81,14 +104,14 @@ export default function Dashboard(){
         <div className={"h-screen flex flex-col bg-bg-main font-playpen relative"}>
 
             <header className={"h-24 max-h-28 border-b-2 border-b-border-col"}>
-                <Navbar showTrips={showTrips} showNotif={showNotif} showSettings={showSettings} addNewTrip={addNewTrip} />
+                <Navbar showTrips={showTrips} showNotif={showNotif} showSettings={showSettings} addNewTrip={addNewTrip} getCityMap={getCityMap} />
             </header>
             <main className={"flex-1 flex flex-row relative"}>
                 <aside className={"w-5/12 border-r-2 border-b-border-col"}>
                     <TripNavbar activeMark={activeMark} setActiveMark={setActiveMark} />
                 </aside >
                 <div id="mainWindow" className={"w-full"} >
-                    <MainBar activeMark={activeMark}/>
+                    <MainBar activeMark={activeMark} hotels={hotels} loading={loading} setSelectedHotel={setSelectedHotel} selectedHotel={selectedHotel} />
                 </div>
                 {myTrips && (
                     <UserTripsWindow userTrips={userTrips} />
@@ -100,7 +123,7 @@ export default function Dashboard(){
                     <UserSettings />
                 )}
                 <aside className={"w-5/12 border-l-2 border-b-border-col"}>
-                    <SocialBar />
+                    <SocialBar activeMark={activeMark} hotels={hotels} selectedHotel={selectedHotel} setSelectedHotel={setSelectedHotel}/>
                 </aside>
             </main>
             {newTrip &&(

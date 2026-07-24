@@ -8,18 +8,18 @@ import Weather from '../components/Weather.jsx';
 import Notes from '../components/Notes.jsx';
 
 
-export default function TripNavbar({activeMark}) {
+export default function MainBar({activeMark, hotels, loading, setSelectedHotel, selectedHotel}) {
     if (activeMark === "map") {
         return (
-            <Map/>
+            <Map hotels={hotels} loading={loading} setSelectedHotel={setSelectedHotel} selectedHotel={selectedHotel}/>
         )
     } else if (activeMark === "dayschedule") {
         return (
             <DaySchedule/>
         )
-    }else if (activeMark === "summary") {
+    }else if (activeMark === "notes") {
         return (
-            <Summary/>
+            <Notes/>
         )
     }else if (activeMark === "funds") {
         return (
@@ -33,9 +33,9 @@ export default function TripNavbar({activeMark}) {
         return (
             <Weather/>
         )
-    }else if (activeMark === "notes") {
+    }else if (activeMark === "summary") {
         return (
-            <Notes/>
+            <Summary/>
         )
     }
 

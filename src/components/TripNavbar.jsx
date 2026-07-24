@@ -11,11 +11,11 @@ export default function TripNavbar({activeMark, setActiveMark}) {
                     <div className={"flex flex-col gap-5"}>
                         <TabButton label="Mapa" tabName="map" activeMark={activeMark} setActiveMark={setActiveMark} />
                         <TabButton label="Plan dnia" tabName="dayschedule" activeMark={activeMark} setActiveMark={setActiveMark} />
-                        <TabButton label="Podsumowanie" tabName="summary" activeMark={activeMark} setActiveMark={setActiveMark} />
+                        <TabButton label="Notatki" tabName="notes" activeMark={activeMark} setActiveMark={setActiveMark} />
                         <TabButton label="Fundusze" tabName="funds" activeMark={activeMark} setActiveMark={setActiveMark} />
                         <TabButton label="Noclegi" tabName="stay" activeMark={activeMark} setActiveMark={setActiveMark} />
                         <TabButton label="Pogoda" tabName="weather" activeMark={activeMark} setActiveMark={setActiveMark} />
-                        <TabButton label="Notatki" tabName="notes" activeMark={activeMark} setActiveMark={setActiveMark} />
+                        <TabButton label="Podsumowanie" tabName="summary" activeMark={activeMark} setActiveMark={setActiveMark} />
                     </div>
                 </div>
                 <hr className={"border"}/>
