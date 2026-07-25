@@ -1,4 +1,4 @@
-export default function UserTripsWindow({userTrips}){
+export default function UserTripsWindow({userTrips, setActiveTrip}){
 
     return(
         <div className="bg-bg-card border-2 border-accent border-t-0 text-white rounded-xl
@@ -21,9 +21,13 @@ export default function UserTripsWindow({userTrips}){
             <div onClick={(e) => e.stopPropagation()} className={"text-text-main"} >
                 <ul id={"tripsList"} className={"p-5"}>
                     {userTrips.map((trip) => (
-                        <li key={trip.name}>
-                            <div onClick={(e) => e.stopPropagation()}>{trip.name}</div>
-                            <div onClick={(e) => e.stopPropagation()}>{`${trip.startDate} → ${trip.endDate}`}</div>
+                        <li key={trip.name}
+                        onClick={(e) => {
+                            e.stopPropagation()
+                            setActiveTrip(trip)
+                        }}>
+                            <div>{trip.name}</div>
+                            <div>{`${trip.startDate} → ${trip.endDate}`}</div>
                         </li>
                     ))}
                 </ul>

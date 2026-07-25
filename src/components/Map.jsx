@@ -13,6 +13,16 @@ L.Icon.Default.mergeOptions({
     iconRetinaUrl: markerIcon2x,
     shadowUrl: markerShadow,
 });
+const selectedIcon = L.divIcon({
+    className: '',
+    html: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="44" height="44">
+        <path fill="red" d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/>
+        <circle fill="white" cx="12" cy="9" r="2.5"/>
+    </svg>`,
+    iconSize: [32, 32],
+    iconAnchor: [16, 32],
+    popupAnchor: [0, -32]
+});
 
 function FlyToCity({hotels}) {
     const map = useMap();
@@ -44,6 +54,7 @@ export default function Map({hotels, loading, setSelectedHotel, selectedHotel}) 
     const startLocation = selectedHotel
         ? [selectedHotel.location.latitude, selectedHotel.location.longitude]
         : [50.0638, 19.9451];
+
     return (
         <main className={"bg-bg-main w-full h-full"}>
             <div className={"w-full h-full p-5 rounded-2xl"}>
@@ -61,11 +72,13 @@ export default function Map({hotels, loading, setSelectedHotel, selectedHotel}) 
                     />
                     {hotels.map((hotel) => (
                         <Marker
+                            icon={selectedHotel?.id === hotel.id ? selectedIcon : new L.Icon.Default()}
                             key={hotel.id}
                             position={[hotel.location.latitude, hotel.location.longitude]}
                             eventHandlers = {{
                                 click: ()=> setSelectedHotel(hotel),
                             }}
+                            options={{ popupAnchor: [0, -40] }}
                         >
                             <Popup className={"bg-bg-input"}>
                                 <div>

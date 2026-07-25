@@ -1,6 +1,6 @@
 import {useState, useEffect} from 'react';
 import TabButton from './TabButton';
-export default function TripNavbar({activeMark, setActiveMark}) {
+export default function TripNavbar({activeMark, setActiveMark, activeTrip}) {
 
     return (
         <main className={"bg-bg-card w-full h-full "}>
@@ -23,7 +23,7 @@ export default function TripNavbar({activeMark, setActiveMark}) {
             <div className={"flex flex-col items-center gap-7"}>
                 <p className={"text-2xl"}>Podróż:</p>
                 <div className={"text-xl"}>
-                    Japonia 2026
+                    {activeTrip?.name || "Brak aktywnej podróży" }
                 </div>
             </div>
         </main>

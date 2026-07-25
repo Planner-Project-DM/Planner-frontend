@@ -1,6 +1,6 @@
 import {useEffect, useRef} from 'react';
 import LinearProgress from '@mui/material/LinearProgress';
-export default function SocialBar({hotels, activeMark, selectedHotel, setSelectedHotel}) {
+export default function SocialBar({hotels, activeMark, selectedHotel, setSelectedHotel, activeTrip}) {
     const hotelRefs = useRef({});
     useEffect(() =>{
         if(selectedHotel === null){
@@ -77,14 +77,14 @@ export default function SocialBar({hotels, activeMark, selectedHotel, setSelecte
                 <div className={"flex flex-col gap-1"}>
                     <div className={"flex justify-between"}>
                         <p className={"font-bold"}>Budżet:</p>
-                        <p className={"font-bold"}>5000 PLN</p>
+                        <p className={"font-bold"}>{activeTrip?.budget || "0"} PLN</p>
                     </div>
                     <div className={"flex justify-between"}>
                         <p className={"text-text-secondary font-bold"}>Wydano:</p>
                         <p className={"text-accent font-bold"}>4500 PLN</p>
                     </div>
                 </div>
-                <LinearProgress variant="determinate" value={55}
+                <LinearProgress variant="determinate" value={50}
                 sx={{height: 10, borderRadius: 4, backgroundColor: 'var(--bg-input)',
                     '& .MuiLinearProgress-bar': {
                         backgroundColor: '#367EFA',

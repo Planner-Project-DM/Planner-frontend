@@ -11,16 +11,25 @@ import {useEffect, useState} from "react";
 
 
 export default function Dashboard(){
+    // Dropdown states
     const [myTrips, setMyTrips] = useState(false);
     const [myNotif, setMyNotif] = useState(false);
     const [mySettings, setMySettings] = useState(false);
+    // Modal trip state
     const [newTrip, setNewTrip] = useState(false);
+    // Spinner map state
     const [loading, setLoading] = useState(false);
+    // Actual selected hotel state
     const [selectedHotel, setSelectedHotel] = useState(null);
+    // Hotel's list state
     const [hotels, setHotels] = useState([]);
+    // Users dropdown trips list state
     const [userTrips, setUserTrips] = useState([]);
-
+    // Marks state
     const [activeMark, setActiveMark] = useState("map");
+    // Actual trip state
+    const [activeTrip, setActiveTrip] = useState(null);
+
 
     async function getTrips(){
         try {
@@ -108,13 +117,13 @@ export default function Dashboard(){
             </header>
             <main className={"flex-1 flex flex-row relative"}>
                 <aside className={"w-5/12 border-r-2 border-b-border-col"}>
-                    <TripNavbar activeMark={activeMark} setActiveMark={setActiveMark} />
+                    <TripNavbar activeMark={activeMark} setActiveMark={setActiveMark} activeTrip={activeTrip}/>
                 </aside >
                 <div id="mainWindow" className={"w-full"} >
                     <MainBar activeMark={activeMark} hotels={hotels} loading={loading} setSelectedHotel={setSelectedHotel} selectedHotel={selectedHotel} />
                 </div>
                 {myTrips && (
-                    <UserTripsWindow userTrips={userTrips} />
+                    <UserTripsWindow userTrips={userTrips} setActiveTrip={setActiveTrip} />
                 )}
                 {myNotif && (
                     <UserNotifications />
@@ -123,7 +132,7 @@ export default function Dashboard(){
                     <UserSettings />
                 )}
                 <aside className={"w-5/12 border-l-2 border-b-border-col"}>
-                    <SocialBar activeMark={activeMark} hotels={hotels} selectedHotel={selectedHotel} setSelectedHotel={setSelectedHotel}/>
+                    <SocialBar activeMark={activeMark} hotels={hotels} selectedHotel={selectedHotel} setSelectedHotel={setSelectedHotel} activeTrip={activeTrip}/>
                 </aside>
             </main>
             {newTrip &&(
