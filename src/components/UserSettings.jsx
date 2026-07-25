@@ -1,16 +1,16 @@
+import { CiSettings } from "react-icons/ci";
+import { CgDarkMode } from "react-icons/cg";
+
+
 export default function UserSettings(){
     return (
         <div className="bg-bg-card border-2 border-accent border-t-0 text-white rounded-xl absolute text-center w-80 min-h-160
                     right-0 shadow-gray-500 shadow-md border-r-0 rounded-t p-2 font-bold"
         onClick={e => e.stopPropagation()}>
-            <div className={"flex flex-col text-text-main gap-5 items-center p-3"}>
-                <p className={"h-10 bg-accent flex items-center justify-center rounded-2xl " +
-                    "w-3/4 border-2 border-accent-hover cursor-pointer hover:bg-accent-hover hover:border-accent text-white " +
-                    "transition duration-150 ease-out hover:ease-in"}>Ustawienia
+            <div className={"flex text-text-main gap-5 items-center p-3 justify-around"}>
+                <p className={"cursor-pointer"} ><CiSettings size={30} />
                 </p>
-                <p className={"h-10 bg-accent flex items-center justify-center rounded-2xl " +
-                    "w-3/4 border-2 border-accent-hover cursor-pointer hover:bg-accent-hover hover:border-accent text-white " +
-                    "transition duration-150 ease-out hover:ease-in"}>Dark / Light
+                <p className={"cursor-pointer"}><CgDarkMode size={30} />
                 </p>
             </div>
             <hr/>
