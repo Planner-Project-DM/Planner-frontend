@@ -1,21 +1,85 @@
 export default function UserSettings(){
     return (
         <div className="bg-bg-card border-2 border-accent border-t-0 text-white rounded-xl absolute text-center w-80 min-h-160
-                    right-0 shadow-gray-500 shadow-md border-r-0 rounded-t"
+                    right-0 shadow-gray-500 shadow-md border-r-0 rounded-t p-2 font-bold"
         onClick={e => e.stopPropagation()}>
-            <div className={"flex flex-col text-text-main"}>
-                <p>Ustawienia</p>
-                <p>Dark / Light</p>
+            <div className={"flex flex-col text-text-main gap-5 items-center p-3"}>
+                <p className={"h-10 bg-accent flex items-center justify-center rounded-2xl " +
+                    "w-3/4 border-2 border-accent-hover cursor-pointer hover:bg-accent-hover hover:border-accent text-white " +
+                    "transition duration-150 ease-out hover:ease-in"}>Ustawienia
+                </p>
+                <p className={"h-10 bg-accent flex items-center justify-center rounded-2xl " +
+                    "w-3/4 border-2 border-accent-hover cursor-pointer hover:bg-accent-hover hover:border-accent text-white " +
+                    "transition duration-150 ease-out hover:ease-in"}>Dark / Light
+                </p>
             </div>
             <hr/>
-            <div className={"flex flex-col text-text-main"}>
-                <ul>
-                    <li>Znajomy</li>
+            <div className={"flex flex-col text-text-main p-3 gap-1"}>
+                <p className={"flex flex-col justify-center items-center"}>Znajomi
+                <hr className={"w-1/2 border-2 border-accent rounded-2xl"}/></p>
+                <ul id={"friendsList"}>
+                    <li className={"flex gap-3 items-center"}>
+                        <div className={"bg-accent rounded-full p-1 h-full flex justify-center items-center text-white w-12"}>MP</div>
+                        <div className={"flex flex-col items-start"}>
+                            <div>Marek P.</div>
+                            <div className={"text-xs text-text-secondary"}>marekp@gmail.com</div>
+                        </div>
+                    </li>
+                    <li className={"flex gap-3 items-center"}>
+                        <div className={"bg-accent rounded-full p-1 h-full flex justify-center items-center text-white w-12"}>MP</div>
+                        <div className={"flex flex-col items-start"}>
+                            <div>Marek P.</div>
+                            <div className={"text-xs text-text-secondary"}>marekp@gmail.com</div>
+                        </div>
+                    </li>
+                    <li className={"flex gap-3 items-center"}>
+                        <div className={"bg-accent rounded-full p-1 h-full flex justify-center items-center text-white w-12"}>MP</div>
+                        <div className={"flex flex-col items-start"}>
+                            <div>Marek P.</div>
+                            <div className={"text-xs text-text-secondary"}>marekp@gmail.com</div>
+                        </div>
+                    </li>
+                    <li className={"flex gap-3 items-center"}>
+                        <div className={"bg-accent rounded-full p-1 h-full flex justify-center items-center text-white w-12"}>MP</div>
+                        <div className={"flex flex-col items-start"}>
+                            <div>Marek P.</div>
+                            <div className={"text-xs text-text-secondary"}>marekp@gmail.com</div>
+                        </div>
+                    </li>
+                    <li className={"flex gap-3 items-center"}>
+                        <div className={"bg-accent rounded-full p-1 h-full flex justify-center items-center text-white w-12"}>MP</div>
+                        <div className={"flex flex-col items-start"}>
+                            <div>Marek P.</div>
+                            <div className={"text-xs text-text-secondary"}>marekp@gmail.com</div>
+                        </div>
+                    </li>
+                    <li className={"flex gap-3 items-center"}>
+                        <div className={"bg-accent rounded-full p-1 h-full flex justify-center items-center text-white w-12"}>MP</div>
+                        <div className={"flex flex-col items-start"}>
+                            <div>Marek P.</div>
+                            <div className={"text-xs text-text-secondary"}>marekp@gmail.com</div>
+                        </div>
+                    </li>
+                    <li className={"flex gap-3 items-center"}>
+                        <div className={"bg-accent rounded-full p-1 h-full flex justify-center items-center text-white w-12"}>MP</div>
+                        <div className={"flex flex-col items-start"}>
+                            <div>Marek P.</div>
+                            <div className={"text-xs text-text-secondary"}>marekp@gmail.com</div>
+                        </div>
+                    </li>
+                    <li className={"flex gap-3 items-center"}>
+                        <div className={"bg-accent rounded-full p-1 h-full flex justify-center items-center text-white w-12"}>MP</div>
+                        <div className={"flex flex-col items-start"}>
+                            <div>Marek P.</div>
+                            <div className={"text-xs text-text-secondary"}>marekp@gmail.com</div>
+                        </div>
+                    </li>
                 </ul>
             </div>
             <hr />
-            <div className="text-text-main">
-                <button>
+            <div className="text-text-main p-3">
+                <button className={"border-2 h-12 border-accent border-dashed text-accent bg-bg-input " +
+                    "rounded-2xl hover:text-bg-input hover:bg-accent transition duration-150 ease-out hover:ease-in w-3/4"}>
                     + Dodaj znajomego
                 </button>
             </div>
