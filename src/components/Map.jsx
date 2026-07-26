@@ -5,7 +5,7 @@ import L from 'leaflet';
 import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png';
 import markerIcon from 'leaflet/dist/images/marker-icon.png';
 import markerShadow from 'leaflet/dist/images/marker-shadow.png';
-import CircularProgress from '@mui/material/CircularProgress';
+// import CircularProgress from '@mui/material/CircularProgress';
 
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
@@ -49,14 +49,13 @@ function FlyToHotel({selectedHotel}){
     return null;
 }
 
-export default function Map({hotels, loading, setSelectedHotel, selectedHotel}) {
-    if (loading) return <CircularProgress/>
+export default function Map({hotels, setSelectedHotel, selectedHotel}) {
     const startLocation = selectedHotel
         ? [selectedHotel.location.latitude, selectedHotel.location.longitude]
         : [50.0638, 19.9451];
 
     return (
-        <main className={"bg-bg-main w-full h-full"}>
+        <main className={"bg-bg-main w-full h-full relative"}>
             <div className={"w-full h-full p-5 rounded-2xl"}>
                 <MapContainer
                     center={startLocation}
@@ -80,7 +79,8 @@ export default function Map({hotels, loading, setSelectedHotel, selectedHotel}) 
                             }}
                             options={{ popupAnchor: [0, -40] }}
                         >
-                            <Popup className={"bg-bg-input"}>
+                            <Popup className={"bg-bg-input"}
+                                   offset={[5, 0]}>
                                 <div>
                                     <p className="font-bold text-xl">{hotel.name || "Brak informacji"}</p>
                                     <p style={{minHeight: '30px', padding: '5px'}}

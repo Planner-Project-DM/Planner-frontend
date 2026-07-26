@@ -8,6 +8,7 @@ import UserNotifications from "../components/UserNotifications.jsx";
 import UserSettings from "../components/UserSettings.jsx"
 import api from "../api/axios.js";
 import {useEffect, useState} from "react";
+import CreateFriendship from "../components/CreateFriendship.jsx";
 
 
 export default function Dashboard(){
@@ -29,8 +30,29 @@ export default function Dashboard(){
     const [activeMark, setActiveMark] = useState("map");
     // Actual trip state
     const [activeTrip, setActiveTrip] = useState(null);
+    const [newFriend, setNewFriend] = useState(false);
+    // Friendships states
+    const [pendingFriends, setPendingFriends] = useState(null);
 
+    async function friendNotification (){
 
+        try {
+
+            const token = localStorage.getItem('userToken') || sessionStorage.getItem('userToken');
+
+            const res = await api.get('/api/friendships?status=PENDING', {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+            setPendingFriends(res.data.data);
+        }
+        catch (error) {
+            console.log(error);
+        }
+    }
+
+    // Trips get from backend function
     async function getTrips(){
         try {
             const token = localStorage.getItem('userToken') || sessionStorage.getItem('userToken');
@@ -46,7 +68,9 @@ export default function Dashboard(){
             console.log(error)
         }
     }
+    // Getting hotels list by city function
     async function getCityMap (city){
+        setLoading(true);
         try {
             const token = localStorage.getItem('userToken') || sessionStorage.getItem('userToken');
 
@@ -70,8 +94,10 @@ export default function Dashboard(){
     useEffect(()=>{
         // eslint-disable-next-line react-hooks/exhaustive-deps, react-hooks/set-state-in-effect
         getTrips();
+        friendNotification()
     }, [])
 
+    // Closing / opening (popups, dropdowns, modals) functions
     function showTrips (){
         setMyTrips(!myTrips);
         setMyNotif(false);
@@ -99,6 +125,9 @@ export default function Dashboard(){
     function closeTripForm (){
         setNewTrip(!newTrip);
     }
+    function closeFriendForm (){
+        setNewFriend(false);
+    }
     useEffect(() => {
         function handleClick() {
             setMyTrips(false);
@@ -113,7 +142,7 @@ export default function Dashboard(){
         <div className={"h-screen flex flex-col bg-bg-main font-playpen relative"}>
 
             <header className={"h-24 max-h-28 border-b-2 border-b-border-col"}>
-                <Navbar showTrips={showTrips} showNotif={showNotif} showSettings={showSettings} addNewTrip={addNewTrip} getCityMap={getCityMap} />
+                <Navbar showTrips={showTrips} showNotif={showNotif} showSettings={showSettings} addNewTrip={addNewTrip} getCityMap={getCityMap} pendingFriends={pendingFriends} />
             </header>
             <main className={"flex-1 flex flex-row relative"}>
                 <aside className={"w-5/12 border-r-2 border-b-border-col"}>
@@ -123,20 +152,23 @@ export default function Dashboard(){
                     <MainBar activeMark={activeMark} hotels={hotels} loading={loading} setSelectedHotel={setSelectedHotel} selectedHotel={selectedHotel} />
                 </div>
                 {myTrips && (
-                    <UserTripsWindow userTrips={userTrips} setActiveTrip={setActiveTrip} />
+                    <UserTripsWindow userTrips={userTrips} setActiveTrip={setActiveTrip} activeTrip={activeTrip}/>
                 )}
                 {myNotif && (
-                    <UserNotifications />
+                    <UserNotifications pendingFriends={pendingFriends} />
                 )}
                 {mySettings && (
-                    <UserSettings />
+                    <UserSettings setNewFriend={setNewFriend}/>
                 )}
                 <aside className={"w-5/12 border-l-2 border-b-border-col"}>
-                    <SocialBar activeMark={activeMark} hotels={hotels} selectedHotel={selectedHotel} setSelectedHotel={setSelectedHotel} activeTrip={activeTrip}/>
+                    <SocialBar activeMark={activeMark} hotels={hotels} selectedHotel={selectedHotel} setSelectedHotel={setSelectedHotel} activeTrip={activeTrip} loading={loading}/>
                 </aside>
             </main>
             {newTrip &&(
-                <NewTripForm closeTripForm={closeTripForm} getTrips={getTrips} />
+                <NewTripForm closeTripForm={closeTripForm} getTrips={getTrips} setActiveTrip={setActiveTrip}/>
+            )}
+            {newFriend && (
+                <CreateFriendship closeFriendForm={closeFriendForm} />
             )}
         </div>
     )

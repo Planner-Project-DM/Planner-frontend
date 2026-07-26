@@ -6,7 +6,7 @@ import 'dayjs/locale/pl';
 import {useState} from "react";
 import api from '../api/axios.js';
 
-export default function NewTripForm({closeTripForm, getTrips}) {
+export default function NewTripForm({closeTripForm, getTrips, setActiveTrip}) {
     const [tripForm, setTripForm] = useState({
         name: "",
         destination: "",
@@ -14,15 +14,18 @@ export default function NewTripForm({closeTripForm, getTrips}) {
         startDate: null,
         endDate: null
     });
+    // Trip sending function to backend
     async function sendTrip(){
         try {
             const token = localStorage.getItem('userToken') || sessionStorage.getItem('userToken');
-            await api.post('/api/trips', tripForm, {
+           const resp =  await api.post('/api/trips', tripForm, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
             });
+            // Function that receives trips to refresh them
             getTrips();
+            setActiveTrip(resp.data.data);
             closeTripForm();
         } catch(error) {
             console.error(error);
@@ -32,14 +35,14 @@ export default function NewTripForm({closeTripForm, getTrips}) {
         <div className="w-screen h-screen absolute bg-gray-800/80 top-0 left-0"  onClick={(e) => e.stopPropagation()}>
             <div
                 className="bg-bg-card border-2 border-accent rounded-xl absolute h-2/3 top-1/2 left-1/2 -translate-x-1/2
-                         -translate-y-1/2 shadow-gray-500 shadow-md flex flex-col w-144 p-10 gap-7">
+                         -translate-y-1/2 shadow-gray-500 shadow-md flex flex-col w-144 p-10 justify-between">
                 <div className={"flex justify-between"}>
                     <p className={"font-bold text-2xl"}>Nowa podróż</p>
                     <button onClick={(e) => {e.stopPropagation(); closeTripForm();}} >✕</button>
                 </div>
                 <hr/>
                 <div className={"flex flex-col gap-5"}>
-                    <FormInput label="Nazwa podróży" id="tripName" placeholder="np. Japonia 2026"  maxLength={40} value={tripForm.name}
+                    <FormInput label="Nazwa podróży" id="tripName" placeholder="np. Japonia 2026"  maxLength={50} value={tripForm.name}
                                onChange={(e) => setTripForm({...tripForm, name: e.target.value})}/>
                     <FormInput label="Destynacja" id="tripName" placeholder="np. Japonia" maxLength={20} value={tripForm.destination}
                     onChange={(e) => setTripForm({...tripForm, destination: e.target.value})}/>

@@ -1,4 +1,4 @@
-export default function UserTripsWindow({userTrips, setActiveTrip}){
+export default function UserTripsWindow({userTrips, setActiveTrip, activeTrip}){
 
     return(
         <div className="bg-bg-card border-2 border-accent border-t-0 text-white rounded-xl
@@ -19,9 +19,13 @@ export default function UserTripsWindow({userTrips, setActiveTrip}){
             </div>
             <hr className={""}/>
             <div onClick={(e) => e.stopPropagation()} className={"text-text-main"} >
-                <ul id={"tripsList"} className={"p-5"}>
+                <ul id={"tripsList"} className={"p-5 flex flex-col gap-2.5 overflow-y-scroll max-h-128 [&::-webkit-scrollbar]:hidden "}>
                     {userTrips.map((trip) => (
-                        <li key={trip.name}
+                        <li key={trip.id}
+                            className={`flex flex-col items-start border-2 rounded-xl p-3 cursor-pointer ${trip.id === activeTrip?.id
+                                ? "bg-accent text-white border-accent"
+                                : "bg-bg-main text-text-main border-border-col hover:bg-bg-input"
+                            }`}
                         onClick={(e) => {
                             e.stopPropagation()
                             setActiveTrip(trip)

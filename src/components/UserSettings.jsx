@@ -2,7 +2,7 @@ import { CiSettings } from "react-icons/ci";
 import { CgDarkMode } from "react-icons/cg";
 
 
-export default function UserSettings(){
+export default function UserSettings({setNewFriend}){
     return (
         <div className="bg-bg-card border-2 border-accent border-t-0 text-white rounded-xl absolute text-center w-80 min-h-160
                     right-0 shadow-gray-500 shadow-md border-r-0 rounded-t p-2 font-bold"
@@ -78,7 +78,8 @@ export default function UserSettings(){
             </div>
             <hr />
             <div className="text-text-main p-3">
-                <button className={"border-2 h-12 border-accent border-dashed text-accent bg-bg-input " +
+                <button onClick={(e) => {e.stopPropagation(); setNewFriend(true)}}
+                    className={"border-2 h-12 border-accent border-dashed text-accent bg-bg-input " +
                     "rounded-2xl hover:text-bg-input hover:bg-accent transition duration-150 ease-out hover:ease-in w-3/4"}>
                     + Dodaj znajomego
                 </button>

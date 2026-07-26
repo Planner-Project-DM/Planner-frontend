@@ -20,9 +20,9 @@ export default function TripNavbar({activeMark, setActiveMark, activeTrip}) {
                 </div>
                 <hr className={"border"}/>
             </div>
-            <div className={"flex flex-col items-center gap-7"}>
+            <div className={"flex flex-col items-center gap-3"}>
                 <p className={"text-2xl"}>Podróż:</p>
-                <div className={"text-xl"}>
+                <div className={"text-xl p-1 break-words max-w-96"}>
                     {activeTrip?.name || "Brak aktywnej podróży" }
                 </div>
             </div>

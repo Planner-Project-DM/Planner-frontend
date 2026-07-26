@@ -1,6 +1,7 @@
 import {useEffect, useRef} from 'react';
 import LinearProgress from '@mui/material/LinearProgress';
-export default function SocialBar({hotels, activeMark, selectedHotel, setSelectedHotel, activeTrip}) {
+import CircularProgress from '@mui/material/CircularProgress';
+export default function SocialBar({hotels, activeMark, selectedHotel, setSelectedHotel, activeTrip, loading}) {
     const hotelRefs = useRef({});
     useEffect(() =>{
         if(selectedHotel === null){
@@ -13,7 +14,11 @@ export default function SocialBar({hotels, activeMark, selectedHotel, setSelecte
         <main className="bg-bg-card w-full h-full p-2 flex flex-col">
             <div className="flex flex-col flex-1 overflow-hidden max-h-160">
                 {activeMark === "map" ? (
-                    hotels.length === 0 ? (
+                    loading ? (
+                        <div className={"flex items-center justify-center h-full"}>
+                            <CircularProgress />
+                        </div>
+                    ) : hotels.length === 0 ? (
                         <div className={"flex items-center justify-center h-full"}>Tutaj pojawi się lista hoteli</div>
                     ) : (
                         <div className={"overflow-y-scroll"}>
@@ -22,7 +27,7 @@ export default function SocialBar({hotels, activeMark, selectedHotel, setSelecte
                                     <li key={hotel.id}
                                         onClick={(e) => {e.stopPropagation();setSelectedHotel(hotel);}}
                                         ref={(el) => hotelRefs.current[hotel.id] = el}
-                                        className={"flex flex-col gap-5 bg-bg-input border-border-col border-2 rounded-2xl p-5 cursor-pointer"}>
+                                        className={"flex flex-col gap-5 bg-bg-input border-border-col border-2 rounded-2xl p-5 cursor-pointer hover:bg-bg-main"}>
                                         <div className={"font-bold text-xl"}>{hotel.name || "Brak informacji"}</div>
                                         <div className={"flex flex-col"}>
                                             <p className={"text-yellow-600 font-bold"}>⭐- {hotel.stars || "Brak informacji"}</p>

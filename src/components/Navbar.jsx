@@ -2,7 +2,8 @@ import {useState, useEffect} from 'react';
 import {CgProfile} from "react-icons/cg";
 import {BsBell} from "react-icons/bs";
 import SearchBar from "./SearchBar.jsx"
-export default function Navbar({showTrips, showNotif, showSettings, addNewTrip, getCityMap}) {
+import Badge from '@mui/material/Badge';
+export default function Navbar({showTrips, showNotif, showSettings, addNewTrip, getCityMap, pendingFriends}) {
 
     return (
         <main className={"flex h-full items-center  bg-bg-card w-full  font-bold text-text-main "}>
@@ -33,8 +34,10 @@ export default function Navbar({showTrips, showNotif, showSettings, addNewTrip, 
                     </div>
                 </button>
                 <div className={"flex gap-5"}>
-                    <button onClick={(e) => {
-                        e.stopPropagation(); showNotif();}} className={"w-12"}><BsBell size={25}/>
+                    <button onClick={(e) => {e.stopPropagation(); showNotif();}} className={"w-12"}>
+                        <Badge color="error" variant="dot" invisible={!pendingFriends?.length}>
+                            <BsBell size={25}/>
+                        </Badge>
                     </button>
                     <button onClick={(e) => {
                         e.stopPropagation();
