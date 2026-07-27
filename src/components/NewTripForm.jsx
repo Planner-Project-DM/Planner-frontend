@@ -6,7 +6,7 @@ import 'dayjs/locale/pl';
 import {useState} from "react";
 import api from '../api/axios.js';
 
-export default function NewTripForm({closeTripForm, getTrips, setActiveTrip}) {
+export default function NewTripForm({closeTripForm, getTrips, setActiveTrip, setSnackbar}) {
     const [tripForm, setTripForm] = useState({
         name: "",
         destination: "",
@@ -28,7 +28,7 @@ export default function NewTripForm({closeTripForm, getTrips, setActiveTrip}) {
             setActiveTrip(resp.data.data);
             closeTripForm();
         } catch(error) {
-            console.error(error);
+            setSnackbar({ open: true, message: error.response?.data?.message || 'Coś poszło nie tak!', severity: 'error' });
         }
     }
     return(

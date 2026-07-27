@@ -1,6 +1,8 @@
 import {useState} from 'react';
 import {useNavigate} from "react-router-dom";
 import api from '../api/axios.js';
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
 
 export default function RegisterScreen() {
     const navigate = useNavigate();
@@ -10,6 +12,7 @@ export default function RegisterScreen() {
     const [password, setPassword] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
     const [success, setSuccess] = useState(false)
+    const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' });
 
     const handleRegister = async (e) => {
         e.preventDefault();
@@ -37,9 +40,9 @@ export default function RegisterScreen() {
             }, 1000)
         } catch (error){
             if (error.response && error.response.data) {
-                setErrorMessage(error.response.data.message || "Wystąpił błąd podczas rejestracji.");
+                setSnackbar({ open: true, message: error.response?.data?.message || 'Coś poszło nie tak!', severity: 'error' });
             } else {
-                setErrorMessage("Brak połączenia z serwerem. Spróbuj ponownie.");
+                setSnackbar({ open: true, message: error.response?.data?.message || 'Brak połączenia z serwerem!', severity: 'error' });
             }
         }
     }
@@ -131,6 +134,9 @@ export default function RegisterScreen() {
                     </button>
                 </div>
             </div>
+            <Snackbar open={snackbar.open} autoHideDuration={4000} onClose={() => setSnackbar({...snackbar, open: false})}>
+                <Alert severity={snackbar.severity}>{snackbar.message}</Alert>
+            </Snackbar>
         </div>
     );
 }

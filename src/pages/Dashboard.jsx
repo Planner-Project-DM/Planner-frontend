@@ -9,6 +9,8 @@ import UserSettings from "../components/UserSettings.jsx"
 import api from "../api/axios.js";
 import {useEffect, useState} from "react";
 import CreateFriendship from "../components/CreateFriendship.jsx";
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
 
 
 export default function Dashboard(){
@@ -30,10 +32,15 @@ export default function Dashboard(){
     const [activeMark, setActiveMark] = useState("map");
     // Actual trip state
     const [activeTrip, setActiveTrip] = useState(null);
-    const [newFriend, setNewFriend] = useState(false);
     // Friendships states
     const [pendingFriends, setPendingFriends] = useState(null);
+    const [newFriend, setNewFriend] = useState(false);
+    const [friends, setFriends] = useState(null);
 
+    // Snackbar state
+    const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' });
+
+    // Friendships functions
     async function friendNotification (){
 
         try {
@@ -48,7 +55,70 @@ export default function Dashboard(){
             setPendingFriends(res.data.data);
         }
         catch (error) {
-            console.log(error);
+            setSnackbar({ open: true, message: error.response?.data?.message || 'Coś poszło nie tak!', severity: 'error' });
+        }
+    }
+    async function acceptFriend(id){
+        try{
+            const token = localStorage.getItem('userToken') || sessionStorage.getItem('userToken');
+
+            await api.patch(`/api/friendships/${id}/accept`,{}, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+            friendNotification();
+            setSnackbar({ open: true, message: 'Dodano znajomego!', severity: 'success' });
+        }
+        catch (error) {
+            setSnackbar({ open: true, message: error.response?.data?.message || 'Coś poszło nie tak!', severity: 'error' });
+        }
+    }
+    async function rejectFriend(id){
+        try{
+            const token = localStorage.getItem('userToken') || sessionStorage.getItem('userToken');
+
+            await api.patch(`/api/friendships/${id}/reject`,{}, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+            friendNotification();
+            setSnackbar({ open: true, message: 'Odrzucono zaproszenie.', severity: 'info' });
+        }
+        catch (error) {
+            setSnackbar({ open: true, message: error.response?.data?.message || 'Coś poszło nie tak!', severity: 'error' });
+        }
+    }
+    async function blockFriend(id){
+        try{
+            const token = localStorage.getItem('userToken') || sessionStorage.getItem('userToken');
+
+            await api.patch(`/api/friendships/${id}/block`,{}, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+            friendNotification();
+            setSnackbar({ open: true, message: 'Zablokowano użytkownika', severity: 'info' });
+        }
+        catch (error) {
+            setSnackbar({ open: true, message: error.response?.data?.message || 'Coś poszło nie tak!', severity: 'error' });
+        }
+    }
+    async function getFriendsList(){
+        try{
+            const token = localStorage.getItem('userToken') || sessionStorage.getItem('userToken');
+
+            const res = await api.get(`/api/friendships`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+            setFriends(res.data.data);
+        }
+        catch (error) {
+            setSnackbar({ open: true, message: error.response?.data?.message || 'Coś poszło nie tak!', severity: 'error' });
         }
     }
 
@@ -65,7 +135,7 @@ export default function Dashboard(){
             setUserTrips(resp.data.data);
         }
         catch (error) {
-            console.log(error)
+            setSnackbar({ open: true, message: error.response?.data?.message || 'Coś poszło nie tak!', severity: 'error' });
         }
     }
     // Getting hotels list by city function
@@ -81,9 +151,12 @@ export default function Dashboard(){
             });
             const sorted = resp.data.data.sort((a,b) => b.stars - a.stars)
             setHotels(sorted);
+            if (sorted.length === 0) {
+                setSnackbar({ open: true, message: 'Nie znaleziono hoteli w tej lokalizacji', severity: 'info' });
+            }
         }
         catch (error) {
-            console.log(error)
+            setSnackbar({ open: true, message: error.response?.data?.message || 'Coś poszło nie tak!', severity: 'error' });
         }
         finally {
             {
@@ -142,7 +215,8 @@ export default function Dashboard(){
         <div className={"h-screen flex flex-col bg-bg-main font-playpen relative"}>
 
             <header className={"h-24 max-h-28 border-b-2 border-b-border-col"}>
-                <Navbar showTrips={showTrips} showNotif={showNotif} showSettings={showSettings} addNewTrip={addNewTrip} getCityMap={getCityMap} pendingFriends={pendingFriends} />
+                <Navbar showTrips={showTrips} showNotif={showNotif} showSettings={showSettings} addNewTrip={addNewTrip} getCityMap={getCityMap}
+                        pendingFriends={pendingFriends} getFriendsList={getFriendsList} />
             </header>
             <main className={"flex-1 flex flex-row relative"}>
                 <aside className={"w-5/12 border-r-2 border-b-border-col"}>
@@ -155,21 +229,24 @@ export default function Dashboard(){
                     <UserTripsWindow userTrips={userTrips} setActiveTrip={setActiveTrip} activeTrip={activeTrip}/>
                 )}
                 {myNotif && (
-                    <UserNotifications pendingFriends={pendingFriends} />
+                    <UserNotifications pendingFriends={pendingFriends} acceptFriend={acceptFriend} rejectFriend={rejectFriend} blockFriend={blockFriend}/>
                 )}
                 {mySettings && (
-                    <UserSettings setNewFriend={setNewFriend}/>
+                    <UserSettings setNewFriend={setNewFriend} friends={friends}/>
                 )}
                 <aside className={"w-5/12 border-l-2 border-b-border-col"}>
                     <SocialBar activeMark={activeMark} hotels={hotels} selectedHotel={selectedHotel} setSelectedHotel={setSelectedHotel} activeTrip={activeTrip} loading={loading}/>
                 </aside>
             </main>
             {newTrip &&(
-                <NewTripForm closeTripForm={closeTripForm} getTrips={getTrips} setActiveTrip={setActiveTrip}/>
+                <NewTripForm closeTripForm={closeTripForm} getTrips={getTrips} setActiveTrip={setActiveTrip} setSnackbar={setSnackbar}/>
             )}
             {newFriend && (
-                <CreateFriendship closeFriendForm={closeFriendForm} />
+                <CreateFriendship closeFriendForm={closeFriendForm} setSnackbar={setSnackbar} />
             )}
+            <Snackbar open={snackbar.open} autoHideDuration={4000} onClose={() => setSnackbar({...snackbar, open: false})}>
+                <Alert severity={snackbar.severity}>{snackbar.message}</Alert>
+            </Snackbar>
         </div>
     )
 }

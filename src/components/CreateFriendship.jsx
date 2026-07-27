@@ -1,11 +1,11 @@
 import FormInput from "./FormInput.jsx";
 import {useState} from "react";
 import api from "../api/axios.js";
-export default function CreateFriendship ({closeFriendForm}) {
+export default function CreateFriendship ({closeFriendForm, setSnackbar}) {
     const [friendForm, setFriendForm] = useState({
         emailSender: ""
     })
-    // Request sening function (friendship)
+    // Request sending function (friendship)
     async function sendRequest(){
         try {
             const token = localStorage.getItem('userToken') || sessionStorage.getItem('userToken');
@@ -25,7 +25,7 @@ export default function CreateFriendship ({closeFriendForm}) {
             closeFriendForm()
         }
         catch (error) {
-            console.log(error);
+            setSnackbar({ open: true, message: error.response?.data?.message || 'Coś poszło nie tak!', severity: 'error' });
         }
 
 

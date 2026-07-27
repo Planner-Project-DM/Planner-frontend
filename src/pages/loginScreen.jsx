@@ -1,12 +1,16 @@
 import {useState} from 'react';
 import api from '../api/axios.js';
 import { useNavigate } from 'react-router-dom';
+import Alert from "@mui/material/Alert";
+import Snackbar from "@mui/material/Snackbar";
+
 export default function LoginScreen({setIsLoggedIn}) {
     const navigate = useNavigate();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
     const [rememberMe, setRememberMe] = useState(false);
+    const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' });
 
     const handleRegister = async (e) => {
         e.preventDefault();
@@ -33,9 +37,9 @@ export default function LoginScreen({setIsLoggedIn}) {
             navigate('/dashboard');
         } catch (error){
             if (error.response && error.response.data) {
-                setErrorMessage(error.response.data.message || "Wystąpił błąd podczas rejestracji.");
+                setSnackbar({ open: true, message: error.response?.data?.message || 'Coś poszło nie tak!', severity: 'error' });
             } else {
-                setErrorMessage("Brak połączenia z serwerem. Spróbuj ponownie.");
+                setSnackbar({ open: true, message: error.response?.data?.message || 'Brak połączenia z serwerem!', severity: 'error' });
             }
         }
     }
@@ -124,6 +128,10 @@ export default function LoginScreen({setIsLoggedIn}) {
                     </button>
                 </div>
             </div>
+            <Snackbar open={snackbar.open} autoHideDuration={4000} onClose={() => setSnackbar({...snackbar, open: false})}>
+                <Alert severity={snackbar.severity}>{snackbar.message}</Alert>
+            </Snackbar>
         </div>
+
     );
 }
