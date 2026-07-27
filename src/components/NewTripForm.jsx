@@ -37,8 +37,8 @@ export default function NewTripForm({closeTripForm, getTrips, setActiveTrip, set
                 className="bg-bg-card border-2 border-accent rounded-xl absolute h-2/3 top-1/2 left-1/2 -translate-x-1/2
                          -translate-y-1/2 shadow-gray-500 shadow-md flex flex-col w-144 p-10 justify-between">
                 <div className={"flex justify-between"}>
-                    <p className={"font-bold text-2xl"}>Nowa podróż</p>
-                    <button onClick={(e) => {e.stopPropagation(); closeTripForm();}} >✕</button>
+                    <p className={"font-bold text-2xl text-text-main"}>Nowa podróż</p>
+                    <button className={"text-text-main"} onClick={(e) => {e.stopPropagation(); closeTripForm();}} >✕</button>
                 </div>
                 <hr/>
                 <div className={"flex flex-col gap-5"}>
@@ -54,12 +54,20 @@ export default function NewTripForm({closeTripForm, getTrips, setActiveTrip, set
                         <DatePicker
                             label="Wybierz datę początkową"
                             value={tripForm.startDate}
+                            sx={{
+                                '& .MuiInputBase-input': { color: 'var(--text-main)' }, '& .MuiInputLabel-root': { color: 'var(--text-main)' },
+                                '& .MuiSvgIcon-root': { color: 'var(--text-main)' }, '& .MuiOutlinedInput-notchedOutline': { borderColor: 'var(--border)' }
+                            }}
                             onChange={(newValue) => setTripForm({...tripForm, startDate: newValue})}
                             disablePast
                         />
                         <DatePicker
                             label="Wybierz datę końcową"
                             value={tripForm.endDate}
+                            sx={{
+                                '& .MuiInputBase-input': { color: 'var(--text-main)' }, '& .MuiInputLabel-root': { color: 'var(--text-main)' },
+                                '& .MuiSvgIcon-root': { color: 'var(--text-main)' }, '& .MuiOutlinedInput-notchedOutline': { borderColor: 'var(--border)' }
+                            }}
                             onChange={(newValue) => setTripForm({...tripForm, endDate: newValue})}
                             minDate={tripForm.startDate}
                             disablePast

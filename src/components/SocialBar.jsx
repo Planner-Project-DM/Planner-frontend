@@ -19,19 +19,19 @@ export default function SocialBar({hotels, activeMark, selectedHotel, setSelecte
                             <CircularProgress />
                         </div>
                     ) : hotels.length === 0 ? (
-                        <div className={"flex items-center justify-center h-full"}>Tutaj pojawi się lista hoteli</div>
+                        <div className={"flex items-center justify-center h-full text-text-main"}>Tutaj pojawi się lista hoteli</div>
                     ) : (
-                        <div className={"overflow-y-scroll"}>
+                        <div className={"overflow-y-scroll [&::-webkit-scrollbar]:hidden"}>
                             <ul className={"flex flex-col gap-2"}>
                                 {hotels.map((hotel)=>(
                                     <li key={hotel.id}
                                         onClick={(e) => {e.stopPropagation();setSelectedHotel(hotel);}}
                                         ref={(el) => hotelRefs.current[hotel.id] = el}
                                         className={"flex flex-col gap-5 bg-bg-input border-border-col border-2 rounded-2xl p-5 cursor-pointer hover:bg-bg-main"}>
-                                        <div className={"font-bold text-xl"}>{hotel.name || "Brak informacji"}</div>
+                                        <div className={"font-bold text-xl text-text-main"}>{hotel.name || "Brak informacji"}</div>
                                         <div className={"flex flex-col"}>
                                             <p className={"text-yellow-600 font-bold"}>⭐- {hotel.stars || "Brak informacji"}</p>
-                                            <p id={'street'}>{hotel.address.street || "Brak informacji"}</p>
+                                            <p className={"text-text-main"} id={'street'}>{hotel.address.street || "Brak informacji"}</p>
                                         </div>
                                         <div>
                                             <p className={"text-accent font-bold"}>3500 zł</p>
@@ -46,10 +46,10 @@ export default function SocialBar({hotels, activeMark, selectedHotel, setSelecte
                 ): (
                     <>
                         <div className="h-12">
-                            <p>Grupa • (nazwa)</p>
+                            <p className={"text-text-main"}>Grupa • (nazwa)</p>
                         </div>
                         <div className="flex-1 overflow-y-scroll max-h-114 [&::-webkit-scrollbar]:hidden">
-                            <ul id="groupList" className="flex flex-col gap-5">
+                            <ul id="groupList" className="flex flex-col gap-5 text-text-main">
                                 <li>Inicjały <p>ANDRZEJ DRZEWKO</p></li>
                                 <li>Inicjały <p>ANDRZEJ DRZEWKO</p></li>
                                 <li>Inicjały <p>ANDRZEJ DRZEWKO</p></li>
@@ -78,9 +78,9 @@ export default function SocialBar({hotels, activeMark, selectedHotel, setSelecte
             </div>
             <hr/>
             <div className="shrink-0 flex flex-col gap-3">
-                <p className={"flex text-xl mt-2"}>Wydatki:</p>
+                <p className={"flex text-xl mt-2 text-text-main"}>Wydatki:</p>
                 <div className={"flex flex-col gap-1"}>
-                    <div className={"flex justify-between"}>
+                    <div className={"flex justify-between text-text-main"}>
                         <p className={"font-bold"}>Budżet:</p>
                         <p className={"font-bold"}>{activeTrip?.budget || "0"} PLN</p>
                     </div>

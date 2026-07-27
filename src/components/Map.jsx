@@ -79,7 +79,7 @@ export default function Map({hotels, setSelectedHotel, selectedHotel}) {
                             }}
                             options={{ popupAnchor: [0, -40] }}
                         >
-                            <Popup className={"bg-bg-input"}
+                            <Popup className={"bg-bg-input rounded-2xl"}
                                    offset={[5, 0]}>
                                 <div>
                                     <p className="font-bold text-xl">{hotel.name || "Brak informacji"}</p>

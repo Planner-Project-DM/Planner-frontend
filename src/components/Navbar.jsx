@@ -9,7 +9,7 @@ export default function Navbar({showTrips, showNotif, showSettings, addNewTrip, 
         <main className={"flex h-full items-center  bg-bg-card w-full  font-bold text-text-main "}>
             <div className={"w-3/12"}>
                 <div className={"bg-bg-input flex items-center h-12 ml-10 w-1/2 max-w-72 rounded-2xl " +
-                    "p-5 justify-center border border-b-border-col"}>
+                    "p-5 justify-center border border-border-col"}>
                     <p>LOGO</p>
                 </div>
             </div>
@@ -29,7 +29,7 @@ export default function Navbar({showTrips, showNotif, showSettings, addNewTrip, 
                         e.stopPropagation();
                         showTrips();
                     }} className={"bg-bg-input flex items-center h-12 w-full rounded-2xl " +
-                             "p-5 justify-between border border-b-border-col hover:bg-bg-main "}>
+                             "p-5 justify-between border border-border-col hover:bg-bg-main "}>
                         <p>Moje podróże</p><p>▾</p>
                     </div>
                 </button>

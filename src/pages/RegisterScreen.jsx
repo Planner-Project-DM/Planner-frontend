@@ -90,11 +90,13 @@ export default function RegisterScreen() {
                             <input type="text" id="registerFName"
                                    value={firstName}
                                    onChange={e => setFirstName(e.target.value)} placeholder="Imię"
-                                   className={"w-1/2"}/>
+                                   className={"w-1/2"}
+                                    maxLength={15}/>
                             <input type="text" id="registerLName" placeholder="Nazwisko"
                                    value={lastName}
                                    onChange={e => setLastName(e.target.value)}
-                                   className={"w-1/2"}/>
+                                   className={"w-1/2"}
+                                   maxLength={15}/>
                         </div>
                         <input type="email" id="registerMail"
                                value={email}

@@ -16,7 +16,7 @@ export default function SearchBar ({getCityMap}){
                    }}
                    onChange={(e) => setSearch(e.target.value)}
                    className={"pl-8 bg-bg-input flex items-center h-12 w-full rounded-2xl " +
-                "p-5 border border-b-border-col"} placeholder="Szukaj miejsc, tras..."/>
+                "p-5 border border-border-col"} placeholder="Szukaj miejsc, tras..."/>
         </div>
     )
 }

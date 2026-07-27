@@ -38,8 +38,8 @@ export default function CreateFriendship ({closeFriendForm, setSnackbar}) {
                 className="bg-bg-card border-2 border-accent rounded-xl absolute top-1/2 left-1/2 -translate-x-1/2
                          -translate-y-1/2 shadow-gray-500 shadow-md flex flex-col w-144 p-7 justify-between h-1/3">
                 <div className={"flex justify-between"}>
-                    <p className={"font-bold text-2xl"}>Dodaj znajomego</p>
-                    <button onClick={(e) => {e.stopPropagation(); closeFriendForm();}} >✕</button>
+                    <p className={"font-bold text-2xl text-text-main"}>Dodaj znajomego</p>
+                    <button className={"text-text-main"} onClick={(e) => {e.stopPropagation(); closeFriendForm();}} >✕</button>
                 </div>
                 <div>
                     <FormInput label="Email znajomego" id="friendMail" placeholder="np. jan@gmail.com"  maxLength={30} value={friendForm.emailSender}

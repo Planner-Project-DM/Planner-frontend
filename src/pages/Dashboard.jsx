@@ -11,9 +11,12 @@ import {useEffect, useState} from "react";
 import CreateFriendship from "../components/CreateFriendship.jsx";
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
+import Modal from '@mui/material/Modal';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
 
 
-export default function Dashboard(){
+export default function Dashboard({darkMode, isDark}){
     // Dropdown states
     const [myTrips, setMyTrips] = useState(false);
     const [myNotif, setMyNotif] = useState(false);
@@ -36,7 +39,11 @@ export default function Dashboard(){
     const [pendingFriends, setPendingFriends] = useState(null);
     const [newFriend, setNewFriend] = useState(false);
     const [friends, setFriends] = useState(null);
-
+    const [friendToDelete, setFriendToDelete] = useState(null);
+    // Modal delete user
+    const [alertDelete, setAlertDelete] = useState(false);
+    const alertOpen = () => setAlertDelete(true);
+    const alertClose = () => setAlertDelete(false);
     // Snackbar state
     const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' });
 
@@ -116,6 +123,27 @@ export default function Dashboard(){
                 }
             });
             setFriends(res.data.data);
+        }
+        catch (error) {
+            setSnackbar({ open: true, message: error.response?.data?.message || 'Coś poszło nie tak!', severity: 'error' });
+        }
+    }
+    async function deleteFriend () {
+        try{
+            const token = localStorage.getItem('userToken') || sessionStorage.getItem('userToken');
+                console.log(friendToDelete)
+            await api.delete(`/api/friendships`,  {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                },
+                data: {
+                    email: friendToDelete
+                }
+            });
+
+            alertClose()
+            getFriendsList();
+            setSnackbar({ open: true, message: 'Usunięto znajomego!', severity: 'info' });
         }
         catch (error) {
             setSnackbar({ open: true, message: error.response?.data?.message || 'Coś poszło nie tak!', severity: 'error' });
@@ -214,28 +242,33 @@ export default function Dashboard(){
     return (
         <div className={"h-screen flex flex-col bg-bg-main font-playpen relative"}>
 
-            <header className={"h-24 max-h-28 border-b-2 border-b-border-col"}>
-                <Navbar showTrips={showTrips} showNotif={showNotif} showSettings={showSettings} addNewTrip={addNewTrip} getCityMap={getCityMap}
+            <header className={"h-24 max-h-28 border-b-2 border-border-col"}>
+                <Navbar showTrips={showTrips} showNotif={showNotif} showSettings={showSettings}
+                        addNewTrip={addNewTrip} getCityMap={getCityMap}
                         pendingFriends={pendingFriends} getFriendsList={getFriendsList} />
             </header>
             <main className={"flex-1 flex flex-row relative"}>
-                <aside className={"w-5/12 border-r-2 border-b-border-col"}>
+                <aside className={"w-5/12 border-r-2 border-border-col"}>
                     <TripNavbar activeMark={activeMark} setActiveMark={setActiveMark} activeTrip={activeTrip}/>
                 </aside >
                 <div id="mainWindow" className={"w-full"} >
-                    <MainBar activeMark={activeMark} hotels={hotels} loading={loading} setSelectedHotel={setSelectedHotel} selectedHotel={selectedHotel} />
+                    <MainBar activeMark={activeMark} hotels={hotels} loading={loading}
+                             setSelectedHotel={setSelectedHotel} selectedHotel={selectedHotel} />
                 </div>
                 {myTrips && (
                     <UserTripsWindow userTrips={userTrips} setActiveTrip={setActiveTrip} activeTrip={activeTrip}/>
                 )}
                 {myNotif && (
-                    <UserNotifications pendingFriends={pendingFriends} acceptFriend={acceptFriend} rejectFriend={rejectFriend} blockFriend={blockFriend}/>
+                    <UserNotifications pendingFriends={pendingFriends} acceptFriend={acceptFriend}
+                                       rejectFriend={rejectFriend} blockFriend={blockFriend}/>
                 )}
                 {mySettings && (
-                    <UserSettings setNewFriend={setNewFriend} friends={friends}/>
+                    <UserSettings setNewFriend={setNewFriend} friends={friends} alertOpen={alertOpen}
+                                  setFriendToDelete={setFriendToDelete} darkMode={darkMode} isDark={isDark}/>
                 )}
-                <aside className={"w-5/12 border-l-2 border-b-border-col"}>
-                    <SocialBar activeMark={activeMark} hotels={hotels} selectedHotel={selectedHotel} setSelectedHotel={setSelectedHotel} activeTrip={activeTrip} loading={loading}/>
+                <aside className={"w-5/12 border-l-2 border-border-col"}>
+                    <SocialBar activeMark={activeMark} hotels={hotels} selectedHotel={selectedHotel}
+                               setSelectedHotel={setSelectedHotel} activeTrip={activeTrip} loading={loading}/>
                 </aside>
             </main>
             {newTrip &&(
@@ -247,6 +280,37 @@ export default function Dashboard(){
             <Snackbar open={snackbar.open} autoHideDuration={4000} onClose={() => setSnackbar({...snackbar, open: false})}>
                 <Alert severity={snackbar.severity}>{snackbar.message}</Alert>
             </Snackbar>
+            <Modal
+                open={alertDelete}
+                onClose={alertClose}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+            >
+                <Box sx={{
+                    position: 'absolute',
+                    top: '50%',
+                    left: '50%',
+                    transform: 'translate(-50%, -50%)',
+                    bgcolor: 'background.paper',
+                    borderRadius: 2,
+                    boxShadow: 24,
+                    p: 4,
+                    width: 400
+                }}>
+                    <div className={"flex justify-between p-2 flex-col gap-5"}>
+                        <Typography id="modal-modal-title" variant="h6" component="h2" sx={{fontWeight: 'bold',}}>
+                            Czy chcesz usunąć znajomego?
+                        </Typography>
+                    <div className={"flex justify-between"}>
+                        <button onClick={alertClose} className={"bg-gray-400 border border-border-col w-24 h-10 rounded-xl " +
+                            "hover:bg-gray-600 hover:text-white transition duration-150 ease-out hover:ease-in"}>Anuluj</button>
+                        <button className={"bg-red-700 text-white rounded-2xl h-10 w-24 " +
+                            "hover:bg-red-900 transition duration-150 ease-out hover:ease-in "} onClick={deleteFriend}>Usuń</button>
+                    </div>
+                    </div>
+                </Box>
+            </Modal>
+
         </div>
     )
 }
