@@ -43,7 +43,7 @@ export default function UserSettings({setNewFriend, friends, alertOpen, setFrien
                 </ul>
             </div>
             <hr />
-            <div className="text-text-main p-3">
+            <div className="text-text-main p-3 pt-5">
                 <button onClick={(e) => {e.stopPropagation(); setNewFriend(true)}}
                     className={"border-2 h-12 border-accent border-dashed text-accent bg-bg-input " +
                     "rounded-2xl hover:text-bg-input hover:bg-accent transition duration-150 ease-out hover:ease-in w-3/4"}>

@@ -6,6 +6,7 @@ import NewTripForm from "../components/NewTripForm.jsx";
 import UserTripsWindow from "../components/UserTripsWindow.jsx";
 import UserNotifications from "../components/UserNotifications.jsx";
 import UserSettings from "../components/UserSettings.jsx"
+import GroupAdd from "../components/GroupAdd.jsx"
 import api from "../api/axios.js";
 import {useEffect, useState} from "react";
 import CreateFriendship from "../components/CreateFriendship.jsx";
@@ -14,6 +15,7 @@ import Alert from '@mui/material/Alert';
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
+
 
 
 export default function Dashboard({darkMode, isDark}){
@@ -26,9 +28,11 @@ export default function Dashboard({darkMode, isDark}){
     // Spinner map state
     const [loading, setLoading] = useState(false);
     // Actual selected hotel state
-    const [selectedHotel, setSelectedHotel] = useState(null);
-    // Hotel's list state
-    const [hotels, setHotels] = useState([]);
+    const [selectedTripItem, setSelectedTripItem] = useState(null);
+    // triplist state
+    const [tripItems, setTripItems] = useState([]);
+    const [selectedCategory, setSelectedCategory] = useState("ALL");
+    const sortedItems = selectedCategory === 'ALL' ? tripItems : tripItems.filter((item) => item.category === selectedCategory);
     // Users dropdown trips list state
     const [userTrips, setUserTrips] = useState([]);
     // Marks state
@@ -40,6 +44,9 @@ export default function Dashboard({darkMode, isDark}){
     const [newFriend, setNewFriend] = useState(false);
     const [friends, setFriends] = useState(null);
     const [friendToDelete, setFriendToDelete] = useState(null);
+    // Group states
+    const [groupMembers, setGroupMembers] = useState(null);
+    const [addGroup, setNewGroup] = useState(false);
     // Modal delete user
     const [alertDelete, setAlertDelete] = useState(false);
     const alertOpen = () => setAlertDelete(true);
@@ -54,7 +61,7 @@ export default function Dashboard({darkMode, isDark}){
 
             const token = localStorage.getItem('userToken') || sessionStorage.getItem('userToken');
 
-            const res = await api.get('/api/friendships?status=PENDING', {
+            const res = await api.get('/api/friendships/my-requests', {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
@@ -117,7 +124,7 @@ export default function Dashboard({darkMode, isDark}){
         try{
             const token = localStorage.getItem('userToken') || sessionStorage.getItem('userToken');
 
-            const res = await api.get(`/api/friendships`, {
+            const res = await api.get(`/api/friendships?status=ACCEPTED`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
@@ -131,7 +138,6 @@ export default function Dashboard({darkMode, isDark}){
     async function deleteFriend () {
         try{
             const token = localStorage.getItem('userToken') || sessionStorage.getItem('userToken');
-                console.log(friendToDelete)
             await api.delete(`/api/friendships`,  {
                 headers: {
                     'Authorization': `Bearer ${token}`
@@ -150,7 +156,7 @@ export default function Dashboard({darkMode, isDark}){
         }
     }
 
-    // Trips get from backend function
+    // Trips get from backend function mapped in UserTripsWindow
     async function getTrips(){
         try {
             const token = localStorage.getItem('userToken') || sessionStorage.getItem('userToken');
@@ -166,21 +172,46 @@ export default function Dashboard({darkMode, isDark}){
             setSnackbar({ open: true, message: error.response?.data?.message || 'Coś poszło nie tak!', severity: 'error' });
         }
     }
-    // Getting hotels list by city function
+    async function getTripGroupMem(){
+        try {
+            const token = localStorage.getItem('userToken') || sessionStorage.getItem('userToken');
+                if(activeTrip === null) {
+                    return;
+                } else {
+                    const resp = await api.get(`/api/trips/${activeTrip.id}`, {
+                        headers: {
+                            'Authorization': `Bearer ${token}`
+                        }
+                    });
+                    if (resp.data.data.tripGroup === null) {
+                        setGroupMembers([])
+                        return;
+                    } else {
+                        setGroupMembers(resp.data.data.tripGroup.groupUsers);
+                    }
+                }
+        }
+        catch (error) {
+            setSnackbar({ open: true, message: error.response?.data?.message || 'Coś poszło nie tak!', severity: 'error' });
+            console.log(error)
+        }
+    }
+    // Getting tripItems list by city function
     async function getCityMap (city){
         setLoading(true);
         try {
             const token = localStorage.getItem('userToken') || sessionStorage.getItem('userToken');
 
-            const resp = await api.get(`/api/hotels/city/${city}`,{
+            const resp = await api.get(`/api/trip-items/city/${city}`,{
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
             });
-            const sorted = resp.data.data.sort((a,b) => b.stars - a.stars)
-            setHotels(sorted);
-            if (sorted.length === 0) {
-                setSnackbar({ open: true, message: 'Nie znaleziono hoteli w tej lokalizacji', severity: 'info' });
+            const items = resp.data.data;
+            setTripItems(items);
+
+            if (items.length === 0) {
+                setSnackbar({ open: true, message: 'Brak wyników dla tej lokalizacji.', severity: 'info' });
             }
         }
         catch (error) {
@@ -190,6 +221,21 @@ export default function Dashboard({darkMode, isDark}){
             {
                 setLoading(false)
             }
+        }
+    }
+    // Function adding item to bookmark "Przewodnik"
+    async function addItemToTrip(item) {
+        try {
+            const token = localStorage.getItem('userToken') || sessionStorage.getItem('userToken');
+            await api.post(`/api/trips/${activeTrip.id}/add-item`,{name: item.name},  {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                },
+            });
+            setSnackbar({ open: true, message: 'Dodano do zakładki.', severity: 'success' });
+        }
+        catch(error) {
+            setSnackbar({ open: true, message: error.response?.data?.message || 'Musisz wybrać podróż!', severity: 'error' });
         }
     }
     useEffect(()=>{
@@ -229,6 +275,9 @@ export default function Dashboard({darkMode, isDark}){
     function closeFriendForm (){
         setNewFriend(false);
     }
+    function closeGroupForm (){
+        setNewFriend(false);
+    }
     useEffect(() => {
         function handleClick() {
             setMyTrips(false);
@@ -252,8 +301,8 @@ export default function Dashboard({darkMode, isDark}){
                     <TripNavbar activeMark={activeMark} setActiveMark={setActiveMark} activeTrip={activeTrip}/>
                 </aside >
                 <div id="mainWindow" className={"w-full"} >
-                    <MainBar activeMark={activeMark} hotels={hotels} loading={loading}
-                             setSelectedHotel={setSelectedHotel} selectedHotel={selectedHotel} />
+                    <MainBar activeMark={activeMark} tripItems={sortedItems} loading={loading}
+                             setSelectedTripItem={setSelectedTripItem} selectedTripItem={selectedTripItem} />
                 </div>
                 {myTrips && (
                     <UserTripsWindow userTrips={userTrips} setActiveTrip={setActiveTrip} activeTrip={activeTrip}/>
@@ -267,8 +316,11 @@ export default function Dashboard({darkMode, isDark}){
                                   setFriendToDelete={setFriendToDelete} darkMode={darkMode} isDark={isDark}/>
                 )}
                 <aside className={"w-5/12 border-l-2 border-border-col"}>
-                    <SocialBar activeMark={activeMark} hotels={hotels} selectedHotel={selectedHotel}
-                               setSelectedHotel={setSelectedHotel} activeTrip={activeTrip} loading={loading}/>
+                    <SocialBar activeMark={activeMark} tripItems={sortedItems} selectedTripItem={selectedTripItem}
+                               setSelectedTripItem={setSelectedTripItem} activeTrip={activeTrip} loading={loading}
+                               setSelectedCategory={setSelectedCategory} selectedCategory={selectedCategory}
+                               addItemToTrip={addItemToTrip} getTripGroupMem={getTripGroupMem} groupMembers={groupMembers}
+                               setNewGroup={setNewGroup} closeGroupForm={closeGroupForm} />
                 </aside>
             </main>
             {newTrip &&(
@@ -276,6 +328,9 @@ export default function Dashboard({darkMode, isDark}){
             )}
             {newFriend && (
                 <CreateFriendship closeFriendForm={closeFriendForm} setSnackbar={setSnackbar} />
+            )}
+            {addGroup && (
+                <GroupAdd closeGroupForm={closeGroupForm} setSnackbar={setSnackbar} />
             )}
             <Snackbar open={snackbar.open} autoHideDuration={4000} onClose={() => setSnackbar({...snackbar, open: false})}>
                 <Alert severity={snackbar.severity}>{snackbar.message}</Alert>
@@ -291,22 +346,22 @@ export default function Dashboard({darkMode, isDark}){
                     top: '50%',
                     left: '50%',
                     transform: 'translate(-50%, -50%)',
-                    bgcolor: 'background.paper',
+                    bgcolor: 'var(--bg-input)',
                     borderRadius: 2,
                     boxShadow: 24,
                     p: 4,
                     width: 400
                 }}>
                     <div className={"flex justify-between p-2 flex-col gap-5"}>
-                        <Typography id="modal-modal-title" variant="h6" component="h2" sx={{fontWeight: 'bold',}}>
+                        <Typography id="modal-modal-title" variant="h6" component="h2" sx={{fontWeight: 'bold', color: 'var(--text-main)'}}>
                             Czy chcesz usunąć znajomego?
                         </Typography>
-                    <div className={"flex justify-between"}>
-                        <button onClick={alertClose} className={"bg-gray-400 border border-border-col w-24 h-10 rounded-xl " +
-                            "hover:bg-gray-600 hover:text-white transition duration-150 ease-out hover:ease-in"}>Anuluj</button>
-                        <button className={"bg-red-700 text-white rounded-2xl h-10 w-24 " +
-                            "hover:bg-red-900 transition duration-150 ease-out hover:ease-in "} onClick={deleteFriend}>Usuń</button>
-                    </div>
+                        <div className={"flex justify-between"}>
+                            <button onClick={alertClose} className={"bg-gray-400 border border-border-col w-24 h-10 rounded-xl " +
+                                "hover:bg-gray-600 hover:text-white transition duration-150 ease-out hover:ease-in"}>Anuluj</button>
+                            <button className={"bg-red-700 text-white rounded-2xl h-10 w-24 " +
+                                "hover:bg-red-900 transition duration-150 ease-out hover:ease-in "} onClick={deleteFriend}>Usuń</button>
+                        </div>
                     </div>
                 </Box>
             </Modal>

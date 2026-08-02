@@ -8,10 +8,10 @@ import Weather from '../components/Weather.jsx';
 import Notes from '../components/Notes.jsx';
 
 
-export default function MainBar({activeMark, hotels, loading, setSelectedHotel, selectedHotel}) {
+export default function MainBar({activeMark, tripItems, loading, setSelectedTripItem, selectedTripItem}) {
     if (activeMark === "map") {
         return (
-            <Map hotels={hotels} loading={loading} setSelectedHotel={setSelectedHotel} selectedHotel={selectedHotel}/>
+            <Map tripItems={tripItems} loading={loading} setSelectedTripItem={setSelectedTripItem} selectedTripItem={selectedTripItem}/>
         )
     } else if (activeMark === "dayschedule") {
         return (
