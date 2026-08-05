@@ -193,7 +193,6 @@ export default function Dashboard({darkMode, isDark}){
         }
         catch (error) {
             setSnackbar({ open: true, message: error.response?.data?.message || 'Coś poszło nie tak!', severity: 'error' });
-            console.log(error)
         }
     }
     // Getting tripItems list by city function
@@ -276,33 +275,34 @@ export default function Dashboard({darkMode, isDark}){
         setNewFriend(false);
     }
     function closeGroupForm (){
-        setNewFriend(false);
+        setNewGroup(false);
     }
     useEffect(() => {
         function handleClick() {
             setMyTrips(false);
             setMyNotif(false);
             setMySettings(false);
+            setNewGroup(false);
         }
         window.addEventListener('click', handleClick);
         return () => window.removeEventListener('click', handleClick)
     }, []);
 
     return (
-        <div className={"h-screen flex flex-col bg-bg-main font-playpen relative"}>
+        <div className={"h-screen flex flex-col bg-bg-main font-playpen relative overflow-hidden"}>
 
             <header className={"h-24 max-h-28 border-b-2 border-border-col"}>
                 <Navbar showTrips={showTrips} showNotif={showNotif} showSettings={showSettings}
                         addNewTrip={addNewTrip} getCityMap={getCityMap}
                         pendingFriends={pendingFriends} getFriendsList={getFriendsList} />
             </header>
-            <main className={"flex-1 flex flex-row relative"}>
+            <main className={"flex-1 flex flex-row relative overflow-hidden"}>
                 <aside className={"w-5/12 border-r-2 border-border-col"}>
                     <TripNavbar activeMark={activeMark} setActiveMark={setActiveMark} activeTrip={activeTrip}/>
                 </aside >
-                <div id="mainWindow" className={"w-full"} >
+                <div id="mainWindow" className={"w-full h-full"} >
                     <MainBar activeMark={activeMark} tripItems={sortedItems} loading={loading}
-                             setSelectedTripItem={setSelectedTripItem} selectedTripItem={selectedTripItem} />
+                             setSelectedTripItem={setSelectedTripItem} selectedTripItem={selectedTripItem}  activeTrip={activeTrip}/>
                 </div>
                 {myTrips && (
                     <UserTripsWindow userTrips={userTrips} setActiveTrip={setActiveTrip} activeTrip={activeTrip}/>

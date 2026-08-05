@@ -16,7 +16,6 @@ export default function SocialBar({tripItems, activeMark, selectedTripItem, setS
     useEffect(() =>{
         getTripGroupMem();
     }, [activeTrip]);
-    console.log(groupMembers)
     return (
         <main className="bg-bg-card w-full h-full p-2 flex flex-col">
             <div className="flex flex-col flex-1 overflow-hidden max-h-160">
@@ -65,12 +64,12 @@ export default function SocialBar({tripItems, activeMark, selectedTripItem, setS
                 ): (
                     <>
                         <div className="h-12">
-                            <p className={"text-text-main"}>Grupa • {!activeTrip?.tripGroup ? "Nazwa grupy" : activeTrip.tripGroup.groupUsers[0].group.name}</p>
+                            <p className={"text-text-main"}>Grupa • {!activeTrip?.tripGroup ? "Nazwij grupę" : activeTrip.tripGroup.groupUsers[0].group.name}</p>
                         </div>
                         <div className="flex-1 overflow-y-scroll max-h-128 [&::-webkit-scrollbar]:hidden">
                             <ul id="groupList" className="flex flex-col gap-5 text-text-main">
                                 {groupMembers  === null ? (
-                                    <div className={"flex items-center justify-center h-full text-text-main"}>Tutaj pojawią się członkowie grupy</div>
+                                        <div className={"flex items-center justify-center h-full text-text-main font-bold"}>Tutaj pojawią się członkowie grupy</div>
                                 ) : (
                                     (groupMembers || []).map((member) => (
                                         <li className={"flex gap-1 items-center h-10 w-full justify-between"} key={member.user.email}>
@@ -95,7 +94,7 @@ export default function SocialBar({tripItems, activeMark, selectedTripItem, setS
                         </div>
                         <div className="p-5 flex justify-center items-center h-24">
                             <button onClick={(e) => {e.stopPropagation(); setNewGroup(true)}}
-                                className="h-12 w-64 border-2 border-accent border-dashed text-accent bg-bg-input rounded-2xl
+                                    className="h-12 w-64 border-2 border-accent border-dashed text-accent bg-bg-input rounded-2xl
                              hover:text-bg-input hover:bg-accent font-bold transition duration-150 ease-out hover:ease-in">+ Dodaj członka grupy
                             </button>
                         </div>
