@@ -1,25 +1,27 @@
 import FormInput from "./FormInput.jsx";
-
-export default function Stay({activeTrip}) {
-
+import { FaRegTrashCan } from "react-icons/fa6";
+import {useState} from "react";
+export default function Stay({activeTrip, setItemPrice, removeItemFromTrip}) {
+    const [itemPrices, setItemPrices] = useState({});
     return (
         <main className={"w-full h-full"}>
             <div
                 className={"w-full h-full pt-2"}>
                 {activeTrip === null ? (
                     <div className={"w-full h-full flex justify-center items-center"}>
-                        <div className={"font-bold text-5xl"}>Wybierz podróż!</div>
+                        <div className={"font-bold text-5xl text-text-main"}>Wybierz podróż!</div>
                     </div>
                 ) : (
                     activeTrip?.tripItineraries.length === 0 ? (
                         <div className={"w-full h-full flex justify-center items-center"}>
-                            <div className={"font-bold text-5xl"}>Brak atrakcji/noclegów</div>
+                            <div className={"font-bold text-5xl text-text-main"}>Brak atrakcji/noclegów</div>
                         </div>
                     ) : (
                         <ul className={"flex flex-col gap-7 mx-auto p-3 w-11/12 h-full overflow-y-scroll [&::-webkit-scrollbar]:hidden"}>
                             {activeTrip?.tripItineraries.map((trip) => (
-                                <li className={"w-full min-h-36 flex text-text-main rounded-2xl p-2 bg-bg-card border-2 border-accent"}>
-                                    <div className={"w-3/4 flex flex-col justify-evenly gap-3"}>
+                                <li className={"w-full min-h-48 flex text-text-main rounded-2xl p-2 bg-bg-card border-2 border-accent"}
+                                    key={trip.tripItem.id}>
+                                    <div className={"w-1/2 flex flex-col justify-evenly gap-3"}>
                                         <div className={"flex items-center gap-2"}>
                                             <div className={`w-3 h-3 rounded-full text-2xl text-bold 
                                             ${trip.tripItem.category === "ATTRACTION" ? "bg-[#639922]" : "bg-[#378ADD]"}`}></div>
@@ -36,11 +38,25 @@ export default function Stay({activeTrip}) {
                                                 {trip.tripItem.website || "Brak informacji"}</a>
                                         </div>
                                     </div>
-                                    <div className={"flex items-center justify-end gap-2 w-1/4"}>
-                                        <div className={"font-bold text-text-main"}>Cena: </div>
-                                        <div className={"w-44 text-text-main"}>
-                                            <FormInput id="price" placeholder="Podaj kwotę" type="number"
-                                                       max={9999999999} min={0}/>
+                                    <div className={"flex flex-col items-end justify-around gap-2 w-1/2"}>
+                                        <div className={"flex items-end justify-end "}>
+                                            <FaRegTrashCan
+                                                onClick={() => removeItemFromTrip(trip.tripItem.name)}
+                                                className={"bg-red-600 rounded border-2 border-red-700 cursor-pointer " +
+                                                "transition duration-150 ease-out hover:ease-in"} size={35}/>
+                                        </div>
+                                        <div className={"flex items-center gap-2"}>
+                                            <div className={"w-44 text-text-main"}>
+                                                <FormInput className={"w-32"} id="price" placeholder="Podaj kwotę" type="number"
+                                                           max={9999999999} min={0}
+                                                           onChange={e => setItemPrices({...itemPrices, [trip.tripItem.id]: e.target.value})}
+                                                />
+                                            </div>
+                                            <button
+                                                className={"w-28 h-12 border-2 border-green-600 text-white hover:border-green-700 " +
+                                                    "rounded-xl bg-green-500 hover:bg-green-600 transition duration-150 ease-out hover:ease-in"}
+                                                onClick={() => setItemPrice(trip.tripItem.name, itemPrices[trip.tripItem.id])}
+                                            >Zapisz cenę</button>
                                         </div>
                                     </div>
                                 </li>

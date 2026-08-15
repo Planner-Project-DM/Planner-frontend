@@ -222,6 +222,18 @@ export default function Dashboard({darkMode, isDark}){
             }
         }
     }
+    async function refreshActiveTrip() {
+        try {
+            const token = localStorage.getItem('userToken') || sessionStorage.getItem('userToken');
+            const resp = await api.get(`/api/trips/${activeTrip.id}`, {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            setActiveTrip(resp.data.data);
+        }
+        catch (error) {
+            setSnackbar({ open: true, message: error.response?.data?.message || 'Coś poszło nie tak!', severity: 'error' });
+        }
+    }
     // Function adding item to bookmark "Przewodnik"
     async function addItemToTrip(item) {
         try {
@@ -232,9 +244,49 @@ export default function Dashboard({darkMode, isDark}){
                 },
             });
             setSnackbar({ open: true, message: 'Dodano do zakładki.', severity: 'success' });
+            refreshActiveTrip();
         }
         catch(error) {
             setSnackbar({ open: true, message: error.response?.data?.message || 'Musisz wybrać podróż!', severity: 'error' });
+        }
+    }
+    // setItemPrice function
+    async function setItemPrice(name,price) {
+        try {
+            const token = localStorage.getItem('userToken') || sessionStorage.getItem('userToken');
+            await api.put(`/api/trips/${activeTrip.id}/set-price`,
+                {name: name,
+                    price: price
+                },
+                {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                },
+            });
+            setSnackbar({ open: true, message: 'Cena zmieniona poprawnie.', severity: 'success' });
+            refreshActiveTrip();
+        }
+        catch(error) {
+            setSnackbar({ open: true, message: error.response?.data?.message || 'Pole ceny nie może być puste!', severity: 'error' });
+        }
+    }
+    // Delete item from trip
+    async function removeItemFromTrip(name) {
+        try {
+            const token = localStorage.getItem('userToken') || sessionStorage.getItem('userToken');
+            await api.delete(`/api/trips/${activeTrip.id}/remove-item`,  {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                },
+                params: {
+                    name: name
+                }
+            });
+            setSnackbar({ open: true, message: 'Usunięto z przewodnika', severity: 'info' });
+            refreshActiveTrip();
+        }
+        catch(error) {
+            setSnackbar({ open: true, message: error.response?.data?.message , severity: 'error' });
         }
     }
     useEffect(()=>{
@@ -302,7 +354,9 @@ export default function Dashboard({darkMode, isDark}){
                 </aside >
                 <div id="mainWindow" className={"w-full h-full"} >
                     <MainBar activeMark={activeMark} tripItems={sortedItems} loading={loading}
-                             setSelectedTripItem={setSelectedTripItem} selectedTripItem={selectedTripItem}  activeTrip={activeTrip}/>
+                             setSelectedTripItem={setSelectedTripItem} selectedTripItem={selectedTripItem}  activeTrip={activeTrip}
+                             setItemPrice={setItemPrice}
+                             removeItemFromTrip={removeItemFromTrip}/>
                 </div>
                 {myTrips && (
                     <UserTripsWindow userTrips={userTrips} setActiveTrip={setActiveTrip} activeTrip={activeTrip}/>
@@ -330,7 +384,7 @@ export default function Dashboard({darkMode, isDark}){
                 <CreateFriendship closeFriendForm={closeFriendForm} setSnackbar={setSnackbar} />
             )}
             {addGroup && (
-                <GroupAdd closeGroupForm={closeGroupForm} setSnackbar={setSnackbar} />
+                <GroupAdd closeGroupForm={closeGroupForm} setSnackbar={setSnackbar}  groupName={activeTrip?.tripGroup?.name} activeTrip={activeTrip}/>
             )}
             <Snackbar open={snackbar.open} autoHideDuration={4000} onClose={() => setSnackbar({...snackbar, open: false})}>
                 <Alert severity={snackbar.severity}>{snackbar.message}</Alert>

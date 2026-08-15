@@ -1,4 +1,4 @@
-export default function FormInput({ label, id, placeholder, type = "text" , maxLength, max, value, onChange, min }) {
+export default function FormInput({ label, id, placeholder, type = "text" , maxLength, max, value, onChange, min, onBlur }) {
     return (
         <div className="flex flex-col gap-1">
             <label htmlFor={id} className={"text-text-main"}>{label}</label>
@@ -12,6 +12,7 @@ export default function FormInput({ label, id, placeholder, type = "text" , maxL
                 max={max}
                 value={value}
                 onChange={onChange}
+                onBlur={onBlur}
             />
         </div>
     )

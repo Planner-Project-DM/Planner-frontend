@@ -2,6 +2,8 @@ import {useEffect, useRef} from 'react';
 import LinearProgress from '@mui/material/LinearProgress';
 import CircularProgress from '@mui/material/CircularProgress';
 import FilterButtons from '../components/FilterButtons.jsx';
+import { FaUser } from "react-icons/fa";
+import { FaCrown } from "react-icons/fa6";
 export default function SocialBar({tripItems, activeMark, selectedTripItem, setSelectedTripItem, activeTrip, loading,
                                       setSelectedCategory, selectedCategory, addItemToTrip, groupMembers, getTripGroupMem,
                                       setNewGroup}) {
@@ -77,16 +79,13 @@ export default function SocialBar({tripItems, activeMark, selectedTripItem, setS
                                                 <div className={"bg-accent rounded-full p-1 h-10 flex justify-center items-center text-white w-10"}>
                                                     {`${member.user.firstName[0]}${member.user.lastName[0]}`}
                                                 </div>
-                                                <div className={"flex flex-col items-start"}>
-                                                    <div className={"max-w-52 break-words"}>{member.user.firstName} {member.user.lastName}</div>
+                                                <div className={"flex flex-col items-start flex-1"}>
+                                                    <div className={"break-words flex min-w-64 items-center gap-2 font-bold"}>
+                                                        {member.role === "OWNER" ? <FaCrown className={"text-yellow-400"} /> : <FaUser/> }
+                                                        {member.user.firstName} {member.user.lastName}</div>
                                                     <div className={"text-xs text-text-secondary"}>{member.user.email}</div>
                                                 </div>
                                             </div>
-                                            {/*<div className={"flex justify-center items-center"}>*/}
-                                            {/*    <Button onClick={() => { setFriendToDelete(friend.email); alertOpen(); }}*/}
-                                            {/*            style={isDark? {color: 'white'}: {color:'black'}}><TiUserDelete size={25} />*/}
-                                            {/*    </Button>*/}
-                                            {/*</div>*/}
                                         </li>
                                     ))
                                 )}
