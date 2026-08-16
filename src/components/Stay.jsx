@@ -18,7 +18,7 @@ export default function Stay({activeTrip, setItemPrice, removeItemFromTrip}) {
                         </div>
                     ) : (
                         <ul className={"flex flex-col gap-7 mx-auto p-3 w-11/12 h-full overflow-y-scroll [&::-webkit-scrollbar]:hidden"}>
-                            {activeTrip?.tripItineraries.map((trip) => (
+                            {[...activeTrip.tripItineraries].sort((a, b) => a.tripItem.name.localeCompare(b.tripItem.name)).map((trip) => (
                                 <li className={"w-full min-h-48 flex text-text-main rounded-2xl p-2 bg-bg-card border-2 border-accent"}
                                     key={trip.tripItem.id}>
                                     <div className={"w-1/2 flex flex-col justify-evenly gap-3"}>
@@ -41,7 +41,7 @@ export default function Stay({activeTrip, setItemPrice, removeItemFromTrip}) {
                                     <div className={"flex flex-col items-end justify-around gap-2 w-1/2"}>
                                         <div className={"flex items-end justify-end "}>
                                             <FaRegTrashCan
-                                                onClick={() => removeItemFromTrip(trip.tripItem.name)}
+                                                onClick={() => removeItemFromTrip(trip.tripItem)}
                                                 className={"bg-red-600 rounded border-2 border-red-700 cursor-pointer " +
                                                 "transition duration-150 ease-out hover:ease-in"} size={35}/>
                                         </div>
@@ -55,7 +55,7 @@ export default function Stay({activeTrip, setItemPrice, removeItemFromTrip}) {
                                             <button
                                                 className={"w-28 h-12 border-2 border-green-600 text-white hover:border-green-700 " +
                                                     "rounded-xl bg-green-500 hover:bg-green-600 transition duration-150 ease-out hover:ease-in"}
-                                                onClick={() => setItemPrice(trip.tripItem.name, itemPrices[trip.tripItem.id])}
+                                                onClick={() => setItemPrice(trip.tripItem.id, itemPrices[trip.tripItem.id])}
                                             >Zapisz cenę</button>
                                         </div>
                                     </div>

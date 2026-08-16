@@ -1,4 +1,4 @@
-export default function UserTripsWindow({userTrips, setActiveTrip, activeTrip}){
+export default function UserTripsWindow({userTrips, selectActiveTrip, activeTrip}){
 
     return(
         <div className="bg-bg-card border-2 border-accent border-t-0 text-white rounded-xl
@@ -28,7 +28,7 @@ export default function UserTripsWindow({userTrips, setActiveTrip, activeTrip}){
                             }`}
                         onClick={(e) => {
                             e.stopPropagation()
-                            setActiveTrip(trip)
+                            selectActiveTrip(trip)
                         }}>
                             <div>{trip.name}</div>
                             <div>{`${trip.startDate} → ${trip.endDate}`}</div>

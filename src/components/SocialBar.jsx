@@ -110,7 +110,7 @@ export default function SocialBar({tripItems, activeMark, selectedTripItem, setS
                     </div>
                     <div className={"flex justify-between"}>
                         <p className={"text-text-secondary font-bold"}>Wydano:</p>
-                        <p className={"text-accent font-bold"}>4500 PLN</p>
+                        <p className={"text-accent font-bold"}>{activeTrip?.actualCost || "0"} PLN</p>
                     </div>
                 </div>
                 <LinearProgress variant="determinate" value={50}

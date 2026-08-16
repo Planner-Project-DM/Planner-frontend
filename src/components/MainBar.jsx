@@ -1,4 +1,3 @@
-import {useState, useEffect} from 'react';
 import Map from '../components/Map.jsx';
 import DaySchedule from '../components/DaySchedule.jsx';
 import Summary from '../components/Summary.jsx';
@@ -23,7 +22,7 @@ export default function MainBar({activeMark, tripItems, loading, setSelectedTrip
         )
     }else if (activeMark === "funds") {
         return (
-            <Funds/>
+            <Funds activeTrip={activeTrip}/>
         )
     }else if (activeMark === "stay") {
         return (

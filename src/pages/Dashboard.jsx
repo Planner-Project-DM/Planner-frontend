@@ -53,7 +53,6 @@ export default function Dashboard({darkMode, isDark}){
     const alertClose = () => setAlertDelete(false);
     // Snackbar state
     const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' });
-
     // Friendships functions
     async function friendNotification (){
 
@@ -222,6 +221,7 @@ export default function Dashboard({darkMode, isDark}){
             }
         }
     }
+    // Active trip refreshing function
     async function refreshActiveTrip() {
         try {
             const token = localStorage.getItem('userToken') || sessionStorage.getItem('userToken');
@@ -238,7 +238,7 @@ export default function Dashboard({darkMode, isDark}){
     async function addItemToTrip(item) {
         try {
             const token = localStorage.getItem('userToken') || sessionStorage.getItem('userToken');
-            await api.post(`/api/trips/${activeTrip.id}/add-item`,{name: item.name},  {
+            await api.post(`/api/trips/${activeTrip.id}/item`,{tripItemId: item.id},  {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 },
@@ -247,15 +247,15 @@ export default function Dashboard({darkMode, isDark}){
             refreshActiveTrip();
         }
         catch(error) {
-            setSnackbar({ open: true, message: error.response?.data?.message || 'Musisz wybrać podróż!', severity: 'error' });
+            setSnackbar({ open: true, message: error.response?.data?.message || `${item.name} już znajduje się w przewodniku!`, severity: 'error' });
         }
     }
     // setItemPrice function
-    async function setItemPrice(name,price) {
+    async function setItemPrice(id ,price) {
         try {
             const token = localStorage.getItem('userToken') || sessionStorage.getItem('userToken');
-            await api.put(`/api/trips/${activeTrip.id}/set-price`,
-                {name: name,
+            await api.put(`/api/trips/${activeTrip.id}/item`,
+                {tripItemId: id,
                     price: price
                 },
                 {
@@ -271,18 +271,18 @@ export default function Dashboard({darkMode, isDark}){
         }
     }
     // Delete item from trip
-    async function removeItemFromTrip(name) {
+    async function removeItemFromTrip(item) {
         try {
             const token = localStorage.getItem('userToken') || sessionStorage.getItem('userToken');
-            await api.delete(`/api/trips/${activeTrip.id}/remove-item`,  {
+            await api.delete(`/api/trips/${activeTrip.id}/item`,  {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 },
                 params: {
-                    name: name
+                    tripItemId : item.id
                 }
             });
-            setSnackbar({ open: true, message: 'Usunięto z przewodnika', severity: 'info' });
+            setSnackbar({ open: true, message: `Usunięto ${item.name} z przewodnika.`, severity: 'info' });
             refreshActiveTrip();
         }
         catch(error) {
@@ -290,11 +290,26 @@ export default function Dashboard({darkMode, isDark}){
         }
     }
     useEffect(()=>{
+        const lastTrip = localStorage.getItem('activeTripId');
+        if(lastTrip){
+            const token = localStorage.getItem('userToken') || sessionStorage.getItem('userToken');
+            api.get(`/api/trips/${lastTrip}`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            }).then(resp =>setActiveTrip(resp.data.data));
+        }
+
         // eslint-disable-next-line react-hooks/exhaustive-deps, react-hooks/set-state-in-effect
         getTrips();
         friendNotification()
+
     }, [])
 
+    function selectActiveTrip(trip) {
+        setActiveTrip(trip);
+        localStorage.setItem('activeTripId', trip.id);
+    }
     // Closing / opening (popups, dropdowns, modals) functions
     function showTrips (){
         setMyTrips(!myTrips);
@@ -359,7 +374,7 @@ export default function Dashboard({darkMode, isDark}){
                              removeItemFromTrip={removeItemFromTrip}/>
                 </div>
                 {myTrips && (
-                    <UserTripsWindow userTrips={userTrips} setActiveTrip={setActiveTrip} activeTrip={activeTrip}/>
+                    <UserTripsWindow userTrips={userTrips} selectActiveTrip={selectActiveTrip} activeTrip={activeTrip}/>
                 )}
                 {myNotif && (
                     <UserNotifications pendingFriends={pendingFriends} acceptFriend={acceptFriend}
@@ -378,7 +393,7 @@ export default function Dashboard({darkMode, isDark}){
                 </aside>
             </main>
             {newTrip &&(
-                <NewTripForm closeTripForm={closeTripForm} getTrips={getTrips} setActiveTrip={setActiveTrip} setSnackbar={setSnackbar}/>
+                <NewTripForm closeTripForm={closeTripForm} getTrips={getTrips} selectActiveTrip={selectActiveTrip} setSnackbar={setSnackbar}/>
             )}
             {newFriend && (
                 <CreateFriendship closeFriendForm={closeFriendForm} setSnackbar={setSnackbar} />
