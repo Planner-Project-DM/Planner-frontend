@@ -371,7 +371,7 @@ export default function Dashboard({darkMode, isDark}){
                     <MainBar activeMark={activeMark} tripItems={sortedItems} loading={loading}
                              setSelectedTripItem={setSelectedTripItem} selectedTripItem={selectedTripItem}  activeTrip={activeTrip}
                              setItemPrice={setItemPrice}
-                             removeItemFromTrip={removeItemFromTrip}/>
+                             removeItemFromTrip={removeItemFromTrip} setSnackbar={setSnackbar}/>
                 </div>
                 {myTrips && (
                     <UserTripsWindow userTrips={userTrips} selectActiveTrip={selectActiveTrip} activeTrip={activeTrip}/>

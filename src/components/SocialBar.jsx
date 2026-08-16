@@ -18,6 +18,8 @@ export default function SocialBar({tripItems, activeMark, selectedTripItem, setS
     useEffect(() =>{
         getTripGroupMem();
     }, [activeTrip]);
+
+    const finalSum = (activeTrip?.actualCost / activeTrip?.budget) * 100;
     return (
         <main className="bg-bg-card w-full h-full p-2 flex flex-col">
             <div className="flex flex-col flex-1 overflow-hidden max-h-160">
@@ -113,7 +115,7 @@ export default function SocialBar({tripItems, activeMark, selectedTripItem, setS
                         <p className={"text-accent font-bold"}>{activeTrip?.actualCost || "0"} PLN</p>
                     </div>
                 </div>
-                <LinearProgress variant="determinate" value={50}
+                <LinearProgress variant="determinate" value={finalSum}
                 sx={{height: 10, borderRadius: 4, backgroundColor: 'var(--bg-input)',
                     '& .MuiLinearProgress-bar': {
                         backgroundColor: '#367EFA',

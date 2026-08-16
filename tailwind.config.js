@@ -17,6 +17,7 @@ export default {
         'text-muted': 'var(--text-muted)',
         'accent': 'var(--accent)',
         'accent-hover': 'var(--accent-hover)',
+        'bg-funds-card': 'var(--bg-funds-card)',
       },
       backgroundImage: {
         'register-image': "url('assets/loginScreen.png')",

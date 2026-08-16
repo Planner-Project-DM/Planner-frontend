@@ -39,11 +39,10 @@ export default function Stay({activeTrip, setItemPrice, removeItemFromTrip}) {
                                         </div>
                                     </div>
                                     <div className={"flex flex-col items-end justify-around gap-2 w-1/2"}>
-                                        <div className={"flex items-end justify-end "}>
+                                        <div className={"flex items-center justify-center bg-red-600 rounded-xl border-2 border-red-700 cursor-pointer " +
+                                            "transition duration-150 ease-out hover:ease-in w-10 h-10"}>
                                             <FaRegTrashCan
-                                                onClick={() => removeItemFromTrip(trip.tripItem)}
-                                                className={"bg-red-600 rounded border-2 border-red-700 cursor-pointer " +
-                                                "transition duration-150 ease-out hover:ease-in"} size={35}/>
+                                                onClick={() => removeItemFromTrip(trip.tripItem)} size={30}/>
                                         </div>
                                         <div className={"flex items-center gap-2"}>
                                             <div className={"w-44 text-text-main"}>

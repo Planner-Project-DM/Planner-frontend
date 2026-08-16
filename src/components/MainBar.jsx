@@ -7,7 +7,7 @@ import Weather from '../components/Weather.jsx';
 import Notes from '../components/Notes.jsx';
 
 
-export default function MainBar({activeMark, tripItems, loading, setSelectedTripItem, selectedTripItem, activeTrip, setItemPrice, removeItemFromTrip}) {
+export default function MainBar({activeMark, tripItems, loading, setSelectedTripItem, selectedTripItem, activeTrip, setItemPrice, removeItemFromTrip, setSnackbar}) {
     if (activeMark === "map") {
         return (
             <Map tripItems={tripItems} loading={loading} setSelectedTripItem={setSelectedTripItem} selectedTripItem={selectedTripItem}/>
@@ -22,7 +22,7 @@ export default function MainBar({activeMark, tripItems, loading, setSelectedTrip
         )
     }else if (activeMark === "funds") {
         return (
-            <Funds activeTrip={activeTrip}/>
+            <Funds activeTrip={activeTrip} setSnackbar={setSnackbar}/>
         )
     }else if (activeMark === "stay") {
         return (
