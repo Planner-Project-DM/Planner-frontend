@@ -19,7 +19,7 @@ export default function Stay({activeTrip, setItemPrice, removeItemFromTrip}) {
                     ) : (
                         <ul className={"flex flex-col gap-7 mx-auto p-3 w-11/12 h-full overflow-y-scroll [&::-webkit-scrollbar]:hidden"}>
                             {[...activeTrip.tripItineraries].sort((a, b) => a.tripItem.name.localeCompare(b.tripItem.name)).map((trip) => (
-                                <li className={"w-full min-h-48 flex text-text-main rounded-2xl p-2 bg-bg-card border-2 border-accent"}
+                                <li className={"w-full min-h-48 flex text-text-main rounded-2xl p-2 bg-bg-card border-2 border-accent shadow-md"}
                                     key={trip.tripItem.id}>
                                     <div className={"w-1/2 flex flex-col justify-evenly gap-3"}>
                                         <div className={"flex items-center gap-2"}>
@@ -46,7 +46,7 @@ export default function Stay({activeTrip, setItemPrice, removeItemFromTrip}) {
                                         </div>
                                         <div className={"flex items-center gap-2"}>
                                             <div className={"w-44 text-text-main"}>
-                                                <FormInput className={"w-32"} id="price" placeholder="Podaj kwotę" type="number"
+                                                <FormInput className={"w-32"} id="price" placeholder={trip?.price? trip.price : "Podaj kwotę"} type="number"
                                                            max={9999999999} min={0}
                                                            onChange={e => setItemPrices({...itemPrices, [trip.tripItem.id]: e.target.value})}
                                                 />
