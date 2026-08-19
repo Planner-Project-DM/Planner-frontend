@@ -75,7 +75,7 @@ export default function SocialBar({tripItems, activeMark, selectedTripItem, setS
                                 {groupMembers  === null ? (
                                         <div className={"flex items-center justify-center h-full text-text-main font-bold"}>Tutaj pojawią się członkowie grupy</div>
                                 ) : (
-                                    (groupMembers || []).map((member) => (
+                                    ([...groupMembers].sort((a, b) => a.role === "OWNER"? -1 : b.role === "OWNER"? 1 : 0) || []).map((member) => (
                                         <li className={"flex gap-1 items-center h-10 w-full justify-between"} key={member.user.email}>
                                             <div className={"flex justify-between gap-5"}>
                                                 <div className={"bg-accent rounded-full p-1 h-10 flex justify-center items-center text-white w-10"}>

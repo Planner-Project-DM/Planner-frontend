@@ -168,7 +168,7 @@ export default function Dashboard({darkMode, isDark}){
             setUserTrips(resp.data.data);
         }
         catch (error) {
-            setSnackbar({ open: true, message: error.response?.data?.message || 'Coś poszło nie tak!', severity: 'error' });
+            setSnackbar({ open: true, message: error.response?.data?.message || 'Brak podróży!', severity: 'error' });
         }
     }
     async function getTripGroupMem(){
@@ -399,7 +399,8 @@ export default function Dashboard({darkMode, isDark}){
                 <CreateFriendship closeFriendForm={closeFriendForm} setSnackbar={setSnackbar} />
             )}
             {addGroup && (
-                <GroupAdd closeGroupForm={closeGroupForm} setSnackbar={setSnackbar}  groupName={activeTrip?.tripGroup?.name} activeTrip={activeTrip}/>
+                <GroupAdd closeGroupForm={closeGroupForm} setSnackbar={setSnackbar}
+                          groupName={activeTrip?.tripGroup?.name} activeTrip={activeTrip} refreshActiveTrip={refreshActiveTrip}/>
             )}
             <Snackbar open={snackbar.open} autoHideDuration={4000} onClose={() => setSnackbar({...snackbar, open: false})}>
                 <Alert severity={snackbar.severity}>{snackbar.message}</Alert>

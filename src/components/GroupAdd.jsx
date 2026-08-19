@@ -1,7 +1,7 @@
 import FormInput from "./FormInput.jsx";
 import {useState} from "react";
 import api from "../api/axios.js";
-export default function GroupAdd ({closeGroupForm, setSnackbar, groupName}) {
+export default function GroupAdd ({closeGroupForm, setSnackbar, groupName, activeTrip, refreshActiveTrip}) {
     const [groupForm, setGroupForm] = useState({
         email: ""
     })
@@ -9,7 +9,7 @@ export default function GroupAdd ({closeGroupForm, setSnackbar, groupName}) {
         try {
             const token = localStorage.getItem('userToken') || sessionStorage.getItem('userToken');
 
-            await api.post('/api/groups/add',
+            await api.post(`/api/trips/${activeTrip.id}/group/members`,
                 {
                     name: groupName,
                     email: groupForm.email
@@ -18,7 +18,8 @@ export default function GroupAdd ({closeGroupForm, setSnackbar, groupName}) {
                         'Authorization': `Bearer ${token}`
                     }
                 })
-
+            setSnackbar({open: true, message: 'Dodano znajomego do grupy', severity: 'success' });
+            refreshActiveTrip();
             closeGroupForm()
         }
         catch (error) {

@@ -21,8 +21,8 @@ export default function CreateFriendship ({closeFriendForm, setSnackbar}) {
                     'Authorization': `Bearer ${token}`
                 }
             })
-
-            closeFriendForm()
+            setSnackbar({ open: true, message: 'Wysłano zaproszenie do znajomych.', severity: 'success' });
+            closeFriendForm();
         }
         catch (error) {
             setSnackbar({ open: true, message: error.response?.data?.message || 'Coś poszło nie tak!', severity: 'error' });
