@@ -47,6 +47,10 @@ export default function Dashboard({darkMode, isDark}){
     // Group states
     const [groupMembers, setGroupMembers] = useState(null);
     const [addGroup, setNewGroup] = useState(false);
+    const [memberToDelete, setMemberToDelete] = useState(null);
+    const [memberDelete, setMemberDelete] = useState(false);
+    const openDelMem = () => setMemberDelete(true);
+    const closeDelMem = () => setMemberDelete(false);
     // Modal delete user
     const [alertDelete, setAlertDelete] = useState(false);
     const alertOpen = () => setAlertDelete(true);
@@ -189,6 +193,27 @@ export default function Dashboard({darkMode, isDark}){
                         setGroupMembers(resp.data.data.tripGroup.groupUsers);
                     }
                 }
+        }
+        catch (error) {
+            setSnackbar({ open: true, message: error.response?.data?.message || 'Coś poszło nie tak!', severity: 'error' });
+        }
+    }
+    async function deleteGroupMem(){
+        try{
+            const token = localStorage.getItem('userToken') || sessionStorage.getItem('userToken');
+            await api.delete(`/api/trips/${activeTrip.id}/group/members`,  {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                },
+                data: {
+                    name: memberToDelete.group.name,
+                    email: memberToDelete.user.email,
+                }
+            });
+
+            closeDelMem()
+            refreshActiveTrip();
+            setSnackbar({ open: true, message: 'Usunięto członka grupy!', severity: 'info' });
         }
         catch (error) {
             setSnackbar({ open: true, message: error.response?.data?.message || 'Coś poszło nie tak!', severity: 'error' });
@@ -389,7 +414,7 @@ export default function Dashboard({darkMode, isDark}){
                                setSelectedTripItem={setSelectedTripItem} activeTrip={activeTrip} loading={loading}
                                setSelectedCategory={setSelectedCategory} selectedCategory={selectedCategory}
                                addItemToTrip={addItemToTrip} getTripGroupMem={getTripGroupMem} groupMembers={groupMembers}
-                               setNewGroup={setNewGroup} closeGroupForm={closeGroupForm} />
+                               setNewGroup={setNewGroup} closeGroupForm={closeGroupForm}  setMemberToDelete={setMemberToDelete} openDelMem={openDelMem}/>
                 </aside>
             </main>
             {newTrip &&(
@@ -427,10 +452,40 @@ export default function Dashboard({darkMode, isDark}){
                             Czy chcesz usunąć znajomego?
                         </Typography>
                         <div className={"flex justify-between"}>
-                            <button onClick={alertClose} className={"bg-gray-400 border border-border-col w-24 h-10 rounded-xl " +
+                            <button onClick={alertClose} className={"bg-gray-500 border border-border-col w-24 h-10 rounded-xl " +
                                 "hover:bg-gray-600 hover:text-white transition duration-150 ease-out hover:ease-in"}>Anuluj</button>
                             <button className={"bg-red-700 text-white rounded-2xl h-10 w-24 " +
                                 "hover:bg-red-900 transition duration-150 ease-out hover:ease-in "} onClick={deleteFriend}>Usuń</button>
+                        </div>
+                    </div>
+                </Box>
+            </Modal>
+            <Modal
+                open={memberDelete}
+                onClose={closeDelMem}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+            >
+                <Box sx={{
+                    position: 'absolute',
+                    top: '50%',
+                    left: '50%',
+                    transform: 'translate(-50%, -50%)',
+                    bgcolor: 'var(--bg-input)',
+                    borderRadius: 2,
+                    boxShadow: 24,
+                    p: 4,
+                    width: 450
+                }}>
+                    <div className={"flex justify-between p-2 flex-col gap-5"}>
+                        <Typography id="modal-modal-title" variant="h6" component="h2" sx={{fontWeight: 'bold', color: 'var(--text-main)'}}>
+                            Czy chcesz usunąć członka grupy?
+                        </Typography>
+                        <div className={"flex justify-between"}>
+                            <button onClick={closeDelMem} className={"bg-gray-500 border border-border-col w-24 h-10 rounded-xl " +
+                                "hover:bg-gray-600 hover:text-white transition duration-150 ease-out hover:ease-in"}>Anuluj</button>
+                            <button className={"bg-red-700 text-white rounded-2xl h-10 w-24 " +
+                                "hover:bg-red-900 transition duration-150 ease-out hover:ease-in "} onClick={deleteGroupMem}>Usuń</button>
                         </div>
                     </div>
                 </Box>

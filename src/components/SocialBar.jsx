@@ -4,9 +4,11 @@ import CircularProgress from '@mui/material/CircularProgress';
 import FilterButtons from '../components/FilterButtons.jsx';
 import { FaUser } from "react-icons/fa";
 import { FaCrown } from "react-icons/fa6";
+import { AiOutlineUsergroupDelete } from "react-icons/ai";
+
 export default function SocialBar({tripItems, activeMark, selectedTripItem, setSelectedTripItem, activeTrip, loading,
                                       setSelectedCategory, selectedCategory, addItemToTrip, groupMembers, getTripGroupMem,
-                                      setNewGroup}) {
+                                      setNewGroup, setMemberToDelete, openDelMem}) {
     const hotelRefs = useRef({});
     useEffect(() =>{
         if(selectedTripItem === null){
@@ -76,7 +78,7 @@ export default function SocialBar({tripItems, activeMark, selectedTripItem, setS
                                         <div className={"flex items-center justify-center h-full text-text-main font-bold"}>Tutaj pojawią się członkowie grupy</div>
                                 ) : (
                                     ([...groupMembers].sort((a, b) => a.role === "OWNER"? -1 : b.role === "OWNER"? 1 : 0) || []).map((member) => (
-                                        <li className={"flex gap-1 items-center h-10 w-full justify-between"} key={member.user.email}>
+                                        <li className={"flex gap-1 items-center h-10 w-full justify-around"} key={member.user.email}>
                                             <div className={"flex justify-between gap-5"}>
                                                 <div className={"bg-accent rounded-full p-1 h-10 flex justify-center items-center text-white w-10"}>
                                                     {`${member.user.firstName[0]}${member.user.lastName[0]}`}
@@ -87,6 +89,15 @@ export default function SocialBar({tripItems, activeMark, selectedTripItem, setS
                                                         {member.user.firstName} {member.user.lastName}</div>
                                                     <div className={"text-xs text-text-secondary"}>{member.user.email}</div>
                                                 </div>
+                                            </div>
+                                            <div>
+                                                {member.role === "MEMBER" && (
+                                                    <div>
+                                                        <AiOutlineUsergroupDelete onClick={() => {setMemberToDelete(member); openDelMem();}}
+                                                            size={25}
+                                                            className={"mr-3 cursor-pointer"}/>
+                                                    </div>
+                                                )}
                                             </div>
                                         </li>
                                     ))
