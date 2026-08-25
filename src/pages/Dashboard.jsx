@@ -198,6 +198,22 @@ export default function Dashboard({darkMode, isDark}){
             setSnackbar({ open: true, message: error.response?.data?.message || 'Coś poszło nie tak!', severity: 'error' });
         }
     }
+    async function setMemberBalance(members) {
+        try {
+            const token = localStorage.getItem('userToken') || sessionStorage.getItem('userToken');
+            await api.put(`/api/trips/${activeTrip.id}/group/members`, members,
+                {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    },
+                });
+            setSnackbar({ open: true, message: 'Zaktualizowano podział!', severity: 'success' });
+            refreshActiveTrip();
+        }
+        catch(error) {
+            setSnackbar({ open: true, message: error.response?.data?.message || 'Pole wydatku nie może być puste!', severity: 'error' });
+        }
+    }
     async function deleteGroupMem(){
         try{
             const token = localStorage.getItem('userToken') || sessionStorage.getItem('userToken');
@@ -396,7 +412,7 @@ export default function Dashboard({darkMode, isDark}){
                     <MainBar activeMark={activeMark} tripItems={sortedItems} loading={loading}
                              setSelectedTripItem={setSelectedTripItem} selectedTripItem={selectedTripItem}  activeTrip={activeTrip}
                              setItemPrice={setItemPrice}
-                             removeItemFromTrip={removeItemFromTrip} setSnackbar={setSnackbar}/>
+                             removeItemFromTrip={removeItemFromTrip} setSnackbar={setSnackbar} setMemberBalance={setMemberBalance}/>
                 </div>
                 {myTrips && (
                     <UserTripsWindow userTrips={userTrips} selectActiveTrip={selectActiveTrip} activeTrip={activeTrip}/>
