@@ -68,7 +68,7 @@ export default function Funds({activeTrip, setMemberBalance}) {
                         </div>
                     </div>
                 </div>
-                <div className={"font-bold text-2xl m-3"}>
+                <div className={"font-bold text-2xl m-3 text-text-main"}>
                     Podział wydatków:
                 </div>
                 <div className={"h-114 bg-bg-funds-card  w-11/12 justify-center rounded-2xl mb-5 shadow-md p-5"}>
@@ -83,10 +83,10 @@ export default function Funds({activeTrip, setMemberBalance}) {
                                             {`${member.user.firstName[0]}${member.user.lastName[0]}`}
                                         </div>
                                     </div>
-                                    <div>{member.user.firstName} {member.user.lastName}</div>
+                                    <div className={"text-text-main"}>{member.user.firstName} {member.user.lastName}</div>
                                 </div>
                                 <div className={"flex gap-3 items-center"}>
-                                    <div>{(member.balance / activeTrip.budget * 100).toFixed(1)} %</div>
+                                    <div className={"text-text-main"}>{(member.balance / activeTrip.budget * 100).toFixed(1)} %</div>
                                     <div className={"w-24"}>
                                         <FormInput placeholder={member.balance ?? "0"} min={0} type={"number"}
                                                    onChange={e => setUserBalance({
@@ -127,7 +127,15 @@ export default function Funds({activeTrip, setMemberBalance}) {
                         series={[{ dataKey: 'balance', label: 'Podział procentowy wydatków'}]}
                         layout="horizontal"
                         height={activeTrip.tripGroup.groupUsers.length * 40 + 50}
+                        sx={{
+                            '& .MuiChartsAxis-tickLabel': { fill: 'var(--text-main)' },
+                            '& .MuiChartsLegend-root': { color: 'var(--text-main)' }
+                        }}
                     />
+                </div>
+                <div className={"flex flex-1 items-end justify-end mb-5 "}>
+                    <button className={"w-44 h-12 rounded-xl text-white border-2 text-xl font-bold border-accent-hover bg-accent " +
+                        "hover:bg-accent-hover transition duration-150 ease-out hover:ease-in"}>Pobierz Excel</button>
                 </div>
             </div>
         </div>
