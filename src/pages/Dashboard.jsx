@@ -330,6 +330,31 @@ export default function Dashboard({darkMode, isDark}){
             setSnackbar({ open: true, message: error.response?.data?.message , severity: 'error' });
         }
     }
+    async function downloadFundsReport(){
+        try {
+            const token = localStorage.getItem('userToken') || sessionStorage.getItem('userToken');
+
+           const resp = await api.get(`/api/reports/${activeTrip.id}/funds-summary`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                },
+                responseType: 'blob'
+            });
+            const url = window.URL.createObjectURL(new Blob([resp.data]));
+            const link = document.createElement('a');
+            link.href = url;
+
+            link.setAttribute('download', 'raport_wydatkow.xls');
+
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            window.URL.revokeObjectURL(url);
+        }
+        catch (error) {
+            setSnackbar({ open: true, message: error.response?.data?.message || 'Błąd pobierania!', severity: 'error' });
+        }
+    }
     useEffect(()=>{
         const lastTrip = localStorage.getItem('activeTripId');
         if(lastTrip){
@@ -412,7 +437,8 @@ export default function Dashboard({darkMode, isDark}){
                     <MainBar activeMark={activeMark} tripItems={sortedItems} loading={loading}
                              setSelectedTripItem={setSelectedTripItem} selectedTripItem={selectedTripItem}  activeTrip={activeTrip}
                              setItemPrice={setItemPrice}
-                             removeItemFromTrip={removeItemFromTrip} setSnackbar={setSnackbar} setMemberBalance={setMemberBalance}/>
+                             removeItemFromTrip={removeItemFromTrip} setSnackbar={setSnackbar} setMemberBalance={setMemberBalance}
+                             downloadFundsReport={downloadFundsReport}/>
                 </div>
                 {myTrips && (
                     <UserTripsWindow userTrips={userTrips} selectActiveTrip={selectActiveTrip} activeTrip={activeTrip}/>

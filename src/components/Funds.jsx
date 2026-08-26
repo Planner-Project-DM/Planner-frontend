@@ -3,7 +3,7 @@ import {BarChart} from '@mui/x-charts/BarChart';
 import FormInput from "./FormInput.jsx";
 import {useState} from "react";
 
-export default function Funds({activeTrip, setMemberBalance}) {
+export default function Funds({activeTrip, setMemberBalance, downloadFundsReport}) {
     const [userBalance, setUserBalance] = useState({});
     if (activeTrip === null) {
         return null;
@@ -136,7 +136,7 @@ export default function Funds({activeTrip, setMemberBalance}) {
                 <div className={"flex flex-1 items-center justify-center mb-5 w-11/12"}>
                     <button className={"w-64 h-12 rounded-xl text-white border-2 text-xl font-bold border-accent-hover bg-accent " +
                         "hover:bg-accent-hover transition duration-150 ease-out hover:ease-in"}
-                    onClick={()=> {}}>Pobierz Excel</button>
+                    onClick={()=> {downloadFundsReport()}}>Pobierz Excel</button>
                 </div>
             </div>
         </div>

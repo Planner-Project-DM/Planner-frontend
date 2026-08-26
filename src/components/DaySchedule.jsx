@@ -61,6 +61,7 @@ export default function DaySchedule({activeTrip}) {
                         />
                     ))}
                 </div>
+                <div></div>
             </div>
         </div>
     )
