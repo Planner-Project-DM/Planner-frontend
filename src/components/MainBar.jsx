@@ -15,7 +15,7 @@ export default function MainBar({activeMark, tripItems, loading, setSelectedTrip
         )
     } else if (activeMark === "dayschedule") {
         return (
-            <DaySchedule/>
+            <DaySchedule activeTrip={activeTrip}/>
         )
     }else if (activeMark === "notes") {
         return (

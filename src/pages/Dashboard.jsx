@@ -408,7 +408,7 @@ export default function Dashboard({darkMode, isDark}){
                 <aside className={"w-5/12 border-r-2 border-border-col"}>
                     <TripNavbar activeMark={activeMark} setActiveMark={setActiveMark} activeTrip={activeTrip}/>
                 </aside >
-                <div id="mainWindow" className={"w-full h-full"} >
+                <div id="mainWindow" className={"w-full h-full overflow-hidden"} >
                     <MainBar activeMark={activeMark} tripItems={sortedItems} loading={loading}
                              setSelectedTripItem={setSelectedTripItem} selectedTripItem={selectedTripItem}  activeTrip={activeTrip}
                              setItemPrice={setItemPrice}

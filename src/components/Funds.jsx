@@ -128,14 +128,15 @@ export default function Funds({activeTrip, setMemberBalance}) {
                         layout="horizontal"
                         height={activeTrip.tripGroup.groupUsers.length * 40 + 50}
                         sx={{
-                            '& .MuiChartsAxis-tickLabel': { fill: 'var(--text-main)' },
+                            '& .MuiChartsAxis-tickLabel': { fill: 'var(--text-main) !important' },
                             '& .MuiChartsLegend-root': { color: 'var(--text-main)' }
                         }}
                     />
                 </div>
-                <div className={"flex flex-1 items-end justify-end mb-5 "}>
-                    <button className={"w-44 h-12 rounded-xl text-white border-2 text-xl font-bold border-accent-hover bg-accent " +
-                        "hover:bg-accent-hover transition duration-150 ease-out hover:ease-in"}>Pobierz Excel</button>
+                <div className={"flex flex-1 items-center justify-center mb-5 w-11/12"}>
+                    <button className={"w-64 h-12 rounded-xl text-white border-2 text-xl font-bold border-accent-hover bg-accent " +
+                        "hover:bg-accent-hover transition duration-150 ease-out hover:ease-in"}
+                    onClick={()=> {}}>Pobierz Excel</button>
                 </div>
             </div>
         </div>
