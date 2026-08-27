@@ -8,14 +8,14 @@ import Notes from '../components/Notes.jsx';
 
 
 export default function MainBar({activeMark, tripItems, loading, setSelectedTripItem, selectedTripItem,
-                                    activeTrip, setItemPrice, removeItemFromTrip, setSnackbar, setMemberBalance,downloadFundsReport }) {
+                                    activeTrip, setItemPrice, removeItemFromTrip, setSnackbar, setMemberBalance,downloadFundsReport, schedules }) {
     if (activeMark === "map") {
         return (
             <Map tripItems={tripItems} loading={loading} setSelectedTripItem={setSelectedTripItem} selectedTripItem={selectedTripItem}/>
         )
     } else if (activeMark === "dayschedule") {
         return (
-            <DaySchedule activeTrip={activeTrip}/>
+            <DaySchedule activeTrip={activeTrip} schedules={schedules}/>
         )
     }else if (activeMark === "notes") {
         return (

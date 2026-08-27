@@ -1,13 +1,26 @@
 import {useState, useRef} from 'react';
 import FilterButtons from '../components/FilterButtons.jsx'
 
-export default function DaySchedule({activeTrip}) {
+export default function DaySchedule({activeTrip, schedules}) {
     const [selectedDay, setSelectedDay] = useState(null);
     const scrollRef = useRef(null)
     const [isDragging, setIsDragging] = useState(false);
     const [startX, setStartX] = useState(0);
     const [scrollLeft, setScrollLeft] = useState(0);
     const [wasDragged, setWasDragged] = useState(false);
+    // if (schedules === null) {
+    //     return;
+    // } else {
+    //     const events = [{
+    //         id: schedules.id,
+    //         tripItem: {
+    //             id: schedules.tripItem.id,
+    //             name: schedules.tripItem.name,
+    //         },
+    //         startTime: schedules.startTime,
+    //         endTime: schedules.endTime,
+    //     }]
+    // }
     if (activeTrip === null) {
         return (<div className={"w-full h-full flex items-center justify-center text-5xl"}>
             Wybierz podróż!
