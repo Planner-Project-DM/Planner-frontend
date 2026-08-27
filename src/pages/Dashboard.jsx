@@ -430,10 +430,10 @@ export default function Dashboard({darkMode, isDark}){
                         pendingFriends={pendingFriends} getFriendsList={getFriendsList} />
             </header>
             <main className={"flex-1 flex flex-row relative overflow-hidden"}>
-                <aside className={"w-5/12 border-r-2 border-border-col"}>
+                <aside className={"w-96 flex-shrink-0 border-r-2 border-border-col"}>
                     <TripNavbar activeMark={activeMark} setActiveMark={setActiveMark} activeTrip={activeTrip}/>
                 </aside >
-                <div id="mainWindow" className={"w-full h-full overflow-hidden"} >
+                <div id="mainWindow" className={"flex-1 h-full overflow-hidden"} >
                     <MainBar activeMark={activeMark} tripItems={sortedItems} loading={loading}
                              setSelectedTripItem={setSelectedTripItem} selectedTripItem={selectedTripItem}  activeTrip={activeTrip}
                              setItemPrice={setItemPrice}
@@ -451,13 +451,15 @@ export default function Dashboard({darkMode, isDark}){
                     <UserSettings setNewFriend={setNewFriend} friends={friends} alertOpen={alertOpen}
                                   setFriendToDelete={setFriendToDelete} darkMode={darkMode} isDark={isDark}/>
                 )}
-                <aside className={"w-5/12 border-l-2 border-border-col"}>
-                    <SocialBar activeMark={activeMark} tripItems={sortedItems} selectedTripItem={selectedTripItem}
-                               setSelectedTripItem={setSelectedTripItem} activeTrip={activeTrip} loading={loading}
-                               setSelectedCategory={setSelectedCategory} selectedCategory={selectedCategory}
-                               addItemToTrip={addItemToTrip} getTripGroupMem={getTripGroupMem} groupMembers={groupMembers}
-                               setNewGroup={setNewGroup} closeGroupForm={closeGroupForm}  setMemberToDelete={setMemberToDelete} openDelMem={openDelMem}/>
-                </aside>
+                {activeMark !== "dayschedule" && (
+                    <aside className={"w-96 flex-shrink-0 border-l-2 border-border-col"}>
+                        <SocialBar activeMark={activeMark} tripItems={sortedItems} selectedTripItem={selectedTripItem}
+                                   setSelectedTripItem={setSelectedTripItem} activeTrip={activeTrip} loading={loading}
+                                   setSelectedCategory={setSelectedCategory} selectedCategory={selectedCategory}
+                                   addItemToTrip={addItemToTrip} getTripGroupMem={getTripGroupMem} groupMembers={groupMembers}
+                                   setNewGroup={setNewGroup} closeGroupForm={closeGroupForm}  setMemberToDelete={setMemberToDelete} openDelMem={openDelMem}/>
+                    </aside>
+                )}
             </main>
             {newTrip &&(
                 <NewTripForm closeTripForm={closeTripForm} getTrips={getTrips} selectActiveTrip={selectActiveTrip} setSnackbar={setSnackbar}/>

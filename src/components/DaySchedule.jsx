@@ -23,7 +23,7 @@ export default function DaySchedule({activeTrip}) {
         start.setDate(start.getDate() + 1)
     }
     return (
-        <div className={"w-full h-full overflow-hidden"}>
+        <div className={"w-full h-full overflow-hidden p-3"}>
             <div className={"overflow-y-scroll flex flex-col justify-center [&::-webkit-scrollbar]:hidden"}>
                 <div className={"flex gap-3 w-full overflow-x-auto p-3 [&::-webkit-scrollbar]:hidden"}
                      ref={scrollRef}

@@ -67,7 +67,7 @@ export default function SocialBar({tripItems, activeMark, selectedTripItem, setS
                             </div>
                         </>
                     )
-                ): (
+                ) : (
                     <>
                         <div className="h-12">
                             <p className={"text-text-main"}>Grupa • {!activeTrip?.tripGroup ? "Nazwij grupę" : activeTrip.tripGroup.groupUsers[0].group.name}</p>
@@ -114,25 +114,28 @@ export default function SocialBar({tripItems, activeMark, selectedTripItem, setS
                 )}
             </div>
             <hr/>
-            <div className="shrink-0 flex flex-col gap-3">
-                <p className={"flex text-xl mt-2 text-text-main"}>Wydatki:</p>
-                <div className={"flex flex-col gap-1"}>
-                    <div className={"flex justify-between text-text-main"}>
-                        <p className={"font-bold"}>Budżet:</p>
-                        <p className={"font-bold"}>{activeTrip?.budget || "0"} PLN</p>
+            {activeMark !== "dayschedule"  && (
+                <div className="shrink-0 flex flex-col gap-3">
+                    <p className={"flex text-xl mt-2 text-text-main"}>Wydatki:</p>
+                    <div className={"flex flex-col gap-1"}>
+                        <div className={"flex justify-between text-text-main"}>
+                            <p className={"font-bold"}>Budżet:</p>
+                            <p className={"font-bold"}>{activeTrip?.budget || "0"} PLN</p>
+                        </div>
+                        <div className={"flex justify-between"}>
+                            <p className={"text-text-secondary font-bold"}>Wydano:</p>
+                            <p className={"text-accent font-bold"}>{activeTrip?.actualCost || "0"} PLN</p>
+                        </div>
                     </div>
-                    <div className={"flex justify-between"}>
-                        <p className={"text-text-secondary font-bold"}>Wydano:</p>
-                        <p className={"text-accent font-bold"}>{activeTrip?.actualCost || "0"} PLN</p>
-                    </div>
+                    <LinearProgress variant="determinate" value={finalSum}
+                                    sx={{height: 10, borderRadius: 4, backgroundColor: 'var(--bg-input)',
+                                        '& .MuiLinearProgress-bar': {
+                                            backgroundColor: '#367EFA',
+                                            borderRadius: 4,
+                                        }}}/>
                 </div>
-                <LinearProgress variant="determinate" value={finalSum}
-                sx={{height: 10, borderRadius: 4, backgroundColor: 'var(--bg-input)',
-                    '& .MuiLinearProgress-bar': {
-                        backgroundColor: '#367EFA',
-                        borderRadius: 4,
-                    }}}/>
-            </div>
+            )}
+
         </main>
     )
 }
