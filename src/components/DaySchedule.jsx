@@ -25,10 +25,10 @@ export default function DaySchedule({activeTrip, schedules}) {
         </div>);
     }
     return (
-        <div className={"w-full h-full overflow-hidden p-3"}>
-            <div className={"h-full w-full overflow-y-auto"}>
+        <div className={"w-full h-full overflow-hidden p-3 min-h-0"}>
+            <div className={"h-full w-full overflow-y-auto "}>
                 <Willow>
-                    <Calendar init={setApi} events={events} date={new Date(activeTrip.startDate)} view={"month"} />
+                    <Calendar init={setApi} events={events} date={new Date(activeTrip.startDate)} />
                     {api && <Editor api={api} />}
                 </Willow>
             </div>

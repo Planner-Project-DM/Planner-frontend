@@ -96,3 +96,6 @@ img {
     min-height: 50px;
     max-height: 50px;
 }
+.wx-theme {
+    height: 100%;
+}
