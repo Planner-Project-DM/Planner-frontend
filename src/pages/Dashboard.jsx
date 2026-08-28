@@ -258,6 +258,48 @@ export default function Dashboard({darkMode, isDark}){
             setSnackbar({ open: true, message: error.response?.data?.message || 'Coś poszło nie tak!', severity: 'error' });
         }
     }
+    async  function addSchedule({tripItemId, startTime, endTime}) {
+        try {
+            const token = localStorage.getItem('userToken') || sessionStorage.getItem('userToken');
+            await api.post(`/api/trips/${activeTrip.id}/schedules`,
+                {
+                    tripItemId: tripItemId,
+                    startTime: startTime,
+                    endTime: endTime,
+                },{
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+            getSchedules()
+            setSnackbar({ open: true, message: 'Dodano do harmonogramu!', severity: 'success' });
+        }
+        catch (error) {
+            setSnackbar({ open: true, message: error.response?.data?.message || 'Coś poszło nie tak!', severity: 'error' });
+
+        }
+    }
+    async  function editSchedule({tripItemId, startTime, endTime, scheduleId}) {
+        try {
+            const token = localStorage.getItem('userToken') || sessionStorage.getItem('userToken');
+            await api.put(`/api/trips/${activeTrip.id}/schedules`,
+                {
+                    tripItem: tripItemId,
+                    startTime: startTime,
+                    endTime: endTime,
+                    scheduleId: scheduleId,
+                },{
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                })
+            getSchedules()
+            setSnackbar({ open: true, message: 'Wprowadzono zmianę w harmonogramie', severity: 'info' });
+        }
+        catch (error) {
+            setSnackbar({ open: true, message: error.response?.data?.message || 'Coś poszło nie tak!', severity: 'error' });
+        }
+    }
     // Getting tripItems list by city function
     async function getCityMap (city){
         setLoading(true);
@@ -469,7 +511,8 @@ export default function Dashboard({darkMode, isDark}){
                              setSelectedTripItem={setSelectedTripItem} selectedTripItem={selectedTripItem}  activeTrip={activeTrip}
                              setItemPrice={setItemPrice}
                              removeItemFromTrip={removeItemFromTrip} setSnackbar={setSnackbar} setMemberBalance={setMemberBalance}
-                             downloadFundsReport={downloadFundsReport} schedules={schedules}/>
+                             downloadFundsReport={downloadFundsReport} schedules={schedules}
+                             addSchedule={addSchedule} editSchedule={editSchedule}/>
                 </div>
                 {myTrips && (
                     <UserTripsWindow userTrips={userTrips} selectActiveTrip={selectActiveTrip} activeTrip={activeTrip}/>
