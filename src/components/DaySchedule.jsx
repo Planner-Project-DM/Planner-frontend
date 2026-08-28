@@ -2,30 +2,33 @@ import {useEffect, useState} from 'react';
 import {Calendar, Editor, Willow, getEditorItems, registerEditorItem} from "@svar-ui/react-calendar";
 import "@svar-ui/react-calendar/all.css"
 import {RichSelect} from '@svar-ui/react-core';
+
 registerEditorItem('select', RichSelect)
+
 function toLocalISOString(date) {
     const pad = (n) => String(n).padStart(2, '0');
     return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T${pad(date.getHours())}:${pad(date.getMinutes())}:${pad(date.getSeconds())}`;
 }
 
-export default function DaySchedule({activeTrip, schedules , editSchedule, addSchedule}) {
+export default function DaySchedule({activeTrip, schedules, editSchedule, addSchedule}) {
     const [api, setApi] = useState(null);
+    const [initialDate] = useState(() => new Date(activeTrip.startDate));
     let options = []
     let events = []
     useEffect(() => {
-        if(!api) return;
-
+        if (!api) return;
     }, [api]);
+
     function handleSave(ev) {
         console.log(ev)
-        if((ev.values.id).includes("temp") ){
+        if ((ev.values.id).includes("temp")) {
+            console.log("wysyłam:", toLocalISOString(ev.values.start))
             addSchedule({
                 tripItemId: ev.values.tripItemId,
                 startTime: toLocalISOString(ev.values.start),
                 endTime: toLocalISOString(ev.values.end),
             });
-        }
-        else {
+        } else {
             editSchedule({
                 tripItemId: ev.values.tripItemId,
                 startTime: toLocalISOString(ev.values.start),
@@ -34,6 +37,7 @@ export default function DaySchedule({activeTrip, schedules , editSchedule, addSc
             })
         }
     }
+
     if (schedules === null) {
         return;
     } else {
@@ -46,7 +50,7 @@ export default function DaySchedule({activeTrip, schedules , editSchedule, addSc
             }
         ))
     }
-
+    console.log(events)
     if (activeTrip === null) {
         return (<div className={"w-full h-full flex items-center justify-center text-5xl"}>
             Wybierz podróż!
@@ -69,11 +73,30 @@ export default function DaySchedule({activeTrip, schedules , editSchedule, addSc
         ]
     }
     return (
-        <div className={"w-full h-full overflow-hidden p-3 min-h-0"}>
+        <div className={"w-full h-full overflow-hidden p-3 min-h-0 relative z-0"}>
             <div className={"h-full w-full overflow-y-auto "}>
                 <Willow>
-                    <Calendar init={setApi} events={events} date={new Date(activeTrip.startDate)}/>
-                    {api && <Editor api={api} items={items} autoSave={false} onSave={handleSave} bottomBar={bottomButton}/>}
+                    <Calendar init={setApi} events={events} date={initialDate} views={[
+                        {
+                            id: "week",
+                            sections: {
+                                timeGrid: {
+                                    yScale: {startHour: 6, endHour: 24}
+                                }
+                            }
+                        },
+                        {
+                            id: "day",
+                            sections: {
+                                timeGrid: {
+                                    yScale: {startHour: 6, endHour: 24}
+                                }
+                            }
+                        },
+                        "month"
+                    ]}/>
+                    {api &&
+                        <Editor api={api} items={items} autoSave={false} onSave={handleSave} bottomBar={bottomButton}/>}
                 </Willow>
             </div>
         </div>

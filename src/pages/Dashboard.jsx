@@ -53,6 +53,7 @@ export default function Dashboard({darkMode, isDark}){
     const closeDelMem = () => setMemberDelete(false);
     // Schedule states
     const [schedules, setSchedules] = useState(null);
+    const [scheduleDay, setScheduleDay] = useState(null);
     // Modal delete user
     const [alertDelete, setAlertDelete] = useState(false);
     const alertOpen = () => setAlertDelete(true);
