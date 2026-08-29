@@ -20,7 +20,7 @@ export default function DaySchedule({activeTrip, schedules, editSchedule, addSch
     }, [api]);
 
     function handleSave(ev) {
-        console.log(ev)
+        console.log(ev.values)
         if ((ev.values.id).includes("temp")) {
             console.log("wysyłam:", toLocalISOString(ev.values.start))
             addSchedule({
@@ -29,8 +29,9 @@ export default function DaySchedule({activeTrip, schedules, editSchedule, addSch
                 endTime: toLocalISOString(ev.values.end),
             });
         } else {
+            const originalId = schedules.find((el) => el.id === ev.values.id)
             editSchedule({
-                tripItemId: ev.values.tripItemId,
+                tripItemId: ev.values.tripItemId ? ev.values.tripItemId : originalId.tripItem.id,
                 startTime: toLocalISOString(ev.values.start),
                 endTime: toLocalISOString(ev.values.end),
                 scheduleId: ev.values.id,
