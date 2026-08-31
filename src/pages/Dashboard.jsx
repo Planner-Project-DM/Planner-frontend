@@ -301,6 +301,23 @@ export default function Dashboard({darkMode, isDark}){
             setSnackbar({ open: true, message: error.response?.data?.message || 'Coś poszło nie tak!', severity: 'error' });
         }
     }
+    async function deleteSchedule({scheduleId}) {
+        try {
+            const token = localStorage.getItem('userToken') || sessionStorage.getItem('userToken');
+            await api.delete(`/api/trips/${activeTrip.id}/schedules`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                },
+                params: {
+                    scheduleId: scheduleId,
+                }
+            });
+            getSchedules()
+            setSnackbar({open: true, message: 'Usunięto z harmonogramu', severity: 'info'});
+        } catch (error) {
+            setSnackbar({ open: true, message: error.response?.data?.message ||'Coś poszło nie tak!', severity: 'error' });
+        }
+    }
     // Getting tripItems list by city function
     async function getCityMap (city){
         setLoading(true);
@@ -513,7 +530,7 @@ export default function Dashboard({darkMode, isDark}){
                              setItemPrice={setItemPrice}
                              removeItemFromTrip={removeItemFromTrip} setSnackbar={setSnackbar} setMemberBalance={setMemberBalance}
                              downloadFundsReport={downloadFundsReport} schedules={schedules}
-                             addSchedule={addSchedule} editSchedule={editSchedule}/>
+                             addSchedule={addSchedule} editSchedule={editSchedule} deleteSchedule={deleteSchedule}/>
                 </div>
                 {myTrips && (
                     <UserTripsWindow userTrips={userTrips} selectActiveTrip={selectActiveTrip} activeTrip={activeTrip}/>

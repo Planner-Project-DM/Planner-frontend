@@ -10,19 +10,35 @@ function toLocalISOString(date) {
     return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T${pad(date.getHours())}:${pad(date.getMinutes())}:${pad(date.getSeconds())}`;
 }
 
-export default function DaySchedule({activeTrip, schedules, editSchedule, addSchedule}) {
+export default function DaySchedule({activeTrip, schedules, editSchedule, addSchedule, deleteSchedule}) {
     const [api, setApi] = useState(null);
     const [initialDate] = useState(() => new Date(activeTrip.startDate));
     let options = []
     let events = []
     useEffect(() => {
         if (!api) return;
+        api.intercept("delete-event",
+            async (ev) => {
+                deleteSchedule({
+                    scheduleId: ev.id,
+                });
+                return true;
+        })
+        api.intercept("update-event", async (ev) => {
+            const originalId = schedules.find((el) => el.id === ev.id)
+            if (originalId === undefined) return false;
+            editSchedule({
+                tripItemId: originalId.tripItem.id,
+                startTime: toLocalISOString(ev.event.start),
+                endTime: toLocalISOString(ev.event.end),
+                scheduleId: ev.id,
+            })
+            return true;
+        })
     }, [api]);
 
     function handleSave(ev) {
-        console.log(ev.values)
         if ((ev.values.id).includes("temp")) {
-            console.log("wysyłam:", toLocalISOString(ev.values.start))
             addSchedule({
                 tripItemId: ev.values.tripItemId,
                 startTime: toLocalISOString(ev.values.start),
@@ -30,6 +46,11 @@ export default function DaySchedule({activeTrip, schedules, editSchedule, addSch
             });
         } else {
             const originalId = schedules.find((el) => el.id === ev.values.id)
+            if(ev.values.allDay){
+                ev.values.start.setHours(6,0,0)
+                ev.values.end.setHours(23,59,0);
+            }
+
             editSchedule({
                 tripItemId: ev.values.tripItemId ? ev.values.tripItemId : originalId.tripItem.id,
                 startTime: toLocalISOString(ev.values.start),
@@ -51,7 +72,6 @@ export default function DaySchedule({activeTrip, schedules, editSchedule, addSch
             }
         ))
     }
-    console.log(events)
     if (activeTrip === null) {
         return (<div className={"w-full h-full flex items-center justify-center text-5xl"}>
             Wybierz podróż!

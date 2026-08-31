@@ -98,6 +98,7 @@ img {
 }
 .wx-theme {
     height: 100%;
+    --wx-color-primary: var(--accent);
 }
 .wx-popup {
     z-index: 40 !important;
