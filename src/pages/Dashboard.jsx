@@ -266,6 +266,7 @@ export default function Dashboard({darkMode, isDark}){
                     tripItemId: tripItemId,
                     startTime: startTime,
                     endTime: endTime,
+                    allDay: false,
                 },{
                 headers: {
                     'Authorization': `Bearer ${token}`
@@ -288,6 +289,7 @@ export default function Dashboard({darkMode, isDark}){
                     startTime: startTime,
                     endTime: endTime,
                     scheduleId: scheduleId,
+                    allDay: false,
                 },{
                     headers: {
                         'Authorization': `Bearer ${token}`
