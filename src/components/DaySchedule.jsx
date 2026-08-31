@@ -13,8 +13,9 @@ function toLocalISOString(date) {
 export default function DaySchedule({activeTrip, schedules, editSchedule, addSchedule, deleteSchedule}) {
     const [api, setApi] = useState(null);
     const [initialDate] = useState(() => new Date(activeTrip.startDate));
-    let options = []
-    let events = []
+    let options;
+    let events;
+
     useEffect(() => {
         if (!api) return;
         api.intercept("delete-event",

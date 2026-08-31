@@ -75,7 +75,7 @@ export default function Funds({activeTrip, setMemberBalance, downloadFundsReport
                     <ul className={"max-h-96 overflow-y-scroll grid grid-cols-2 gap-5 [&::-webkit-scrollbar]:hidden p-3"}>
                         {activeTrip?.tripGroup?.groupUsers.map((member) => (
                             <li key={member.user.email}
-                                className={"flex justify-around items-center shadow-md rounded-2xl max-h-16 border border-border-col p-3"}>
+                                className={"flex justify-between items-center shadow-md rounded-2xl max-h-16 border border-border-col p-3 pl-5 pr-5"}>
                                 <div className={"flex gap-2 items-center"}>
                                     <div>
                                         <div
