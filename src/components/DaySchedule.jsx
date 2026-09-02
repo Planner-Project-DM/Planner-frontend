@@ -12,7 +12,13 @@ function toLocalISOString(date) {
 
 export default function DaySchedule({activeTrip, schedules, editSchedule, addSchedule, deleteSchedule}) {
     const [api, setApi] = useState(null);
-    const [initialDate] = useState(() => new Date(activeTrip.startDate));
+    const [initialDate] = useState(() => {
+        if (new Date() >= new Date(activeTrip.startDate) && new Date() <= new Date(activeTrip.endDate)) {
+           return new Date()
+        } else {
+            return new Date(activeTrip.startDate)
+        }
+    });
     let options;
     let events;
 
@@ -24,7 +30,7 @@ export default function DaySchedule({activeTrip, schedules, editSchedule, addSch
                     scheduleId: ev.id,
                 });
                 return true;
-        })
+            })
         api.intercept("update-event", async (ev) => {
             const originalId = schedules.find((el) => el.id === ev.id)
             if (originalId === undefined) return false;
@@ -44,19 +50,16 @@ export default function DaySchedule({activeTrip, schedules, editSchedule, addSch
                 tripItemId: ev.values.tripItemId,
                 startTime: toLocalISOString(ev.values.start),
                 endTime: toLocalISOString(ev.values.end),
+                allDay: ev.values.allDay || false,
             });
         } else {
             const originalId = schedules.find((el) => el.id === ev.values.id)
-            if(ev.values.allDay){
-                ev.values.start.setHours(6,0,0)
-                ev.values.end.setHours(23,59,0);
-            }
-
             editSchedule({
                 tripItemId: ev.values.tripItemId ? ev.values.tripItemId : originalId.tripItem.id,
                 startTime: toLocalISOString(ev.values.start),
                 endTime: toLocalISOString(ev.values.end),
                 scheduleId: ev.values.id,
+                allDay: ev.values.allDay || false,
             })
         }
     }
@@ -70,9 +73,11 @@ export default function DaySchedule({activeTrip, schedules, editSchedule, addSch
                 start: new Date(map.startTime),
                 end: new Date(map.endTime),
                 text: map.tripItem.name,
+                allDay: map.allDay,
             }
         ))
     }
+    console.log(events)
     if (activeTrip === null) {
         return (<div className={"w-full h-full flex items-center justify-center text-5xl"}>
             Wybierz podróż!
@@ -118,7 +123,13 @@ export default function DaySchedule({activeTrip, schedules, editSchedule, addSch
                         "month"
                     ]}/>
                     {api &&
-                        <Editor api={api} items={items} autoSave={false} onSave={handleSave} bottomBar={bottomButton}/>}
+                        <Editor api={api} items={items} autoSave={false} onSave={handleSave} bottomBar={bottomButton}
+                                onChange={ev => {
+                                    if (ev.key === "tripItemId") {
+                                        const item = options.find((el) => el.id === ev.value)
+                                        ev.update.text = item.label
+                                    }
+                                }}/>}
                 </Willow>
             </div>
         </div>

@@ -9,7 +9,7 @@ import Notes from '../components/Notes.jsx';
 
 export default function MainBar({activeMark, tripItems, loading, setSelectedTripItem, selectedTripItem,
                                     activeTrip, setItemPrice, removeItemFromTrip, setSnackbar, setMemberBalance,downloadFundsReport, schedules, addSchedule, editSchedule,
-                                    deleteSchedule}) {
+                                    deleteSchedule, weatherData, setWeatherLocation, weatherLocation, getWeather}) {
     if (activeMark === "map") {
         return (
             <Map tripItems={tripItems} loading={loading} setSelectedTripItem={setSelectedTripItem} selectedTripItem={selectedTripItem}/>
@@ -32,7 +32,7 @@ export default function MainBar({activeMark, tripItems, loading, setSelectedTrip
         )
     }else if (activeMark === "weather") {
         return (
-            <Weather/>
+            <Weather getWeather={getWeather} weatherLocation={weatherLocation} setWeatherLocation={setWeatherLocation} weatherData={weatherData}/>
         )
     }else if (activeMark === "summary") {
         return (

@@ -15,10 +15,10 @@ import Alert from '@mui/material/Alert';
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
+import axios from 'axios';
 
 
-
-export default function Dashboard({darkMode, isDark}){
+export default function Dashboard({darkMode, isDark}) {
     // Dropdown states
     const [myTrips, setMyTrips] = useState(false);
     const [myNotif, setMyNotif] = useState(false);
@@ -57,10 +57,14 @@ export default function Dashboard({darkMode, isDark}){
     const [alertDelete, setAlertDelete] = useState(false);
     const alertOpen = () => setAlertDelete(true);
     const alertClose = () => setAlertDelete(false);
+    //Weather state
+    const [weatherLocation, setWeatherLocation] = useState(activeTrip ? activeTrip.destination : []);
+    const [weatherData, setWeatherData] = useState(null);
     // Snackbar state
-    const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' });
+    const [snackbar, setSnackbar] = useState({open: false, message: '', severity: 'success'});
+
     // Friendships functions
-    async function friendNotification (){
+    async function friendNotification() {
 
         try {
 
@@ -72,61 +76,77 @@ export default function Dashboard({darkMode, isDark}){
                 }
             });
             setPendingFriends(res.data.data);
-        }
-        catch (error) {
-            setSnackbar({ open: true, message: error.response?.data?.message || 'Coś poszło nie tak!', severity: 'error' });
+        } catch (error) {
+            setSnackbar({
+                open: true,
+                message: error.response?.data?.message || 'Coś poszło nie tak!',
+                severity: 'error'
+            });
         }
     }
-    async function acceptFriend(id){
-        try{
+
+    async function acceptFriend(id) {
+        try {
             const token = localStorage.getItem('userToken') || sessionStorage.getItem('userToken');
 
-            await api.patch(`/api/friendships/${id}/accept`,{}, {
+            await api.patch(`/api/friendships/${id}/accept`, {}, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
             });
             friendNotification();
-            setSnackbar({ open: true, message: 'Dodano znajomego!', severity: 'success' });
-        }
-        catch (error) {
-            setSnackbar({ open: true, message: error.response?.data?.message || 'Coś poszło nie tak!', severity: 'error' });
+            setSnackbar({open: true, message: 'Dodano znajomego!', severity: 'success'});
+        } catch (error) {
+            setSnackbar({
+                open: true,
+                message: error.response?.data?.message || 'Coś poszło nie tak!',
+                severity: 'error'
+            });
         }
     }
-    async function rejectFriend(id){
-        try{
+
+    async function rejectFriend(id) {
+        try {
             const token = localStorage.getItem('userToken') || sessionStorage.getItem('userToken');
 
-            await api.patch(`/api/friendships/${id}/reject`,{}, {
+            await api.patch(`/api/friendships/${id}/reject`, {}, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
             });
             friendNotification();
-            setSnackbar({ open: true, message: 'Odrzucono zaproszenie.', severity: 'info' });
-        }
-        catch (error) {
-            setSnackbar({ open: true, message: error.response?.data?.message || 'Coś poszło nie tak!', severity: 'error' });
+            setSnackbar({open: true, message: 'Odrzucono zaproszenie.', severity: 'info'});
+        } catch (error) {
+            setSnackbar({
+                open: true,
+                message: error.response?.data?.message || 'Coś poszło nie tak!',
+                severity: 'error'
+            });
         }
     }
-    async function blockFriend(id){
-        try{
+
+    async function blockFriend(id) {
+        try {
             const token = localStorage.getItem('userToken') || sessionStorage.getItem('userToken');
 
-            await api.patch(`/api/friendships/${id}/block`,{}, {
+            await api.patch(`/api/friendships/${id}/block`, {}, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
             });
             friendNotification();
-            setSnackbar({ open: true, message: 'Zablokowano użytkownika', severity: 'info' });
-        }
-        catch (error) {
-            setSnackbar({ open: true, message: error.response?.data?.message || 'Coś poszło nie tak!', severity: 'error' });
+            setSnackbar({open: true, message: 'Zablokowano użytkownika', severity: 'info'});
+        } catch (error) {
+            setSnackbar({
+                open: true,
+                message: error.response?.data?.message || 'Coś poszło nie tak!',
+                severity: 'error'
+            });
         }
     }
-    async function getFriendsList(){
-        try{
+
+    async function getFriendsList() {
+        try {
             const token = localStorage.getItem('userToken') || sessionStorage.getItem('userToken');
 
             const res = await api.get(`/api/friendships?status=ACCEPTED`, {
@@ -135,15 +155,19 @@ export default function Dashboard({darkMode, isDark}){
                 }
             });
             setFriends(res.data.data);
-        }
-        catch (error) {
-            setSnackbar({ open: true, message: error.response?.data?.message || 'Coś poszło nie tak!', severity: 'error' });
+        } catch (error) {
+            setSnackbar({
+                open: true,
+                message: error.response?.data?.message || 'Coś poszło nie tak!',
+                severity: 'error'
+            });
         }
     }
-    async function deleteFriend () {
-        try{
+
+    async function deleteFriend() {
+        try {
             const token = localStorage.getItem('userToken') || sessionStorage.getItem('userToken');
-            await api.delete(`/api/friendships`,  {
+            await api.delete(`/api/friendships`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 },
@@ -154,15 +178,18 @@ export default function Dashboard({darkMode, isDark}){
 
             alertClose()
             getFriendsList();
-            setSnackbar({ open: true, message: 'Usunięto znajomego!', severity: 'info' });
-        }
-        catch (error) {
-            setSnackbar({ open: true, message: error.response?.data?.message || 'Coś poszło nie tak!', severity: 'error' });
+            setSnackbar({open: true, message: 'Usunięto znajomego!', severity: 'info'});
+        } catch (error) {
+            setSnackbar({
+                open: true,
+                message: error.response?.data?.message || 'Coś poszło nie tak!',
+                severity: 'error'
+            });
         }
     }
 
     // Trips get from backend function mapped in UserTripsWindow
-    async function getTrips(){
+    async function getTrips() {
         try {
             const token = localStorage.getItem('userToken') || sessionStorage.getItem('userToken');
 
@@ -172,35 +199,39 @@ export default function Dashboard({darkMode, isDark}){
                 }
             });
             setUserTrips(resp.data.data);
-        }
-        catch (error) {
-            setSnackbar({ open: true, message: error.response?.data?.message || 'Brak podróży!', severity: 'error' });
+        } catch (error) {
+            setSnackbar({open: true, message: error.response?.data?.message || 'Brak podróży!', severity: 'error'});
         }
     }
+
     // Get trip group members func
-    async function getTripGroupMem(){
+    async function getTripGroupMem() {
         try {
             const token = localStorage.getItem('userToken') || sessionStorage.getItem('userToken');
-                if(activeTrip === null) {
+            if (activeTrip === null) {
+                return;
+            } else {
+                const resp = await api.get(`/api/trips/${activeTrip.id}`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                if (resp.data.data.tripGroup === null) {
+                    setGroupMembers([])
                     return;
                 } else {
-                    const resp = await api.get(`/api/trips/${activeTrip.id}`, {
-                        headers: {
-                            'Authorization': `Bearer ${token}`
-                        }
-                    });
-                    if (resp.data.data.tripGroup === null) {
-                        setGroupMembers([])
-                        return;
-                    } else {
-                        setGroupMembers(resp.data.data.tripGroup.groupUsers);
-                    }
+                    setGroupMembers(resp.data.data.tripGroup.groupUsers);
                 }
-        }
-        catch (error) {
-            setSnackbar({ open: true, message: error.response?.data?.message || 'Coś poszło nie tak!', severity: 'error' });
+            }
+        } catch (error) {
+            setSnackbar({
+                open: true,
+                message: error.response?.data?.message || 'Coś poszło nie tak!',
+                severity: 'error'
+            });
         }
     }
+
     // Updating members balance func
     async function setMemberBalance(members) {
         try {
@@ -211,18 +242,22 @@ export default function Dashboard({darkMode, isDark}){
                         'Authorization': `Bearer ${token}`
                     },
                 });
-            setSnackbar({ open: true, message: 'Zaktualizowano podział!', severity: 'success' });
+            setSnackbar({open: true, message: 'Zaktualizowano podział!', severity: 'success'});
             refreshActiveTrip();
-        }
-        catch(error) {
-            setSnackbar({ open: true, message: error.response?.data?.message || 'Pole wydatku nie może być puste!', severity: 'error' });
+        } catch (error) {
+            setSnackbar({
+                open: true,
+                message: error.response?.data?.message || 'Pole wydatku nie może być puste!',
+                severity: 'error'
+            });
         }
     }
+
     // delete group member func
-    async function deleteGroupMem(){
-        try{
+    async function deleteGroupMem() {
+        try {
             const token = localStorage.getItem('userToken') || sessionStorage.getItem('userToken');
-            await api.delete(`/api/trips/${activeTrip.id}/group/members`,  {
+            await api.delete(`/api/trips/${activeTrip.id}/group/members`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 },
@@ -234,31 +269,40 @@ export default function Dashboard({darkMode, isDark}){
 
             closeDelMem()
             refreshActiveTrip();
-            setSnackbar({ open: true, message: 'Usunięto członka grupy!', severity: 'info' });
-        }
-        catch (error) {
-            setSnackbar({ open: true, message: error.response?.data?.message || 'Coś poszło nie tak!', severity: 'error' });
+            setSnackbar({open: true, message: 'Usunięto członka grupy!', severity: 'info'});
+        } catch (error) {
+            setSnackbar({
+                open: true,
+                message: error.response?.data?.message || 'Coś poszło nie tak!',
+                severity: 'error'
+            });
         }
     }
-    async function getSchedules (){
+
+    //schedules functions
+    async function getSchedules() {
         try {
-            if(activeTrip === null) {
+            if (activeTrip === null) {
                 return null;
             } else {
                 const token = localStorage.getItem('userToken') || sessionStorage.getItem('userToken');
-                const resp = await api.get(`/api/trips/${activeTrip.id}/schedules`,{
+                const resp = await api.get(`/api/trips/${activeTrip.id}/schedules`, {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }
                 })
                 setSchedules(resp.data.data);
             }
-        }
-        catch (error) {
-            setSnackbar({ open: true, message: error.response?.data?.message || 'Coś poszło nie tak!', severity: 'error' });
+        } catch (error) {
+            setSnackbar({
+                open: true,
+                message: error.response?.data?.message || 'Coś poszło nie tak!',
+                severity: 'error'
+            });
         }
     }
-    async  function addSchedule({tripItemId, startTime, endTime}) {
+
+    async function addSchedule({tripItemId, startTime, endTime, allDay}) {
         try {
             const token = localStorage.getItem('userToken') || sessionStorage.getItem('userToken');
             await api.post(`/api/trips/${activeTrip.id}/schedules`,
@@ -266,21 +310,25 @@ export default function Dashboard({darkMode, isDark}){
                     tripItemId: tripItemId,
                     startTime: startTime,
                     endTime: endTime,
-                    allDay: false,
-                },{
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
-            })
+                    allDay: allDay,
+                }, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                })
             getSchedules()
-            setSnackbar({ open: true, message: 'Dodano do harmonogramu!', severity: 'success' });
-        }
-        catch (error) {
-            setSnackbar({ open: true, message: error.response?.data?.message || 'Coś poszło nie tak!', severity: 'error' });
+            setSnackbar({open: true, message: 'Dodano do harmonogramu!', severity: 'success'});
+        } catch (error) {
+            setSnackbar({
+                open: true,
+                message: error.response?.data?.message || 'Coś poszło nie tak!',
+                severity: 'error'
+            });
 
         }
     }
-    async  function editSchedule({tripItemId, startTime, endTime, scheduleId}) {
+
+    async function editSchedule({tripItemId, startTime, endTime, scheduleId, allDay}) {
         try {
             const token = localStorage.getItem('userToken') || sessionStorage.getItem('userToken');
             await api.put(`/api/trips/${activeTrip.id}/schedules`,
@@ -289,19 +337,23 @@ export default function Dashboard({darkMode, isDark}){
                     startTime: startTime,
                     endTime: endTime,
                     scheduleId: scheduleId,
-                    allDay: false,
-                },{
+                    allDay: allDay,
+                }, {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }
                 })
             getSchedules()
-            setSnackbar({ open: true, message: 'Wprowadzono zmianę w harmonogramie', severity: 'info' });
-        }
-        catch (error) {
-            setSnackbar({ open: true, message: error.response?.data?.message || 'Coś poszło nie tak!', severity: 'error' });
+            setSnackbar({open: true, message: 'Wprowadzono zmianę w harmonogramie', severity: 'info'});
+        } catch (error) {
+            setSnackbar({
+                open: true,
+                message: error.response?.data?.message || 'Coś poszło nie tak!',
+                severity: 'error'
+            });
         }
     }
+
     async function deleteSchedule({scheduleId}) {
         try {
             const token = localStorage.getItem('userToken') || sessionStorage.getItem('userToken');
@@ -316,16 +368,36 @@ export default function Dashboard({darkMode, isDark}){
             getSchedules()
             setSnackbar({open: true, message: 'Usunięto z harmonogramu', severity: 'info'});
         } catch (error) {
-            setSnackbar({ open: true, message: error.response?.data?.message ||'Coś poszło nie tak!', severity: 'error' });
+            setSnackbar({
+                open: true,
+                message: error.response?.data?.message || 'Coś poszło nie tak!',
+                severity: 'error'
+            });
         }
     }
+
+    // Weather Api call function
+    async function getWeather() {
+        try {
+            const resp =
+                await axios.get(`https://api.openweathermap.org/data/2.5/forecast?q=${weatherLocation}&appid={}&lang=pl&units=metric`)
+            setWeatherData(resp.data)
+        } catch (error) {
+            setSnackbar({
+                open: true,
+                message: error.response?.data?.message || 'Coś poszło nie tak!',
+                severity: 'error'
+            });
+        }
+    }
+
     // Getting tripItems list by city function
-    async function getCityMap (city){
+    async function getCityMap(city) {
         setLoading(true);
         try {
             const token = localStorage.getItem('userToken') || sessionStorage.getItem('userToken');
 
-            const resp = await api.get(`/api/trip-items/city/${city}`,{
+            const resp = await api.get(`/api/trip-items/city/${city}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
@@ -334,91 +406,107 @@ export default function Dashboard({darkMode, isDark}){
             setTripItems(items);
 
             if (items.length === 0) {
-                setSnackbar({ open: true, message: 'Brak wyników dla tej lokalizacji.', severity: 'info' });
+                setSnackbar({open: true, message: 'Brak wyników dla tej lokalizacji.', severity: 'info'});
             }
-        }
-        catch (error) {
-            setSnackbar({ open: true, message: error.response?.data?.message || 'Coś poszło nie tak!', severity: 'error' });
-        }
-        finally {
+        } catch (error) {
+            setSnackbar({
+                open: true,
+                message: error.response?.data?.message || 'Coś poszło nie tak!',
+                severity: 'error'
+            });
+        } finally {
             {
                 setLoading(false)
             }
         }
     }
+
     // Active trip refreshing function
     async function refreshActiveTrip() {
         try {
             const token = localStorage.getItem('userToken') || sessionStorage.getItem('userToken');
             const resp = await api.get(`/api/trips/${activeTrip.id}`, {
-                headers: { 'Authorization': `Bearer ${token}` }
+                headers: {'Authorization': `Bearer ${token}`}
             });
             setActiveTrip(resp.data.data);
-        }
-        catch (error) {
-            setSnackbar({ open: true, message: error.response?.data?.message || 'Coś poszło nie tak!', severity: 'error' });
+        } catch (error) {
+            setSnackbar({
+                open: true,
+                message: error.response?.data?.message || 'Coś poszło nie tak!',
+                severity: 'error'
+            });
         }
     }
+
     // Function adding item to bookmark "Przewodnik"
     async function addItemToTrip(item) {
         try {
             const token = localStorage.getItem('userToken') || sessionStorage.getItem('userToken');
-            await api.post(`/api/trips/${activeTrip.id}/item`,{tripItemId: item.id},  {
+            await api.post(`/api/trips/${activeTrip.id}/item`, {tripItemId: item.id}, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 },
             });
-            setSnackbar({ open: true, message: 'Dodano do zakładki.', severity: 'success' });
+            setSnackbar({open: true, message: 'Dodano do zakładki.', severity: 'success'});
             refreshActiveTrip();
-        }
-        catch(error) {
-            setSnackbar({ open: true, message: error.response?.data?.message || `${item.name} już znajduje się w przewodniku!`, severity: 'error' });
+        } catch (error) {
+            setSnackbar({
+                open: true,
+                message: error.response?.data?.message || `${item.name} już znajduje się w przewodniku!`,
+                severity: 'error'
+            });
         }
     }
+
     // setItemPrice function
-    async function setItemPrice(id ,price) {
+    async function setItemPrice(id, price) {
         try {
             const token = localStorage.getItem('userToken') || sessionStorage.getItem('userToken');
             await api.put(`/api/trips/${activeTrip.id}/item`,
-                {tripItemId: id,
+                {
+                    tripItemId: id,
                     price: price
                 },
                 {
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                },
-            });
-            setSnackbar({ open: true, message: 'Cena zmieniona poprawnie.', severity: 'success' });
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    },
+                });
+            setSnackbar({open: true, message: 'Cena zmieniona poprawnie.', severity: 'success'});
             refreshActiveTrip();
-        }
-        catch(error) {
-            setSnackbar({ open: true, message: error.response?.data?.message || 'Pole ceny nie może być puste!', severity: 'error' });
+        } catch (error) {
+            setSnackbar({
+                open: true,
+                message: error.response?.data?.message || 'Pole ceny nie może być puste!',
+                severity: 'error'
+            });
         }
     }
+
     // Delete item from trip
     async function removeItemFromTrip(item) {
         try {
             const token = localStorage.getItem('userToken') || sessionStorage.getItem('userToken');
-            await api.delete(`/api/trips/${activeTrip.id}/item`,  {
+            await api.delete(`/api/trips/${activeTrip.id}/item`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 },
                 params: {
-                    tripItemId : item.id
+                    tripItemId: item.id
                 }
             });
-            setSnackbar({ open: true, message: `Usunięto ${item.name} z przewodnika.`, severity: 'info' });
+            setSnackbar({open: true, message: `Usunięto ${item.name} z przewodnika.`, severity: 'info'});
             refreshActiveTrip();
-        }
-        catch(error) {
-            setSnackbar({ open: true, message: error.response?.data?.message , severity: 'error' });
+        } catch (error) {
+            setSnackbar({open: true, message: error.response?.data?.message, severity: 'error'});
         }
     }
-    async function downloadFundsReport(){
+
+    async function downloadFundsReport() {
         try {
             const token = localStorage.getItem('userToken') || sessionStorage.getItem('userToken');
 
-           const resp = await api.get(`/api/reports/${activeTrip.id}/funds-summary`, {
+            const resp = await api.get(`/api/reports/${activeTrip.id}/funds-summary`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 },
@@ -434,20 +522,20 @@ export default function Dashboard({darkMode, isDark}){
             link.click();
             document.body.removeChild(link);
             window.URL.revokeObjectURL(url);
-        }
-        catch (error) {
-            setSnackbar({ open: true, message: error.response?.data?.message || 'Błąd pobierania!', severity: 'error' });
+        } catch (error) {
+            setSnackbar({open: true, message: error.response?.data?.message || 'Błąd pobierania!', severity: 'error'});
         }
     }
-    useEffect(()=>{
+
+    useEffect(() => {
         const lastTrip = localStorage.getItem('activeTripId');
-        if(lastTrip){
+        if (lastTrip) {
             const token = localStorage.getItem('userToken') || sessionStorage.getItem('userToken');
             api.get(`/api/trips/${lastTrip}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
-            }).then(resp =>setActiveTrip(resp.data.data));
+            }).then(resp => setActiveTrip(resp.data.data));
         }
 
         // eslint-disable-next-line react-hooks/exhaustive-deps, react-hooks/set-state-in-effect
@@ -460,41 +548,49 @@ export default function Dashboard({darkMode, isDark}){
         setActiveTrip(trip);
         localStorage.setItem('activeTripId', trip.id);
     }
+
     // Closing / opening (popups, dropdowns, modals) functions
-    function showTrips (){
+    function showTrips() {
         setMyTrips(!myTrips);
         setMyNotif(false);
         setMySettings(false);
         setNewTrip(false);
     }
-    function showNotif (){
+
+    function showNotif() {
         setMyNotif(!myNotif);
         setMyTrips(false);
         setMySettings(false);
         setNewTrip(false);
     }
-    function showSettings (){
+
+    function showSettings() {
         setMySettings(!mySettings);
         setMyTrips(false);
         setMyNotif(false)
         setNewTrip(false);
     }
-    function addNewTrip (){
+
+    function addNewTrip() {
         setNewTrip(true);
         setMySettings(false);
         setMyTrips(false);
         setMyNotif(false)
     }
-    function closeTripForm (){
+
+    function closeTripForm() {
         setNewTrip(!newTrip);
     }
-    function closeFriendForm (){
+
+    function closeFriendForm() {
         setNewFriend(false);
     }
-    function closeGroupForm (){
+
+    function closeGroupForm() {
         setNewGroup(false);
     }
-    useEffect(()=> {
+
+    useEffect(() => {
         const fetchData = async () => {
             if (activeMark === "dayschedule") {
                 getSchedules();
@@ -509,6 +605,7 @@ export default function Dashboard({darkMode, isDark}){
             setMySettings(false);
             setNewGroup(false);
         }
+
         window.addEventListener('click', handleClick);
         return () => window.removeEventListener('click', handleClick)
     }, []);
@@ -519,19 +616,22 @@ export default function Dashboard({darkMode, isDark}){
             <header className={"h-24 max-h-28 border-b-2 border-border-col"}>
                 <Navbar showTrips={showTrips} showNotif={showNotif} showSettings={showSettings}
                         addNewTrip={addNewTrip} getCityMap={getCityMap}
-                        pendingFriends={pendingFriends} getFriendsList={getFriendsList} />
+                        pendingFriends={pendingFriends} getFriendsList={getFriendsList}/>
             </header>
             <main className={"flex-1 flex flex-row relative overflow-hidden"}>
                 <aside className={"w-96 flex-shrink-0 border-r-2 border-border-col"}>
                     <TripNavbar activeMark={activeMark} setActiveMark={setActiveMark} activeTrip={activeTrip}/>
-                </aside >
-                <div id="mainWindow" className={"flex-1 h-full overflow-hidden"} >
+                </aside>
+                <div id="mainWindow" className={"flex-1 h-full overflow-hidden"}>
                     <MainBar activeMark={activeMark} tripItems={sortedItems} loading={loading}
-                             setSelectedTripItem={setSelectedTripItem} selectedTripItem={selectedTripItem}  activeTrip={activeTrip}
+                             setSelectedTripItem={setSelectedTripItem} selectedTripItem={selectedTripItem}
+                             activeTrip={activeTrip}
                              setItemPrice={setItemPrice}
-                             removeItemFromTrip={removeItemFromTrip} setSnackbar={setSnackbar} setMemberBalance={setMemberBalance}
+                             removeItemFromTrip={removeItemFromTrip} setSnackbar={setSnackbar}
+                             setMemberBalance={setMemberBalance}
                              downloadFundsReport={downloadFundsReport} schedules={schedules}
-                             addSchedule={addSchedule} editSchedule={editSchedule} deleteSchedule={deleteSchedule}/>
+                             addSchedule={addSchedule} editSchedule={editSchedule} deleteSchedule={deleteSchedule}
+                             getWeather={getWeather} weatherLocation={weatherLocation} setWeatherLocation={setWeatherLocation} weatherData={weatherData}/>
                 </div>
                 {myTrips && (
                     <UserTripsWindow userTrips={userTrips} selectActiveTrip={selectActiveTrip} activeTrip={activeTrip}/>
@@ -549,22 +649,27 @@ export default function Dashboard({darkMode, isDark}){
                         <SocialBar activeMark={activeMark} tripItems={sortedItems} selectedTripItem={selectedTripItem}
                                    setSelectedTripItem={setSelectedTripItem} activeTrip={activeTrip} loading={loading}
                                    setSelectedCategory={setSelectedCategory} selectedCategory={selectedCategory}
-                                   addItemToTrip={addItemToTrip} getTripGroupMem={getTripGroupMem} groupMembers={groupMembers}
-                                   setNewGroup={setNewGroup} closeGroupForm={closeGroupForm}  setMemberToDelete={setMemberToDelete} openDelMem={openDelMem}/>
+                                   addItemToTrip={addItemToTrip} getTripGroupMem={getTripGroupMem}
+                                   groupMembers={groupMembers}
+                                   setNewGroup={setNewGroup} closeGroupForm={closeGroupForm}
+                                   setMemberToDelete={setMemberToDelete} openDelMem={openDelMem}/>
                     </aside>
                 )}
             </main>
-            {newTrip &&(
-                <NewTripForm closeTripForm={closeTripForm} getTrips={getTrips} selectActiveTrip={selectActiveTrip} setSnackbar={setSnackbar}/>
+            {newTrip && (
+                <NewTripForm closeTripForm={closeTripForm} getTrips={getTrips} selectActiveTrip={selectActiveTrip}
+                             setSnackbar={setSnackbar}/>
             )}
             {newFriend && (
-                <CreateFriendship closeFriendForm={closeFriendForm} setSnackbar={setSnackbar} />
+                <CreateFriendship closeFriendForm={closeFriendForm} setSnackbar={setSnackbar}/>
             )}
             {addGroup && (
                 <GroupAdd closeGroupForm={closeGroupForm} setSnackbar={setSnackbar}
-                          groupName={activeTrip?.tripGroup?.name} activeTrip={activeTrip} refreshActiveTrip={refreshActiveTrip}/>
+                          groupName={activeTrip?.tripGroup?.name} activeTrip={activeTrip}
+                          refreshActiveTrip={refreshActiveTrip}/>
             )}
-            <Snackbar open={snackbar.open} autoHideDuration={4000} onClose={() => setSnackbar({...snackbar, open: false})}>
+            <Snackbar open={snackbar.open} autoHideDuration={4000}
+                      onClose={() => setSnackbar({...snackbar, open: false})}>
                 <Alert severity={snackbar.severity}>{snackbar.message}</Alert>
             </Snackbar>
             <Modal
@@ -585,14 +690,19 @@ export default function Dashboard({darkMode, isDark}){
                     width: 400
                 }}>
                     <div className={"flex justify-between p-2 flex-col gap-5"}>
-                        <Typography id="modal-modal-title" variant="h6" component="h2" sx={{fontWeight: 'bold', color: 'var(--text-main)'}}>
+                        <Typography id="modal-modal-title" variant="h6" component="h2"
+                                    sx={{fontWeight: 'bold', color: 'var(--text-main)'}}>
                             Czy chcesz usunąć znajomego?
                         </Typography>
                         <div className={"flex justify-between"}>
-                            <button onClick={alertClose} className={"bg-gray-500 border border-border-col w-24 h-10 rounded-xl " +
-                                "hover:bg-gray-600 hover:text-white transition duration-150 ease-out hover:ease-in"}>Anuluj</button>
+                            <button onClick={alertClose}
+                                    className={"bg-gray-500 border border-border-col w-24 h-10 rounded-xl " +
+                                        "hover:bg-gray-600 hover:text-white transition duration-150 ease-out hover:ease-in"}>Anuluj
+                            </button>
                             <button className={"bg-red-700 text-white rounded-2xl h-10 w-24 " +
-                                "hover:bg-red-900 transition duration-150 ease-out hover:ease-in "} onClick={deleteFriend}>Usuń</button>
+                                "hover:bg-red-900 transition duration-150 ease-out hover:ease-in "}
+                                    onClick={deleteFriend}>Usuń
+                            </button>
                         </div>
                     </div>
                 </Box>
@@ -615,14 +725,19 @@ export default function Dashboard({darkMode, isDark}){
                     width: 450
                 }}>
                     <div className={"flex justify-between p-2 flex-col gap-5"}>
-                        <Typography id="modal-modal-title" variant="h6" component="h2" sx={{fontWeight: 'bold', color: 'var(--text-main)'}}>
+                        <Typography id="modal-modal-title" variant="h6" component="h2"
+                                    sx={{fontWeight: 'bold', color: 'var(--text-main)'}}>
                             Czy chcesz usunąć członka grupy?
                         </Typography>
                         <div className={"flex justify-between"}>
-                            <button onClick={closeDelMem} className={"bg-gray-500 border border-border-col w-24 h-10 rounded-xl " +
-                                "hover:bg-gray-600 hover:text-white transition duration-150 ease-out hover:ease-in"}>Anuluj</button>
+                            <button onClick={closeDelMem}
+                                    className={"bg-gray-500 border border-border-col w-24 h-10 rounded-xl " +
+                                        "hover:bg-gray-600 hover:text-white transition duration-150 ease-out hover:ease-in"}>Anuluj
+                            </button>
                             <button className={"bg-red-700 text-white rounded-2xl h-10 w-24 " +
-                                "hover:bg-red-900 transition duration-150 ease-out hover:ease-in "} onClick={deleteGroupMem}>Usuń</button>
+                                "hover:bg-red-900 transition duration-150 ease-out hover:ease-in "}
+                                    onClick={deleteGroupMem}>Usuń
+                            </button>
                         </div>
                     </div>
                 </Box>
