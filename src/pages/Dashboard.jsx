@@ -58,8 +58,7 @@ export default function Dashboard({darkMode, isDark}) {
     const alertOpen = () => setAlertDelete(true);
     const alertClose = () => setAlertDelete(false);
     //Weather state
-    const [weatherLocation, setWeatherLocation] = useState(activeTrip ? activeTrip.destination : []);
-    const [weatherData, setWeatherData] = useState(null);
+    const [weatherData, setWeatherData] = useState();
     // Snackbar state
     const [snackbar, setSnackbar] = useState({open: false, message: '', severity: 'success'});
 
@@ -377,11 +376,19 @@ export default function Dashboard({darkMode, isDark}) {
     }
 
     // Weather Api call function
-    async function getWeather() {
+    async function getWeather({city, startDate, endDate}) {
         try {
-            const resp =
-                await axios.get(`https://api.openweathermap.org/data/2.5/forecast?q=${weatherLocation}&appid={}&lang=pl&units=metric`)
-            setWeatherData(resp.data)
+            const token = localStorage.getItem('userToken') || sessionStorage.getItem('userToken');
+            const resp = await api.get(`/api/weather/${city}`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                },
+                params: {
+                    startDate: startDate,
+                    endDate: endDate,
+                }
+            });
+            setWeatherData(resp.data);
         } catch (error) {
             setSnackbar({
                 open: true,
@@ -631,7 +638,8 @@ export default function Dashboard({darkMode, isDark}) {
                              setMemberBalance={setMemberBalance}
                              downloadFundsReport={downloadFundsReport} schedules={schedules}
                              addSchedule={addSchedule} editSchedule={editSchedule} deleteSchedule={deleteSchedule}
-                             getWeather={getWeather} weatherLocation={weatherLocation} setWeatherLocation={setWeatherLocation} weatherData={weatherData}/>
+                             getWeather={getWeather}
+                             weatherData={weatherData} setWeatherData={setWeatherData}/>
                 </div>
                 {myTrips && (
                     <UserTripsWindow userTrips={userTrips} selectActiveTrip={selectActiveTrip} activeTrip={activeTrip}/>
