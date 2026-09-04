@@ -13,46 +13,7 @@ export default function Weather({getWeather, weatherData, setWeatherData, active
     });
 
     return (
-        <div
-            className={"flex p-3 gap-5 h-full bg-bg-funds-card w-full justify-center  items-center mt-5 rounded-2xl shadow-md"}>
-            <div>
-                <FormInput type={"text"} label={"Lokalizacja"} placeholder={"L. Podróży"}
-                           onChange={(e) => setWeatherForm({...weatherForm, city: e.target.value})}/>
-                <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="pl">
-                    <DatePicker
-                        label="Wybierz datę początkową"
-                        value={weatherForm.startDate}
-                        sx={{
-                            '& .MuiInputBase-input': {color: 'var(--text-main)'},
-                            '& .MuiInputLabel-root': {color: 'var(--text-main)'},
-                            '& .MuiSvgIcon-root': {color: 'var(--text-main)'},
-                            '& .MuiOutlinedInput-notchedOutline': {borderColor: 'var(--border)'}
-                        }}
-                        onChange={(newValue) => setWeatherForm({...weatherForm, startDate: newValue})}
-                        disablePast
-                    />
-                    <DatePicker
-                        label="Wybierz datę końcową"
-                        value={weatherForm.endDate}
-                        sx={{
-                            '& .MuiInputBase-input': {color: 'var(--text-main)'},
-                            '& .MuiInputLabel-root': {color: 'var(--text-main)'},
-                            '& .MuiSvgIcon-root': {color: 'var(--text-main)'},
-                            '& .MuiOutlinedInput-notchedOutline': {borderColor: 'var(--border)'}
-                        }}
-                        onChange={(newValue) => setWeatherForm({...weatherForm, endDate: newValue})}
-                        disablePast
-                    />
-                </LocalizationProvider>
-            </div>
-
-            <div>
-
-            </div>
-
-            <div>
-
-            </div>
+        <div className={"flex justify-center items-center"}>
         </div>
     );
 }
