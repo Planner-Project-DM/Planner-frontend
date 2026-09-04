@@ -15,7 +15,7 @@ import Alert from '@mui/material/Alert';
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import axios from 'axios';
+// import axios from 'axios';
 
 
 export default function Dashboard({darkMode, isDark}) {
@@ -57,8 +57,6 @@ export default function Dashboard({darkMode, isDark}) {
     const [alertDelete, setAlertDelete] = useState(false);
     const alertOpen = () => setAlertDelete(true);
     const alertClose = () => setAlertDelete(false);
-    //Weather state
-    const [weatherData, setWeatherData] = useState();
     // Snackbar state
     const [snackbar, setSnackbar] = useState({open: false, message: '', severity: 'success'});
 
@@ -375,29 +373,6 @@ export default function Dashboard({darkMode, isDark}) {
         }
     }
 
-    // Weather Api call function
-    async function getWeather({city, startDate, endDate}) {
-        try {
-            const token = localStorage.getItem('userToken') || sessionStorage.getItem('userToken');
-            const resp = await api.get(`/api/weather/${city}`, {
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                },
-                params: {
-                    startDate: startDate,
-                    endDate: endDate,
-                }
-            });
-            setWeatherData(resp.data);
-        } catch (error) {
-            setSnackbar({
-                open: true,
-                message: error.response?.data?.message || 'Coś poszło nie tak!',
-                severity: 'error'
-            });
-        }
-    }
-
     // Getting tripItems list by city function
     async function getCityMap(city) {
         setLoading(true);
@@ -637,9 +612,7 @@ export default function Dashboard({darkMode, isDark}) {
                              removeItemFromTrip={removeItemFromTrip} setSnackbar={setSnackbar}
                              setMemberBalance={setMemberBalance}
                              downloadFundsReport={downloadFundsReport} schedules={schedules}
-                             addSchedule={addSchedule} editSchedule={editSchedule} deleteSchedule={deleteSchedule}
-                             getWeather={getWeather}
-                             weatherData={weatherData} setWeatherData={setWeatherData}/>
+                             addSchedule={addSchedule} editSchedule={editSchedule} deleteSchedule={deleteSchedule}/>
                 </div>
                 {myTrips && (
                     <UserTripsWindow userTrips={userTrips} selectActiveTrip={selectActiveTrip} activeTrip={activeTrip}/>

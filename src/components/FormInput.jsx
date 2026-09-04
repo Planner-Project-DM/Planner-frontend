@@ -1,4 +1,4 @@
-export default function FormInput({ label, id, placeholder, type = "text" , maxLength, max, value, onChange, min, onBlur,}) {
+export default function FormInput({ label, id, placeholder, type = "text" , maxLength, max, value, onChange, min, onBlur, shadow}) {
     return (
         <div className="flex flex-col gap-1">
             <label htmlFor={id} className={"text-text-main"}>{label}</label>
@@ -7,7 +7,7 @@ export default function FormInput({ label, id, placeholder, type = "text" , maxL
                 type={type}
                 placeholder={placeholder}
                 id={id}
-                className="w-full bg-bg-input rounded-xl p-3 border border-border-col text-text-main"
+                className={`w-full bg-bg-input rounded-xl p-3 border border-border-col text-text-main ${shadow}`}
                 maxLength={maxLength}
                 max={max}
                 value={value}
