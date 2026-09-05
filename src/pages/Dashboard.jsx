@@ -612,7 +612,8 @@ export default function Dashboard({darkMode, isDark}) {
                              removeItemFromTrip={removeItemFromTrip} setSnackbar={setSnackbar}
                              setMemberBalance={setMemberBalance}
                              downloadFundsReport={downloadFundsReport} schedules={schedules}
-                             addSchedule={addSchedule} editSchedule={editSchedule} deleteSchedule={deleteSchedule}/>
+                             addSchedule={addSchedule} editSchedule={editSchedule} deleteSchedule={deleteSchedule}
+                             isDark={isDark}/>
                 </div>
                 {myTrips && (
                     <UserTripsWindow userTrips={userTrips} selectActiveTrip={selectActiveTrip} activeTrip={activeTrip}/>

@@ -10,14 +10,14 @@ import Notes from '../components/Notes.jsx';
 
 export default function MainBar({activeMark, tripItems, loading, setSelectedTripItem, selectedTripItem,
                                     activeTrip, setItemPrice, removeItemFromTrip, setSnackbar, setMemberBalance,downloadFundsReport, schedules, addSchedule, editSchedule,
-                                    deleteSchedule}) {
+                                    deleteSchedule, isDark}) {
     if (activeMark === "map") {
         return (
             <Map tripItems={tripItems} loading={loading} setSelectedTripItem={setSelectedTripItem} selectedTripItem={selectedTripItem}/>
         )
     } else if (activeMark === "dayschedule") {
         return (
-            <DaySchedule activeTrip={activeTrip} schedules={schedules} addSchedule={addSchedule} editSchedule={editSchedule} deleteSchedule={deleteSchedule}/>
+            <DaySchedule activeTrip={activeTrip} schedules={schedules} addSchedule={addSchedule} editSchedule={editSchedule} deleteSchedule={deleteSchedule} isDark={isDark}/>
         )
     }else if (activeMark === "notes") {
         return (

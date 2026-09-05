@@ -1,5 +1,5 @@
 import {useEffect, useState} from 'react';
-import {Calendar, Editor, Willow, getEditorItems, registerEditorItem} from "@svar-ui/react-calendar";
+import {Calendar, Editor, Willow, WillowDark, getEditorItems, registerEditorItem} from "@svar-ui/react-calendar";
 import "@svar-ui/react-calendar/all.css"
 import {RichSelect} from '@svar-ui/react-core';
 
@@ -10,7 +10,7 @@ function toLocalISOString(date) {
     return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T${pad(date.getHours())}:${pad(date.getMinutes())}:${pad(date.getSeconds())}`;
 }
 
-export default function DaySchedule({activeTrip, schedules, editSchedule, addSchedule, deleteSchedule}) {
+export default function DaySchedule({activeTrip, schedules, editSchedule, addSchedule, deleteSchedule, isDark}) {
     const [api, setApi] = useState(null);
     const [initialDate] = useState(() => {
         if (new Date() >= new Date(activeTrip.startDate) && new Date() <= new Date(activeTrip.endDate)) {
@@ -99,10 +99,11 @@ export default function DaySchedule({activeTrip, schedules, editSchedule, addSch
             {comp: 'button', text: 'Zapisz', id: 'save'},
         ]
     }
+    const Theme = isDark ? WillowDark : Willow;
     return (
         <div className={"w-full h-full overflow-hidden p-3 min-h-0 relative z-0"}>
             <div className={"h-full w-full overflow-y-auto "}>
-                <Willow>
+                <Theme>
                     <Calendar init={setApi} events={events} date={initialDate} views={[
                         {
                             id: "week",
@@ -130,7 +131,7 @@ export default function DaySchedule({activeTrip, schedules, editSchedule, addSch
                                         ev.update.text = item.label
                                     }
                                 }}/>}
-                </Willow>
+                </Theme>
             </div>
         </div>
     )
