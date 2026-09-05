@@ -1,13 +1,14 @@
 import {useState, useEffect} from "react";
 import FormInput from '../components/FormInput.jsx';
 import axios from 'axios';
-
+import dayjs from "dayjs";
 const apiKey = import.meta.env.VITE_OPENWEATHER_KEY;
 
 
 export default function Weather({activeTrip}) {
     const [weatherData, setWeatherData] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
+    const [selectedDay, setSelectedDay] = useState(dayjs(new Date()).format('YYYY-MM-DD'))
 
     const [weatherForm, setWeatherForm] = useState({
         city: activeTrip? activeTrip.destination : "Warszawa",
@@ -34,6 +35,7 @@ export default function Weather({activeTrip}) {
         const forecastResp = await axios.get(`https://api.openweathermap.org/data/2.5/forecast?lat=${coords.lat}&lon=${coords.lon}&appid=${apiKey}&units=metric&lang=pl`);
 
         const dailyForecast = forecastResp.data.list.filter((el) => el.dt_txt.includes("15:00:00"));
+        const hourForecast = forecastResp.data.list.filter((el) => el.dt_txt.includes(selectedDay))
 
         const mappedData = {
             current: {
@@ -48,6 +50,14 @@ export default function Weather({activeTrip}) {
                 wind: String(Math.round(resp.data.wind.speed)),
                 humidity: resp.data.main.humidity,
             },
+            hourly: hourForecast.map((el) => ({
+                date: el.dt_txt.split(' ')[1],
+                description: el.weather[0].description,
+                icon: el.weather[0].icon,
+                temperature: {
+                    current: String(Math.round(el.main.temp)),
+                },
+            })),
             forecast: dailyForecast.map(el => ({
                 date: el.dt_txt.split(' ')[0],
                 description: el.weather[0].description,
@@ -109,10 +119,26 @@ export default function Weather({activeTrip}) {
                                     <p className="bg-white/20 px-4 py-2 rounded-xl">Wilgotność: {weatherData.current.humidity}%</p>
                                 </div>
                             </div>
-
+                            <div className="bg-bg-funds-card p-6 flex justify-between items-center border-t border-border-col">
+                                {weatherData.hourly.map((hour, index) => (
+                                    <div key={index} className="flex flex-col min-w-24 items-center bg-bg-card border border-border-col p-2 rounded-2xl shadow-sm">
+                                        <p className="text-xs font-bold text-text-muted mb-1">
+                                            {hour.date}
+                                        </p>
+                                        <img
+                                            src={`https://openweathermap.org/img/wn/${hour.icon}@2x.png`}
+                                            alt="icon"
+                                            className="w-12 h-12 filter drop-shadow-[0_2px_4px_rgba(0,0,0,0.15)]"
+                                        />
+                                        <p className="text-sm font-bold text-[var(--text-main)] mt-1">{hour.temperature.current}°</p>
+                                    </div>
+                                ))}
+                            </div>
                             <div className="bg-bg-funds-card p-6 flex justify-between items-center border-t border-border-col">
                                 {weatherData.forecast.map((day, index) => (
-                                    <div key={index} className="flex flex-col min-w-24 items-center bg-bg-card border border-border-col p-2 rounded-2xl shadow-sm">
+                                    <div key={index}
+                                         onClick={() => setSelectedDay(day.date)}
+                                         className="flex flex-col min-w-24 items-center bg-bg-card border border-border-col p-2 rounded-2xl shadow-sm">
                                         <p className="text-xs font-bold text-text-muted mb-1">
                                             {day.date.slice(5)}
                                         </p>
