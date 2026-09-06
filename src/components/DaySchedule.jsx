@@ -67,17 +67,27 @@ export default function DaySchedule({activeTrip, schedules, editSchedule, addSch
     if (schedules === null) {
         return;
     } else {
-        events = schedules.map((map) => (
-            {
+        events = schedules.map((map) => {
+            let newStartTime;
+            let newEndTime
+            if (map.allDay) {
+                newStartTime = new Date(new Date(map.startTime).setHours(0, 0, 0, 0))
+                newEndTime = map.endTime !== null
+                    ? new Date(new Date(map.endTime).setHours(0, 0, 0, 0))
+                    : new Date(new Date(map.startTime).setHours(0, 0, 0, 0) + 24 * 60 * 60 * 1000);
+            } else {
+                newStartTime = new Date(map.startTime);
+                newEndTime = new Date(map.endTime);
+            }
+            return {
                 id: map.id,
-                start: new Date(map.startTime),
-                end: new Date(map.endTime),
+                start: newStartTime,
+                end: newEndTime,
                 text: map.tripItem.name,
                 allDay: map.allDay,
             }
-        ))
+        })
     }
-    console.log(events)
     if (activeTrip === null) {
         return (<div className={"w-full h-full flex items-center justify-center text-5xl"}>
             Wybierz podróż!
