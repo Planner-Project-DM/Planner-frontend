@@ -5,9 +5,12 @@ import {useState} from "react";
 
 export default function Funds({activeTrip, setMemberBalance, downloadFundsReport}) {
     const [userBalance, setUserBalance] = useState({});
-    if (activeTrip === null) {
-        return null;
-    }
+    if (activeTrip === null)
+        return (
+            <div className={"h-full w-full flex items-center justify-center text-4xl font-bold"}>
+                Wybierz podróż!
+            </div>
+        );
 
     const sum = {
         HOTEL: 0,
