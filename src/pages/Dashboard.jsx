@@ -431,6 +431,7 @@ export default function Dashboard({darkMode, isDark}) {
             });
             setSnackbar({open: true, message: 'Dodano do zakładki.', severity: 'success'});
             refreshActiveTrip();
+            getTrips()
         } catch (error) {
             setSnackbar({
                 open: true,
@@ -526,7 +527,8 @@ export default function Dashboard({darkMode, isDark}) {
 
     }, [])
 
-    function selectActiveTrip(trip) {
+    function selectActiveTrip(trip)
+    {
         setActiveTrip(trip);
         localStorage.setItem('activeTripId', trip.id);
     }
@@ -613,7 +615,7 @@ export default function Dashboard({darkMode, isDark}) {
                              setMemberBalance={setMemberBalance}
                              downloadFundsReport={downloadFundsReport} schedules={schedules}
                              addSchedule={addSchedule} editSchedule={editSchedule} deleteSchedule={deleteSchedule}
-                             isDark={isDark}/>
+                             isDark={isDark} refreshActiveTrip={refreshActiveTrip}/>
                 </div>
                 {myTrips && (
                     <UserTripsWindow userTrips={userTrips} selectActiveTrip={selectActiveTrip} activeTrip={activeTrip}/>

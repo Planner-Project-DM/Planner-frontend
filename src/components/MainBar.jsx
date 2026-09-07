@@ -10,7 +10,7 @@ import Notes from '../components/Notes.jsx';
 
 export default function MainBar({activeMark, tripItems, loading, setSelectedTripItem, selectedTripItem,
                                     activeTrip, setItemPrice, removeItemFromTrip, setSnackbar, setMemberBalance,downloadFundsReport, schedules, addSchedule, editSchedule,
-                                    deleteSchedule, isDark}) {
+                                    deleteSchedule, isDark, refreshActiveTrip}) {
     if (activeMark === "map") {
         return (
             <Map tripItems={tripItems} loading={loading} setSelectedTripItem={setSelectedTripItem} selectedTripItem={selectedTripItem}/>
@@ -29,7 +29,7 @@ export default function MainBar({activeMark, tripItems, loading, setSelectedTrip
         )
     }else if (activeMark === "stay") {
         return (
-            <Stay activeTrip={activeTrip} setItemPrice={setItemPrice} removeItemFromTrip={removeItemFromTrip}/>
+            <Stay activeTrip={activeTrip} setItemPrice={setItemPrice} removeItemFromTrip={removeItemFromTrip} refreshActiveTrip={refreshActiveTrip} activeMark={activeMark}/>
         )
     }else if (activeMark === "weather") {
         return (

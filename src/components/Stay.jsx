@@ -1,7 +1,10 @@
 import FormInput from "./FormInput.jsx";
 import { FaRegTrashCan } from "react-icons/fa6";
-import {useState} from "react";
-export default function Stay({activeTrip, setItemPrice, removeItemFromTrip}) {
+import {useEffect, useState} from "react";
+export default function Stay({activeTrip, setItemPrice, removeItemFromTrip, refreshActiveTrip, activeMark}) {
+    // useEffect(() => {
+    //     refreshActiveTrip()
+    // }, [activeMark]);
     const [itemPrices, setItemPrices] = useState({});
     return (
         <main className={"w-full h-full"}>
