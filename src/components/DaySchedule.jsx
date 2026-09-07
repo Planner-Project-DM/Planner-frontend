@@ -13,8 +13,9 @@ function toLocalISOString(date) {
 export default function DaySchedule({activeTrip, schedules, editSchedule, addSchedule, deleteSchedule, isDark}) {
     const [api, setApi] = useState(null);
     const [initialDate] = useState(() => {
+        if (activeTrip === null) return null;
         if (new Date() >= new Date(activeTrip.startDate) && new Date() <= new Date(activeTrip.endDate)) {
-           return new Date()
+            return new Date()
         } else {
             return new Date(activeTrip.startDate)
         }
@@ -63,7 +64,12 @@ export default function DaySchedule({activeTrip, schedules, editSchedule, addSch
             })
         }
     }
-
+    if (activeTrip === null)
+        return (
+            <div className={"h-full w-full flex items-center justify-center text-4xl font-bold"}>
+                Wybierz podróż!
+            </div>
+        );
     if (schedules === null) {
         return;
     } else {
@@ -87,11 +93,6 @@ export default function DaySchedule({activeTrip, schedules, editSchedule, addSch
                 allDay: map.allDay,
             }
         })
-    }
-    if (activeTrip === null) {
-        return (<div className={"w-full h-full flex items-center justify-center text-5xl"}>
-            Wybierz podróż!
-        </div>);
     }
     options = activeTrip.tripItineraries.map((item) => (
         {
@@ -134,7 +135,8 @@ export default function DaySchedule({activeTrip, schedules, editSchedule, addSch
                         "month"
                     ]}/>
                     {api &&
-                        <Editor api={api} items={items} autoSave={false} onSave={handleSave} bottomBar={bottomButton}
+                        <Editor api={api} items={items} autoSave={false} onSave={handleSave}
+                                bottomBar={bottomButton}
                                 onChange={ev => {
                                     if (ev.key === "tripItemId") {
                                         const item = options.find((el) => el.id === ev.value)
@@ -145,5 +147,4 @@ export default function DaySchedule({activeTrip, schedules, editSchedule, addSch
             </div>
         </div>
     )
-
 }
