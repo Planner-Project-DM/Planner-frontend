@@ -15,8 +15,8 @@ import Alert from '@mui/material/Alert';
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-// import axios from 'axios';
-
+import {Client} from '@stomp/stompjs';
+import SockJS from 'sockjs-client';
 
 export default function Dashboard({darkMode, isDark}) {
     // Dropdown states
@@ -59,6 +59,36 @@ export default function Dashboard({darkMode, isDark}) {
     const alertClose = () => setAlertDelete(false);
     // Snackbar state
     const [snackbar, setSnackbar] = useState({open: false, message: '', severity: 'success'});
+
+    useEffect(() => {
+        const token = localStorage.getItem('userToken') || sessionStorage.getItem('userToken');
+
+        const client = new Client({
+            webSocketFactory: () => new SockJS('http://51.68.140.22:10350/ws-notifications'),
+            connectHeaders: {
+                Authorization: `Bearer ${token}`,
+            },
+            reconnectDelay: 5000,
+
+            onConnect: () => {
+                console.log('Połączono z WebSockets!');
+
+                client.subscribe('/user/queue/notifications', (message) => {
+                    const newNotif = JSON.parse(message.body);
+                });
+            },
+            onStompError: (frame) => {
+                console.error('Błąd STOMP:', frame);
+            },
+        });
+
+        client.activate();
+        return () => {
+            client.deactivate();
+            console.log('Rozłączono WebSockets (Cleanup)');
+        };
+
+    }, []);
 
     // Friendships functions
     async function friendNotification() {
@@ -527,8 +557,7 @@ export default function Dashboard({darkMode, isDark}) {
 
     }, [])
 
-    function selectActiveTrip(trip)
-    {
+    function selectActiveTrip(trip) {
         setActiveTrip(trip);
         localStorage.setItem('activeTripId', trip.id);
     }
