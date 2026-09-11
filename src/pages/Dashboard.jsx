@@ -59,6 +59,8 @@ export default function Dashboard({darkMode, isDark}) {
     const alertClose = () => setAlertDelete(false);
     // Snackbar state
     const [snackbar, setSnackbar] = useState({open: false, message: '', severity: 'success'});
+    // Websocket state's
+    const [socketNotif, setSocketNotif] = useState([]);
 
     useEffect(() => {
         const token = localStorage.getItem('userToken') || sessionStorage.getItem('userToken');
@@ -71,10 +73,10 @@ export default function Dashboard({darkMode, isDark}) {
             reconnectDelay: 5000,
 
             onConnect: () => {
-                console.log('Połączono z WebSockets!');
-
                 client.subscribe('/user/queue/notifications', (message) => {
                     const newNotif = JSON.parse(message.body);
+                    const notifWithType = { ...newNotif, type: "notification" };
+                    setSocketNotif(prev => [notifWithType, ...prev]);
                 });
             },
             onStompError: (frame) => {
@@ -85,7 +87,6 @@ export default function Dashboard({darkMode, isDark}) {
         client.activate();
         return () => {
             client.deactivate();
-            console.log('Rozłączono WebSockets (Cleanup)');
         };
 
     }, []);
@@ -651,7 +652,7 @@ export default function Dashboard({darkMode, isDark}) {
                 )}
                 {myNotif && (
                     <UserNotifications pendingFriends={pendingFriends} acceptFriend={acceptFriend}
-                                       rejectFriend={rejectFriend} blockFriend={blockFriend}/>
+                                       rejectFriend={rejectFriend} blockFriend={blockFriend} socketNotif={socketNotif}/>
                 )}
                 {mySettings && (
                     <UserSettings setNewFriend={setNewFriend} friends={friends} alertOpen={alertOpen}
