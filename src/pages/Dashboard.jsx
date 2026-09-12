@@ -75,7 +75,7 @@ export default function Dashboard({darkMode, isDark}) {
             onConnect: () => {
                 client.subscribe('/user/queue/notifications', (message) => {
                     const newNotif = JSON.parse(message.body);
-                    const notifWithType = { ...newNotif, type: "notification" };
+                    const notifWithType = { ...newNotif, type: "notification", id: Date.now() };
                     setSocketNotif(prev => [notifWithType, ...prev]);
                 });
             },
@@ -630,7 +630,7 @@ export default function Dashboard({darkMode, isDark}) {
             <header className={"h-24 max-h-28 border-b-2 border-border-col"}>
                 <Navbar showTrips={showTrips} showNotif={showNotif} showSettings={showSettings}
                         addNewTrip={addNewTrip} getCityMap={getCityMap}
-                        pendingFriends={pendingFriends} getFriendsList={getFriendsList}/>
+                        pendingFriends={pendingFriends} getFriendsList={getFriendsList} socketNotif={socketNotif}/>
             </header>
             <main className={"flex-1 flex flex-row relative overflow-hidden"}>
                 <aside className={"w-96 flex-shrink-0 border-r-2 border-border-col"}>
