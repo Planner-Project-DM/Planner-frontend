@@ -3,11 +3,34 @@ import {FaXmark} from "react-icons/fa6";
 import {MdBlock} from "react-icons/md";
 import {FaUserFriends} from "react-icons/fa";
 import { GoRead } from "react-icons/go";
+const translations = {
+    "Cost of item updated": "Koszt przedmiotu zaktualizowany",
+    "Friendship removed": "Usunięto ze znajomych",
+    "Trip schedule deleted": "Usunięto wydarzenie z harmonogramu",
+    "Schedule updated in trip": "Zaktualizowano wydarzenie w harmonogramie",
+    "New schedule added to trip": "Dodano nowe wydarzenie do harmonogramu",
+    "Added to group": "Dodano do grupy",
+};
+function translateNotification(title) {
+    if (translations[title]) {
+        return translations[title];
+    }
+    if (title.startsWith("Friendship request from")) {
+        const name = title.slice("Friendship request from ".length);
+        return `Zaproszenie do znajomych od ${name}`;
+    }
+    if (title.startsWith("Removed from group")) {
+        const groupName = title.slice("Removed from group".length);
+        return `Usunięto z grupy ${groupName}`;
+    }
+    return title;
+}
 
 export default function UserNotifications({pendingFriends, acceptFriend, rejectFriend, blockFriend, socketNotif}) {
     const friendsWithType = (pendingFriends || []).map((friend) => ({...friend, type: "friendRequest"}));
     const notifsWithType = socketNotif.map((notif) => ({...notif, type: "notification"}));
     const allNotifications = [...friendsWithType, ...notifsWithType];
+
     return (
         <div className="bg-bg-card border-2 border-accent border-t-0 text-white rounded-xl absolute text-center w-80 min-h-114
                     right-20 shadow-gray-500 shadow-md  rounded-t-0"
@@ -39,10 +62,10 @@ export default function UserNotifications({pendingFriends, acceptFriend, rejectF
                         )
                     } else {
                         return (
-                            <li key={request.title} className={"p-3 min-h-28 items-start flex flex-col border-2 rounded-2xl justify-between bg-bg-input text-text-main border-border-col"}>
+                            <li key={request.id} className={"p-3 min-h-28 items-start flex flex-col border-2 rounded-2xl justify-between bg-bg-input text-text-main border-border-col"}>
                                 <div className={"flex flex-col w-full items-start"}>
                                     <div className={"font-bold text-lg w-full flex justify-start"}>
-                                        <div>{request.title}</div>
+                                        <div>{translateNotification(request.title)}</div>
                                     </div>
                                     <div className={"text-sm w-full flex items-start text-left mt-2"}>
                                         {request.message}

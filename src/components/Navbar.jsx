@@ -3,7 +3,7 @@ import {CgProfile} from "react-icons/cg";
 import {BsBell} from "react-icons/bs";
 import SearchBar from "./SearchBar.jsx"
 import Badge from '@mui/material/Badge';
-export default function Navbar({showTrips, showNotif, showSettings, addNewTrip, getCityMap, pendingFriends, getFriendsList}) {
+export default function Navbar({showTrips, showNotif, showSettings, addNewTrip, getCityMap, pendingFriends, getFriendsList, socketNotif}) {
 
     return (
         <main className={"flex h-full items-center  bg-bg-card w-full  font-bold text-text-main "}>
@@ -35,7 +35,7 @@ export default function Navbar({showTrips, showNotif, showSettings, addNewTrip, 
                 </button>
                 <div className={"flex gap-5 items-center justify-center"}>
                     <button onClick={(e) => {e.stopPropagation(); showNotif();}} className={"w-12"}>
-                        <Badge color="error" variant="dot" invisible={!pendingFriends?.length}>
+                        <Badge color="error" variant="dot" invisible={!pendingFriends?.length && !socketNotif?.length}>
                             <BsBell size={27}/>
                         </Badge>
                     </button>
