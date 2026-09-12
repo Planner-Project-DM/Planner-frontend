@@ -33,8 +33,7 @@ export default function NewTripForm({closeTripForm, getTrips, selectActiveTrip, 
     }
     return(
         <div className="w-screen h-screen absolute bg-gray-800/80 top-0 left-0"  onClick={(e) => e.stopPropagation()}>
-            <div
-                className="bg-bg-card border-2 border-accent rounded-xl absolute h-2/3 top-1/2 left-1/2 -translate-x-1/2
+            <div className="bg-bg-card border-2 border-accent rounded-xl absolute h-2/3 top-1/2 left-1/2 -translate-x-1/2
                          -translate-y-1/2 shadow-gray-500 shadow-md flex flex-col w-144 p-10 justify-between">
                 <div className={"flex justify-between"}>
                     <p className={"font-bold text-2xl text-text-main"}>Nowa podróż</p>

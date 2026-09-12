@@ -648,7 +648,7 @@ export default function Dashboard({darkMode, isDark}) {
                              isDark={isDark} refreshActiveTrip={refreshActiveTrip}/>
                 </div>
                 {myTrips && (
-                    <UserTripsWindow userTrips={userTrips} selectActiveTrip={selectActiveTrip} activeTrip={activeTrip}/>
+                    <UserTripsWindow userTrips={userTrips} selectActiveTrip={selectActiveTrip} activeTrip={activeTrip} showTrips={showTrips}/>
                 )}
                 {myNotif && (
                     <UserNotifications pendingFriends={pendingFriends} acceptFriend={acceptFriend}
