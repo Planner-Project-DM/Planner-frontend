@@ -55,14 +55,14 @@ export default function UserNotifications({pendingFriends, acceptFriend, rejectF
                         if (request.type === "friendRequest") {
                             return (
                                 <li key={request.id}
-                                    className={"p-3 min-h-28 items-start flex flex-col border-2 rounded-2xl justify-between bg-bg-input text-text-main border-border-col"}>
+                                    className={"shrink-0 h-auto p-3 items-start flex flex-col border-2 rounded-2xl justify-between bg-bg-input text-text-main border-border-col"}>
                                     <div className={"flex flex-col w-full items-start"}>
                                         <div className={"font-bold text-lg w-full flex justify-between"}>
-                                            <div>{request.name} {request.surname}</div>
+                                            <div className={"break-words"}>{request.name} {request.surname}</div>
                                             <p><FaUserFriends/></p></div>
-                                        <div className={"text-sm w-full flex items-start"}>{request.email}</div>
+                                        <div className={"text-sm w-full flex items-start break-words"}>{request.email}</div>
                                     </div>
-                                    <div className={"flex justify-around w-full"}>
+                                    <div className={"flex justify-around w-full mt-2"}>
                                         <button onClick={() => acceptFriend(request.id)}>
                                             <IoMdCheckmark size={25} style={{color: 'green'}}/>
                                         </button>
@@ -77,22 +77,20 @@ export default function UserNotifications({pendingFriends, acceptFriend, rejectF
                             )
                         } else {
                             return (
-                                <li key={request.id}
-                                    className={"p-3 min-h-28 items-start flex flex-col border-2 rounded-2xl justify-between bg-bg-input text-text-main border-border-col"}>
+                                <li key={request.id} className={"shrink-0 h-auto p-3 items-start flex flex-col border-2 rounded-2xl justify-between bg-bg-input text-text-main border-border-col"}>
                                     <div className={"flex flex-col w-full items-start"}>
                                         <div className={"font-bold text-lg w-full flex justify-start"}>
-                                            <div>{translateNotification(request.title)}</div>
+                                            <div className={"break-words"}>{translateNotification(request.title)}</div>
                                         </div>
-                                        <div className={"text-sm w-full flex items-start text-left mt-2"}>
+                                        <div className={"text-sm w-full flex items-start text-left mt-2 break-words"}>
                                             {request.message}
                                         </div>
                                     </div>
                                     <div className={"flex justify-end w-full mt-2"}>
-                                        <button
-                                            className={"flex justify-center items-center bg-gray-600 border border-border-col " +
-                                                "hover:bg-gray-500 text-white rounded-xl w-8 h-8 transition duration-150 ease-out hover:ease-in"}
-                                            onClick={() => markAsRead(request.id)}>
-                                            <GoRead/>
+                                        <button className={"flex justify-center items-center bg-gray-600 border border-border-col " +
+                                            "hover:bg-gray-500 text-white rounded-xl w-8 h-8 transition duration-150 ease-out hover:ease-in"}
+                                                onClick={() => markAsRead(request.id)}>
+                                            <GoRead />
                                         </button>
                                     </div>
                                 </li>
