@@ -3,6 +3,7 @@ import {FaXmark} from "react-icons/fa6";
 import {MdBlock} from "react-icons/md";
 import {FaUserFriends} from "react-icons/fa";
 import { GoRead } from "react-icons/go";
+import { MdMarkAsUnread } from "react-icons/md";
 const translations = {
     "Cost of item updated": "Koszt przedmiotu zaktualizowany",
     "Friendship removed": "Usunięto ze znajomych",
@@ -26,7 +27,7 @@ function translateNotification(title) {
     return title;
 }
 
-export default function UserNotifications({pendingFriends, acceptFriend, rejectFriend, blockFriend, socketNotif}) {
+export default function UserNotifications({pendingFriends, acceptFriend, rejectFriend, blockFriend, socketNotif, markAsRead, markAllAsRead}) {
     const friendsWithType = (pendingFriends || []).map((friend) => ({...friend, type: "friendRequest"}));
     const notifsWithType = socketNotif.map((notif) => ({...notif, type: "notification"}));
     const allNotifications = [...friendsWithType, ...notifsWithType];
@@ -35,7 +36,15 @@ export default function UserNotifications({pendingFriends, acceptFriend, rejectF
         <div className="bg-bg-card border-2 border-accent border-t-0 text-white rounded-xl absolute text-center w-80 min-h-114
                     right-20 shadow-gray-500 shadow-md  rounded-t-0"
              onClick={e => e.stopPropagation()}>
-            <ul className={"overflow-y-scroll [&::-webkit-scrollbar]:hidden h-114 p-5 flex flex-col gap-5 mt-2 w-full"}>
+            <div className="w-full flex justify-end px-5 pt-4 pb-2 border-b border-border-col/50">
+                <button
+                    onClick={() => markAllAsRead()}
+                    className="text-xs bg-gray-600 border border-border-col hover:bg-gray-500 text-white rounded-lg px-3 py-1.5 transition duration-150 ease-out hover:ease-in"
+                >
+                    <MdMarkAsUnread size={25}/>
+                </button>
+            </div>
+            <ul className={"overflow-y-scroll [&::-webkit-scrollbar]:hidden flex-1 p-5 flex flex-col gap-5 w-full"}>
                 {(allNotifications || []).map((request) => {
                     if (request.type === "friendRequest") {
                         return (
@@ -73,7 +82,8 @@ export default function UserNotifications({pendingFriends, acceptFriend, rejectF
                                 </div>
                                 <div className={"flex justify-end w-full mt-2"}>
                                     <button className={"flex justify-center items-center bg-gray-600 border border-border-col " +
-                                        "hover:bg-gray-500 text-white rounded-xl w-8 h-8 transition duration-150 ease-out hover:ease-in"}>
+                                        "hover:bg-gray-500 text-white rounded-xl w-8 h-8 transition duration-150 ease-out hover:ease-in"}
+                                            onClick={() => markAsRead(request.id)}>
                                         <GoRead />
                                     </button>
                                 </div>

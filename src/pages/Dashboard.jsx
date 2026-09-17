@@ -75,7 +75,7 @@ export default function Dashboard({darkMode, isDark}) {
             onConnect: () => {
                 client.subscribe('/user/queue/notifications', (message) => {
                     const newNotif = JSON.parse(message.body);
-                    const notifWithType = { ...newNotif, type: "notification", id: Date.now() };
+                    const notifWithType = {...newNotif, type: "notification", id: Date.now()};
                     setSocketNotif(prev => [notifWithType, ...prev]);
                 });
             },
@@ -516,6 +516,7 @@ export default function Dashboard({darkMode, isDark}) {
         }
     }
 
+    // Downloading Excel in funds
     async function downloadFundsReport() {
         try {
             const token = localStorage.getItem('userToken') || sessionStorage.getItem('userToken');
@@ -541,6 +542,72 @@ export default function Dashboard({darkMode, isDark}) {
         }
     }
 
+    // Fetch for unread notifications and injecting them to notifications
+    async function getUnreadNotif() {
+        try {
+            const token = localStorage.getItem('userToken') || sessionStorage.getItem('userToken');
+
+            const resp = await api.get(`/api/notifications/unread`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                },
+            });
+            return (resp.data.data).map((notif) => ({
+                id: notif.id,
+                title: notif.title,
+                message: notif.message,
+                type: "notification"
+            }))
+
+        } catch (error) {
+            setSnackbar({open: true, message: error.response?.data?.message || 'Błąd pobierania!', severity: 'error'});
+        }
+    }
+
+    // Tag notifications as read
+    async function markAsRead(id) {
+        try {
+            const token = localStorage.getItem('userToken') || sessionStorage.getItem('userToken');
+
+            await api.post(`/api/notifications/${id}/markAsRead`, {}, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+            const res = await getUnreadNotif();
+            setSocketNotif(res);
+            setSnackbar({open: true, message: 'Odczytano powiadomienie!', severity: 'success'});
+
+        } catch (error) {
+            setSnackbar({
+                open: true,
+                message: error.response?.data?.message || 'Coś poszło nie tak!',
+                severity: 'error'
+            });
+        }
+    }
+
+    async function markAllAsRead() {
+        try {
+            const token = localStorage.getItem('userToken') || sessionStorage.getItem('userToken');
+
+            await api.post(`/api/notifications/markAllAsRead`, {}, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+            setSocketNotif([])
+            setSnackbar({open: true, message: 'Odczytano wszystkie powiadomienia!', severity: 'success'});
+
+        } catch (error) {
+            setSnackbar({
+                open: true,
+                message: error.response?.data?.message || 'Coś poszło nie tak!',
+                severity: 'error'
+            });
+        }
+    }
+
     useEffect(() => {
         const lastTrip = localStorage.getItem('activeTripId');
         if (lastTrip) {
@@ -555,6 +622,8 @@ export default function Dashboard({darkMode, isDark}) {
         // eslint-disable-next-line react-hooks/exhaustive-deps, react-hooks/set-state-in-effect
         getTrips();
         friendNotification()
+        getUnreadNotif()
+            .then((result) => setSocketNotif(prev => [...prev, ...result]))
 
     }, [])
 
@@ -648,11 +717,14 @@ export default function Dashboard({darkMode, isDark}) {
                              isDark={isDark} refreshActiveTrip={refreshActiveTrip}/>
                 </div>
                 {myTrips && (
-                    <UserTripsWindow userTrips={userTrips} selectActiveTrip={selectActiveTrip} activeTrip={activeTrip} showTrips={showTrips}/>
+                    <UserTripsWindow userTrips={userTrips} selectActiveTrip={selectActiveTrip} activeTrip={activeTrip}
+                                     showTrips={showTrips}/>
                 )}
                 {myNotif && (
                     <UserNotifications pendingFriends={pendingFriends} acceptFriend={acceptFriend}
-                                       rejectFriend={rejectFriend} blockFriend={blockFriend} socketNotif={socketNotif}/>
+                                       rejectFriend={rejectFriend} blockFriend={blockFriend} socketNotif={socketNotif}
+                                       markAsRead={markAsRead}
+                                       markAllAsRead={markAllAsRead}/>
                 )}
                 {mySettings && (
                     <UserSettings setNewFriend={setNewFriend} friends={friends} alertOpen={alertOpen}
