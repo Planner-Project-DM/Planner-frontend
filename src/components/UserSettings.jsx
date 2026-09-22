@@ -3,13 +3,13 @@ import { CgDarkMode } from "react-icons/cg";
 import { TiUserDelete } from "react-icons/ti";
 import Button from '@mui/material/Button';
 
-export default function UserSettings({setNewFriend, friends, alertOpen, setFriendToDelete, darkMode, isDark}){
+export default function UserSettings({setNewFriend, friends, alertOpen, setFriendToDelete, darkMode, isDark, setOpenSettings}){
     return (
         <div className="bg-bg-card border-2 border-accent border-t-0 text-white rounded-xl absolute text-center w-114 min-h-160
                     right-0 shadow-gray-500 shadow-md border-r-0 rounded-t p-2 font-bold"
         onClick={e => e.stopPropagation()}>
             <div className={"flex text-text-main gap-5 items-center p-3 justify-around"}>
-                <p className={"cursor-pointer"} ><CiSettings size={30} />
+                <p className={"cursor-pointer"} onClick={() => setOpenSettings(true)}><CiSettings size={30} />
                 </p>
                 <p onClick={darkMode} className={"cursor-pointer"}><CgDarkMode size={30} />
                 </p>

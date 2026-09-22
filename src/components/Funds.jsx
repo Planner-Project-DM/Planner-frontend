@@ -76,7 +76,7 @@ export default function Funds({activeTrip, setMemberBalance, downloadFundsReport
                 </div>
                 <div className={"h-114 bg-bg-funds-card  w-11/12 justify-center rounded-2xl mb-5 shadow-md p-5"}>
                     <ul className={"max-h-96 overflow-y-scroll grid grid-cols-2 gap-5 [&::-webkit-scrollbar]:hidden p-3"}>
-                        {activeTrip?.tripGroup?.groupUsers.map((member) => (
+                        {activeTrip?.tripGroup?.groupUsers?.map((member) => (
                             <li key={member.user.email}
                                 className={"flex justify-between items-center shadow-md rounded-2xl max-h-16 border border-border-col p-3 pl-5 pr-5"}>
                                 <div className={"flex gap-2 items-center"}>
@@ -107,7 +107,7 @@ export default function Funds({activeTrip, setMemberBalance, downloadFundsReport
                             className={"w-36 h-12 border-2 border-green-600 text-white hover:border-green-700 " +
                                 "rounded-xl bg-green-500 hover:bg-green-600 transition duration-150 ease-out hover:ease-in"}
                             onClick={() => {
-                                const members = activeTrip.tripGroup.groupUsers.map((member) => (
+                                const members = activeTrip.tripGroup?.groupUsers?.map((member) => (
                                     {
                                         email: member.user.email,
                                         role: member.role,
@@ -121,15 +121,15 @@ export default function Funds({activeTrip, setMemberBalance, downloadFundsReport
                 </div>
                 <div className={"h-114 bg-bg-funds-card  w-11/12 justify-center rounded-2xl mb-5 shadow-md p-5"}>
                     <BarChart
-                        dataset={activeTrip.tripGroup.groupUsers.map((user) => (
-                            {name: `${user.user.firstName}.${user.user.lastName}. (${user.user.email})`,
-                            balance: user.balance}
+                        dataset={activeTrip?.tripGroup?.groupUsers?.map((user) => (
+                            {name: `${user?.user.firstName}.${user?.user.lastName}. (${user?.user.email})`,
+                            balance: user?.balance}
                         ))}
                         yAxis={[{ scaleType: 'band', dataKey: "name" }]}
                         xAxis={[{ max: activeTrip.budget }]}
                         series={[{ dataKey: 'balance', label: 'Podział procentowy wydatków'}]}
                         layout="horizontal"
-                        height={activeTrip.tripGroup.groupUsers.length * 40 + 50}
+                        height={activeTrip?.tripGroup?.groupUsers?.length * 40 + 50}
                         sx={{
                             '& .MuiChartsAxis-tickLabel': { fill: 'var(--text-main) !important' },
                             '& .MuiChartsLegend-root': { color: 'var(--text-main)' }

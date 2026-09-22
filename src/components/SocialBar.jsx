@@ -70,7 +70,7 @@ export default function SocialBar({tripItems, activeMark, selectedTripItem, setS
                 ) : (
                     <>
                         <div className="h-12">
-                            <p className={"text-text-main"}>Grupa • {!activeTrip?.tripGroup ? "Nazwij grupę" : activeTrip.tripGroup.groupUsers[0].group.name}</p>
+                            <p className={"text-text-main"}>Grupa • {!activeTrip?.tripGroup?.groupUsers?.length ? "Nazwij grupę" : activeTrip.tripGroup.groupUsers[0].group.name}</p>
                         </div>
                         <div className="flex-1 overflow-y-scroll max-h-128 [&::-webkit-scrollbar]:hidden">
                             <ul id="groupList" className="flex flex-col gap-5 text-text-main">

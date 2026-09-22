@@ -5,6 +5,7 @@ import SocialBar from "../components/SocialBar.jsx"
 import NewTripForm from "../components/NewTripForm.jsx";
 import UserTripsWindow from "../components/UserTripsWindow.jsx";
 import UserNotifications from "../components/UserNotifications.jsx";
+import UserSettingsWindow from "../components/UserSettingsWindow.jsx";
 import UserSettings from "../components/UserSettings.jsx"
 import GroupAdd from "../components/GroupAdd.jsx"
 import api from "../api/axios.js";
@@ -29,7 +30,7 @@ export default function Dashboard({darkMode, isDark}) {
     const [loading, setLoading] = useState(false);
     // Actual selected hotel state
     const [selectedTripItem, setSelectedTripItem] = useState(null);
-    // triplist state
+    // Triplist state
     const [tripItems, setTripItems] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState("ALL");
     const sortedItems = selectedCategory === 'ALL' ? tripItems : tripItems.filter((item) => item.category === selectedCategory);
@@ -61,6 +62,8 @@ export default function Dashboard({darkMode, isDark}) {
     const [snackbar, setSnackbar] = useState({open: false, message: '', severity: 'success'});
     // Websocket state's
     const [socketNotif, setSocketNotif] = useState([]);
+    // Setting's modal
+    const [openSettings, setOpenSettings] = useState(false);
 
     useEffect(() => {
         const token = localStorage.getItem('userToken') || sessionStorage.getItem('userToken');
@@ -699,7 +702,7 @@ export default function Dashboard({darkMode, isDark}) {
             <header className={"h-24 max-h-28 border-b-2 border-border-col"}>
                 <Navbar showTrips={showTrips} showNotif={showNotif} showSettings={showSettings}
                         addNewTrip={addNewTrip} getCityMap={getCityMap}
-                        pendingFriends={pendingFriends} getFriendsList={getFriendsList} socketNotif={socketNotif}/>
+                        pendingFriends={pendingFriends} getFriendsList={getFriendsList} socketNotif={socketNotif} />
             </header>
             <main className={"flex-1 flex flex-row relative overflow-hidden"}>
                 <aside className={"w-96 flex-shrink-0 border-r-2 border-border-col"}>
@@ -728,7 +731,7 @@ export default function Dashboard({darkMode, isDark}) {
                 )}
                 {mySettings && (
                     <UserSettings setNewFriend={setNewFriend} friends={friends} alertOpen={alertOpen}
-                                  setFriendToDelete={setFriendToDelete} darkMode={darkMode} isDark={isDark}/>
+                                  setFriendToDelete={setFriendToDelete} darkMode={darkMode} isDark={isDark} setOpenSettings={setOpenSettings}/>
                 )}
                 {activeMark !== "dayschedule" && (
                     <aside className={"w-96 flex-shrink-0 border-l-2 border-border-col"}>
@@ -745,6 +748,9 @@ export default function Dashboard({darkMode, isDark}) {
             {newTrip && (
                 <NewTripForm closeTripForm={closeTripForm} getTrips={getTrips} selectActiveTrip={selectActiveTrip}
                              setSnackbar={setSnackbar}/>
+            )}
+            {openSettings && (
+                <UserSettingsWindow setOpenSettings={setOpenSettings}/>
             )}
             {newFriend && (
                 <CreateFriendship closeFriendForm={closeFriendForm} setSnackbar={setSnackbar}/>
