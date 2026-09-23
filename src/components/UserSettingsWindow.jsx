@@ -4,7 +4,7 @@ import {FaPeopleGroup} from "react-icons/fa6";
 import {FaShield} from "react-icons/fa6";
 import SettingsButton from '../components/SettingsButton.jsx';
 import GeneralTab from '../components/GeneralTab.jsx';
-import GroupTab from '../components/GroupTab.jsx';
+import TripTab from './TripTab.jsx';
 import SafetyTab from '../components/SafetyTab.jsx';
 
 export default function UserSettingsWindow({setOpenSettings}) {
@@ -12,7 +12,7 @@ export default function UserSettingsWindow({setOpenSettings}) {
 
     function renderContent() {
         if (activeTab === "generalTab") return <GeneralTab/>;
-        if (activeTab === "groupTab") return <GroupTab/>;
+        if (activeTab === "groupTab") return <TripTab/>;
         if (activeTab === "safetyTab") return <SafetyTab/>;
     }
 
@@ -34,7 +34,7 @@ export default function UserSettingsWindow({setOpenSettings}) {
                         <SettingsButton text={"Ustawienia konta"} emote={<FaShield size={20}/>}
                                         onClick={() => setActiveTab("safetyTab")}/>
                     </div>
-                    <div className={"w-full h-full overflow-hidden "}>
+                    <div className={"w-full h-full p-3 flex flex-col gap-5"}>
                         {renderContent()}
                     </div>
                 </div>

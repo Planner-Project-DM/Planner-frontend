@@ -1,5 +1,5 @@
 
-export default function GroupTab() {
+export default function TripTab() {
 
     return (
         <>
