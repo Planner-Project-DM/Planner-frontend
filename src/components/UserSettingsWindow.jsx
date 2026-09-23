@@ -29,9 +29,9 @@ export default function UserSettingsWindow({setOpenSettings}) {
                         className={"w-1/3 bg-bg-funds-card rounded-2xl shadow-lg min-h-32 max-h-44 flex flex-col items-center justify-center p-3 mt-2"}>
                         <SettingsButton text={"Ogólne"} emote={<MdOutlineDisplaySettings size={20}/>}
                                         onClick={() => setActiveTab("generalTab")}/>
-                        <SettingsButton text={"Ustawienia grupy"} emote={<FaPeopleGroup size={20}/>}
+                        <SettingsButton text={"Ustawienia podróży"} emote={<FaPeopleGroup size={20}/>}
                                         onClick={() => setActiveTab("groupTab")}/>
-                        <SettingsButton text={"Bezpieczeństwo"} emote={<FaShield size={20}/>}
+                        <SettingsButton text={"Ustawienia konta"} emote={<FaShield size={20}/>}
                                         onClick={() => setActiveTab("safetyTab")}/>
                     </div>
                     <div className={"w-full h-full overflow-hidden "}>
