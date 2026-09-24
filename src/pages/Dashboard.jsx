@@ -750,7 +750,7 @@ export default function Dashboard({darkMode, isDark}) {
                              setSnackbar={setSnackbar}/>
             )}
             {openSettings && (
-                <UserSettingsWindow setOpenSettings={setOpenSettings} darkMode={darkMode} isDark={isDark}/>
+                <UserSettingsWindow setOpenSettings={setOpenSettings} darkMode={darkMode} isDark={isDark} activeTrip={activeTrip}/>
             )}
             {newFriend && (
                 <CreateFriendship closeFriendForm={closeFriendForm} setSnackbar={setSnackbar}/>

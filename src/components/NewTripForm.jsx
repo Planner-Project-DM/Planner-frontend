@@ -45,7 +45,7 @@ export default function NewTripForm({closeTripForm, getTrips, selectActiveTrip, 
                                onChange={(e) => setTripForm({...tripForm, name: e.target.value})}/>
                     <FormInput label="Destynacja" id="tripName" placeholder="np. Japonia" maxLength={20} value={tripForm.destination}
                     onChange={(e) => setTripForm({...tripForm, destination: e.target.value})}/>
-                    <FormInput label="Budżet" id="budget" placeholder="Podaj kwotę (PLN)" type="number" max={9999999999} value={tripForm.budget}
+                    <FormInput label="Budżet" id="budget" placeholder="Podaj kwotę" type="number" max={9999999999} value={tripForm.budget}
                     onChange={(e) => setTripForm({...tripForm, budget: e.target.value})}/>
                 </div>
                 <div className={"flex gap-5"}>

@@ -7,12 +7,12 @@ import GeneralTab from '../components/GeneralTab.jsx';
 import TripTab from './TripTab.jsx';
 import SafetyTab from '../components/SafetyTab.jsx';
 
-export default function UserSettingsWindow({setOpenSettings, darkMode, isDark}) {
+export default function UserSettingsWindow({setOpenSettings, darkMode, isDark, activeTrip}) {
     const [activeTab, setActiveTab] = useState("generalTab");
 
     function renderContent() {
         if (activeTab === "generalTab") return <GeneralTab darkMode={darkMode} isDark={isDark}/>;
-        if (activeTab === "groupTab") return <TripTab/>;
+        if (activeTab === "groupTab") return <TripTab activeTrip={activeTrip}/>;
         if (activeTab === "safetyTab") return <SafetyTab/>;
     }
 

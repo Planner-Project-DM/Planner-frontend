@@ -1,4 +1,4 @@
-import SettingsCard from '../components/SettingsCard.jsx'
+import SettingsCard from '../components/SettingsCard.jsx';
 
 export default function GeneralTab({darkMode, isDark}) {
 
@@ -21,7 +21,7 @@ export default function GeneralTab({darkMode, isDark}) {
                                   value: "dolar",
                                   label: "Dolar $"
                               }]}
-                          showButton={true}
+                          showButton={true} showSelect={true} showInput={false}
             />
             <SettingsCard header={"Język"} paragraph={"Wybierz swój preferowany język."}
                           options={[{
@@ -32,7 +32,7 @@ export default function GeneralTab({darkMode, isDark}) {
                                   value: "eng",
                                   label: "English"
                               }]}
-                          showButton={true}
+                          showButton={true} showSelect={true} showInput={false}
             />
             <SettingsCard header={"Motyw"} paragraph={"Dostosuj wygląd strony, wybierając jasny lub ciemny motyw."}
                           options={[{
@@ -43,7 +43,7 @@ export default function GeneralTab({darkMode, isDark}) {
                                   value: "dark",
                                   label: "Ciemny"
                               }]}
-                          showButton={false}
+                          showButton={false} showSelect={true} showInput={false}
                           selectValue={isDark ? "dark" : "light"}
                           onChange={changeTheme}
             />
