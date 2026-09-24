@@ -1,20 +1,52 @@
+import SettingsCard from '../components/SettingsCard.jsx'
 
-export default function GeneralTab() {
+export default function GeneralTab({darkMode, isDark}) {
+
+    function changeTheme(e) {
+        if (e.target.value === "light") {
+            darkMode(false)
+        } else {
+            darkMode(true)
+        }
+    }
 
     return (
-        <div className={"bg-bg-funds-card rounded-2xl shadow-lg h-24 w-full min-h-36 flex flex-col gap-3 p-3"}>
-            <h2 className={"font-bold text-xl"}>Waluta</h2>
-            <p>Zmiana waluty używanej na stronie.</p>
-            <div className={"w-full flex justify-between"}>
-                <div>
-                    <select className={"rounded-xl h-12 cursor-pointer bg-bg-funds-card border-border-col"}>
-                        <option value={"pln"}>PLN zł</option>
-                        <option value={"dolar"}>Dolar $</option>
-                    </select>
-                </div>
-                <button className={"w-24 h-12 border-2 border-green-600 text-white hover:border-green-700 " +
-                    "rounded-xl bg-green-500 hover:bg-green-600 transition duration-150 ease-out hover:ease-in"}>Zapisz</button>
-            </div>
-        </div>
+        <>
+            <SettingsCard header={"Waluta"} paragraph={"Wybierz walutę, w której chcesz widzieć kwoty na stronie."}
+                          options={[{
+                              value: "pln",
+                              label: "PLN zł"
+                          },
+                              {
+                                  value: "dolar",
+                                  label: "Dolar $"
+                              }]}
+                          showButton={true}
+            />
+            <SettingsCard header={"Język"} paragraph={"Wybierz swój preferowany język."}
+                          options={[{
+                              value: "pl",
+                              label: "Polski"
+                          },
+                              {
+                                  value: "eng",
+                                  label: "English"
+                              }]}
+                          showButton={true}
+            />
+            <SettingsCard header={"Motyw"} paragraph={"Dostosuj wygląd strony, wybierając jasny lub ciemny motyw."}
+                          options={[{
+                              value: "light",
+                              label: "Jasny"
+                          },
+                              {
+                                  value: "dark",
+                                  label: "Ciemny"
+                              }]}
+                          showButton={false}
+                          selectValue={isDark ? "dark" : "light"}
+                          onChange={changeTheme}
+            />
+        </>
     )
 }

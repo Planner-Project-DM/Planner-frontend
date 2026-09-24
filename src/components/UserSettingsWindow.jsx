@@ -7,11 +7,11 @@ import GeneralTab from '../components/GeneralTab.jsx';
 import TripTab from './TripTab.jsx';
 import SafetyTab from '../components/SafetyTab.jsx';
 
-export default function UserSettingsWindow({setOpenSettings}) {
+export default function UserSettingsWindow({setOpenSettings, darkMode, isDark}) {
     const [activeTab, setActiveTab] = useState("generalTab");
 
     function renderContent() {
-        if (activeTab === "generalTab") return <GeneralTab/>;
+        if (activeTab === "generalTab") return <GeneralTab darkMode={darkMode} isDark={isDark}/>;
         if (activeTab === "groupTab") return <TripTab/>;
         if (activeTab === "safetyTab") return <SafetyTab/>;
     }
@@ -26,7 +26,7 @@ export default function UserSettingsWindow({setOpenSettings}) {
                 </button>
                 <div className={"h-full w-full flex p-3 gap-5"}>
                     <div
-                        className={"w-1/3 bg-bg-funds-card rounded-2xl shadow-lg min-h-32 max-h-44 flex flex-col items-center justify-center p-3 mt-2"}>
+                        className={"w-5/12 bg-bg-funds-card rounded-2xl shadow-lg min-h-32 max-h-44 flex flex-col items-center justify-center p-3 mt-2"}>
                         <SettingsButton text={"Ogólne"} emote={<MdOutlineDisplaySettings size={20}/>}
                                         onClick={() => setActiveTab("generalTab")}/>
                         <SettingsButton text={"Ustawienia podróży"} emote={<FaPeopleGroup size={20}/>}

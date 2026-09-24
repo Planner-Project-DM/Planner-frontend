@@ -731,7 +731,7 @@ export default function Dashboard({darkMode, isDark}) {
                 )}
                 {mySettings && (
                     <UserSettings setNewFriend={setNewFriend} friends={friends} alertOpen={alertOpen}
-                                  setFriendToDelete={setFriendToDelete} darkMode={darkMode} isDark={isDark} setOpenSettings={setOpenSettings} setMySettings={setMySettings}/>
+                                  setFriendToDelete={setFriendToDelete}  isDark={isDark} setOpenSettings={setOpenSettings} setMySettings={setMySettings}/>
                 )}
                 {activeMark !== "dayschedule" && (
                     <aside className={"w-96 flex-shrink-0 border-l-2 border-border-col"}>
@@ -750,7 +750,7 @@ export default function Dashboard({darkMode, isDark}) {
                              setSnackbar={setSnackbar}/>
             )}
             {openSettings && (
-                <UserSettingsWindow setOpenSettings={setOpenSettings}/>
+                <UserSettingsWindow setOpenSettings={setOpenSettings} darkMode={darkMode} isDark={isDark}/>
             )}
             {newFriend && (
                 <CreateFriendship closeFriendForm={closeFriendForm} setSnackbar={setSnackbar}/>

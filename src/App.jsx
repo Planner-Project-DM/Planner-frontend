@@ -27,11 +27,10 @@ function App() {
     const [isLoggedIn, setIsLoggedIn] = useState(isTokenValid);
     const [isDark, setIsDark] = useState(false);
 
-    function darkMode() {
-        const newMode = !isDark;
-        setIsDark(newMode);
-        document.body.classList.toggle('dark');
-        localStorage.setItem('isDark', newMode);
+    function darkMode(isDarkValue) {
+        document.body.classList.toggle('dark', isDarkValue);
+        setIsDark(isDarkValue);
+        localStorage.setItem('isDark', isDarkValue);
     }
     useEffect(() => {
         const savedMode = localStorage.getItem('isDark');
@@ -47,7 +46,7 @@ function App() {
             <BrowserRouter>
                 <Routes>
                     <Route path="/" element={isLoggedIn ? <Navigate to="/dashboard" /> : <Navigate to="/login" />} />
-                    <Route path="/dashboard" element={isLoggedIn ? <Dashboard setIsLoggedIn={setIsLoggedIn} darkMode={darkMode} isDark={isDark}/> : <Navigate to="/login" />} />
+                    <Route path="/dashboard" element={isLoggedIn ? <Dashboard setIsLoggedIn={setIsLoggedIn} darkMode={darkMode} isDark={isDark} setIsDark={setIsDark}/> : <Navigate to="/login" />} />
                     <Route path="/login" element={isLoggedIn ? <Navigate to="/dashboard" /> : <LoginScreen setIsLoggedIn={setIsLoggedIn} />} />
                     <Route path="/register" element={isLoggedIn ? <Navigate to="/dashboard" /> : <RegisterScreen />} />
                 </Routes>
