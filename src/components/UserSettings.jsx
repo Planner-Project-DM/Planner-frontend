@@ -1,5 +1,3 @@
-import { CiSettings } from "react-icons/ci";
-import { CgDarkMode } from "react-icons/cg";
 import { TiUserDelete } from "react-icons/ti";
 import Button from '@mui/material/Button';
 
