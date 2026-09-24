@@ -94,7 +94,7 @@ export default function Funds({activeTrip, setMemberBalance, downloadFundsReport
                                         <FormInput placeholder={member.balance ?? "0"} min={0} type={"number"}
                                                    onChange={e => setUserBalance({
                                                        ...userBalance,
-                                                       [member.user.email]: e.target.value
+                                                       [member.user.email]: Number(e.target.value)
                                                    })}
                                         />
                                     </div>
