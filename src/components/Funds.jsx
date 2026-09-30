@@ -1,10 +1,12 @@
 import {PieChart} from '@mui/x-charts/PieChart';
 import {BarChart} from '@mui/x-charts/BarChart';
 import FormInput from "./FormInput.jsx";
-import {useState} from "react";
+import {useState, useContext} from "react";
+import { CurrencyContext } from '../api/CurrencyContext.jsx';
 
 export default function Funds({activeTrip, setMemberBalance, downloadFundsReport}) {
     const [userBalance, setUserBalance] = useState({});
+    const { currency } = useContext(CurrencyContext);
     if (activeTrip === null)
         return (
             <div className={"h-full w-full flex items-center justify-center text-4xl font-bold"}>
@@ -64,7 +66,7 @@ export default function Funds({activeTrip, setMemberBalance, downloadFundsReport
                                     <li className={"w-full h-12 flex flex-col justify-center items-center"}>
                                         <div
                                             className={"text-text-main font-bold break-words text-xl"}>{item.tripItem.name}</div>
-                                        <div className={"text-accent font-bold"}>{item.price + " PLN"}</div>
+                                        <div className={"text-accent font-bold"}>{new Intl.NumberFormat('pl-PL', { style: 'currency', currency }).format(item.price || 0)}</div>
                                     </li>
                                 ))}
                             </ul>
