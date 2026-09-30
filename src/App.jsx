@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import LoginScreen from "./pages/loginScreen.jsx";
 import RegisterScreen from "./pages/RegisterScreen.jsx";
 import Dashboard from "./pages/Dashboard.jsx";
+import { CurrencyProvider } from './api/CurrencyProvider.jsx';
 
 function isTokenValid() {
     const token = localStorage.getItem('userToken') || sessionStorage.getItem('userToken');
@@ -43,14 +44,16 @@ function App() {
     }, []);
     return (
         <>
-            <BrowserRouter>
-                <Routes>
-                    <Route path="/" element={isLoggedIn ? <Navigate to="/dashboard" /> : <Navigate to="/login" />} />
-                    <Route path="/dashboard" element={isLoggedIn ? <Dashboard setIsLoggedIn={setIsLoggedIn} darkMode={darkMode} isDark={isDark} setIsDark={setIsDark}/> : <Navigate to="/login" />} />
-                    <Route path="/login" element={isLoggedIn ? <Navigate to="/dashboard" /> : <LoginScreen setIsLoggedIn={setIsLoggedIn} />} />
-                    <Route path="/register" element={isLoggedIn ? <Navigate to="/dashboard" /> : <RegisterScreen />} />
-                </Routes>
-            </BrowserRouter>
+            <CurrencyProvider>
+                <BrowserRouter>
+                    <Routes>
+                        <Route path="/" element={isLoggedIn ? <Navigate to="/dashboard" /> : <Navigate to="/login" />} />
+                        <Route path="/dashboard" element={isLoggedIn ? <Dashboard setIsLoggedIn={setIsLoggedIn} darkMode={darkMode} isDark={isDark} setIsDark={setIsDark}/> : <Navigate to="/login" />} />
+                        <Route path="/login" element={isLoggedIn ? <Navigate to="/dashboard" /> : <LoginScreen setIsLoggedIn={setIsLoggedIn} />} />
+                        <Route path="/register" element={isLoggedIn ? <Navigate to="/dashboard" /> : <RegisterScreen />} />
+                    </Routes>
+                </BrowserRouter>
+            </CurrencyProvider>
         </>
     );
 }

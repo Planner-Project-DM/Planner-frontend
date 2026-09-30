@@ -2,8 +2,22 @@ import SettingsCard from '../components/SettingsCard.jsx';
 import Switch from '@mui/joy/Switch';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import {useState} from "react";
+import Autocomplete from '@mui/material/Autocomplete';
+import TextField from '@mui/material/TextField';
+import { useContext } from 'react';
+import { CurrencyContext } from '../api/CurrencyContext.jsx';
+
+
 export default function GeneralTab({darkMode, isDark}) {
     const [checked, setChecked] = useState({friends: false, schedule: false, group: false, funds: false});
+    const currencyCodes = Intl.supportedValuesOf('currency');
+    const currencyNames = new Intl.DisplayNames(['pl'], { type: 'currency' });
+
+    const currencyOptions = currencyCodes.map(code => ({
+        value: code,
+        label: `${code} — ${currencyNames.of(code)}`
+    }));
+    const { currency, setCurrency } = useContext(CurrencyContext);
     function changeTheme(e) {
         if (e.target.value === "light") {
             darkMode(false)
@@ -14,17 +28,25 @@ export default function GeneralTab({darkMode, isDark}) {
 
     return (
         <>
-            <SettingsCard header={"Waluta"} paragraph={"Wybierz walutę, w której chcesz widzieć kwoty na stronie."}
-                          options={[{
-                              value: "pln",
-                              label: "PLN zł"
-                          },
-                              {
-                                  value: "dolar",
-                                  label: "Dolar $"
-                              }]}
-                          showButton={true} showSelect={true} showInput={false}
-            />
+            <div className={`bg-bg-funds-card rounded-2xl shadow-lg  w-full min-h-36 flex flex-col gap-5 p-3`}>
+                <div className={"flex flex-col"}>
+                    <h2 className={"font-bold text-xl text-text-main"}>Waluta</h2>
+                    <p className={"text-text-main"}>Wybierz walutę, w której chcesz widzieć kwoty na stronie.</p>
+                </div>
+                <div className={"w-full flex justify-between"}>
+                    <div className={"w-full mr-5"}>
+                        <Autocomplete
+                            options={currencyOptions}
+                            value={currencyOptions.find(e => e.value === currency)}
+                            getOptionLabel={(option) => option.label}
+                            onChange={(event, newValue) => {
+                                if(newValue) setCurrency(newValue?.value);
+                            }}
+                            renderInput={(params) => <TextField {...params} label="Waluta" />}
+                        />
+                    </div>
+                </div>
+            </div>
             <SettingsCard header={"Język"} paragraph={"Wybierz swój preferowany język."}
                           options={[{
                               value: "pl",

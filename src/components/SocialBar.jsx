@@ -1,15 +1,17 @@
-import {useEffect, useRef} from 'react';
+import {useEffect, useRef, useContext} from 'react';
 import LinearProgress from '@mui/material/LinearProgress';
 import CircularProgress from '@mui/material/CircularProgress';
 import FilterButtons from '../components/FilterButtons.jsx';
 import { FaUser } from "react-icons/fa";
 import { FaCrown } from "react-icons/fa6";
 import { AiOutlineUsergroupDelete } from "react-icons/ai";
+import { CurrencyContext } from '../api/CurrencyContext.jsx';
 
 export default function SocialBar({tripItems, activeMark, selectedTripItem, setSelectedTripItem, activeTrip, loading,
                                       setSelectedCategory, selectedCategory, addItemToTrip, groupMembers, getTripGroupMem,
                                       setNewGroup, setMemberToDelete, openDelMem}) {
     const hotelRefs = useRef({});
+    const { currency } = useContext(CurrencyContext);
     useEffect(() =>{
         if(selectedTripItem === null){
             return;
@@ -120,11 +122,11 @@ export default function SocialBar({tripItems, activeMark, selectedTripItem, setS
                     <div className={"flex flex-col gap-1"}>
                         <div className={"flex justify-between text-text-main"}>
                             <p className={"font-bold"}>Budżet:</p>
-                            <p className={"font-bold"}>{activeTrip?.budget || "0"} PLN</p>
+                            <p className={"font-bold"}>{new Intl.NumberFormat('pl-PL', { style: 'currency', currency }).format(activeTrip?.budget || 0)}</p>
                         </div>
                         <div className={"flex justify-between"}>
                             <p className={"text-text-secondary font-bold"}>Wydano:</p>
-                            <p className={"text-accent font-bold"}>{activeTrip?.actualCost || "0"} PLN</p>
+                            <p className={"text-accent font-bold"}>{new Intl.NumberFormat('pl-PL', { style: 'currency', currency }).format(activeTrip?.actualCost || 0)}</p>
                         </div>
                     </div>
                     <LinearProgress variant="determinate" value={finalSum}
