@@ -1,18 +1,33 @@
-import SettingsCard from '../components/SettingsCard.jsx';
-import Switch from '@mui/joy/Switch';
-import FormControlLabel from '@mui/material/FormControlLabel';
 import {useState} from "react";
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
 import { useContext } from 'react';
 import { CurrencyContext } from '../api/CurrencyContext.jsx';
-
+import SettingsCard from './SettingsCard.jsx'
 
 export default function GeneralTab({darkMode, isDark}) {
-    const [checked, setChecked] = useState({friends: false, schedule: false, group: false, funds: false});
+
     const currencyCodes = Intl.supportedValuesOf('currency');
     const currencyNames = new Intl.DisplayNames(['pl'], { type: 'currency' });
-
+    const [checked, setChecked] = useState({
+        generalNotifs: true,
+        friends: {
+            main: false,
+            removed: false,
+            request: false,
+        },
+        schedule: {
+            main: false,
+            updated: false,
+            added: false,
+            removed: false,
+        },
+        group: {
+            added: false,
+            removed: false,
+        },
+        funds: false
+    });
     const currencyOptions = currencyCodes.map(code => ({
         value: code,
         label: `${code} — ${currencyNames.of(code)}`
@@ -77,54 +92,8 @@ export default function GeneralTab({darkMode, isDark}) {
                     <p className={"text-text-main"}>Dostosuj powiadomienia, które będziesz otrzymywać.</p>
                 </div>
                 <div className={"w-full flex flex-col gap-3 p-3"}>
-                    <FormControlLabel
-                        control={<Switch
-                            disabled={false}
-                            size="lg"
-                            checked={checked.friends}
-                            onChange={(e) => setChecked({...checked, friends: e.target.checked})}
-                            color="primary"
-                            variant={checked.friends ? 'solid' : 'outlined'}
-                        />}
-                        label={<span className="text-text-main">Znajomi</span>}
-                        sx={{ gap: '8px' }}
-                    />
-                    <FormControlLabel
-                        control={<Switch
-                            disabled={false}
-                            size="lg"
-                            checked={checked.schedule}
-                            onChange={(e) => setChecked({...checked, schedule: e.target.checked})}
-                            color="primary"
-                            variant={checked.schedule ? 'solid' : 'outlined'}
-                        />}
-                        label={<span className="text-text-main">Harmonogram podróży</span>}
-                        sx={{ gap: '8px' }}
-                    />
-                    <FormControlLabel
-                        control={<Switch
-                            disabled={false}
-                            size="lg"
-                            checked={checked.group}
-                            onChange={(e) => setChecked({...checked, group: e.target.checked})}
-                            color="primary"
-                            variant={checked.group ? 'solid' : 'outlined'}
-                        />}
-                        label={<span className="text-text-main">Grupa</span>}
-                        sx={{ gap: '8px' }}
-                    />
-                    <FormControlLabel
-                        control={<Switch
-                            disabled={false}
-                            size="lg"
-                            checked={checked.funds}
-                            onChange={(e) => setChecked({...checked, funds: e.target.checked})}
-                            color="primary"
-                            variant={checked.funds ? 'solid' : 'outlined'}
-                        />}
-                        label={<span className="text-text-main">Fundusze</span>}
-                        sx={{ gap: '8px' }}
-                    />
+
+
                 </div>
             </div>
         </>
