@@ -4,6 +4,7 @@ import TextField from '@mui/material/TextField';
 import { useContext } from 'react';
 import { CurrencyContext } from '../api/CurrencyContext.jsx';
 import SettingsCard from './SettingsCard.jsx'
+import NotificationToggle from './NotificationToggle.jsx'
 
 export default function GeneralTab({darkMode, isDark}) {
 
@@ -92,7 +93,13 @@ export default function GeneralTab({darkMode, isDark}) {
                     <p className={"text-text-main"}>Dostosuj powiadomienia, które będziesz otrzymywać.</p>
                 </div>
                 <div className={"w-full flex flex-col gap-3 p-3"}>
-
+                    <NotificationToggle size={"lg"} checkedObj={checked.generalNotifs}
+                                        onChange={(e) => setChecked({...checked, generalNotifs: e.target.checked})}
+                                        label={"Wszystkie powiadomienia"}
+                    />
+                    <div className={"w-full flex items-center justify-center"}>
+                        <hr className={"w-3/4 h-1 border-2 border-border-col m-3"}/>
+                    </div>
 
                 </div>
             </div>
