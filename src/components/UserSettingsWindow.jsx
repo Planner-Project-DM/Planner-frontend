@@ -34,7 +34,7 @@ export default function UserSettingsWindow({setOpenSettings, darkMode, isDark, a
                         <SettingsButton text={"Ustawienia konta"} emote={<FaShield size={20}/>}
                                         onClick={() => setActiveTab("safetyTab")}/>
                     </div>
-                    <div className={"w-full h-full p-3 flex flex-col gap-5"}>
+                    <div className={"w-full h-full p-3 flex flex-col gap-5 overflow-y-auto"}>
                         {renderContent()}
                     </div>
                 </div>
