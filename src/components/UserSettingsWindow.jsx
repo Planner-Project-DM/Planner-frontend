@@ -6,12 +6,26 @@ import SettingsButton from '../components/SettingsButton.jsx';
 import GeneralTab from '../components/GeneralTab.jsx';
 import TripTab from './TripTab.jsx';
 import SafetyTab from '../components/SafetyTab.jsx';
+import CircularProgress from '@mui/material/CircularProgress';
+import Box from '@mui/material/Box';
 
-export default function UserSettingsWindow({setOpenSettings, darkMode, isDark, activeTrip}) {
+export default function UserSettingsWindow({setOpenSettings, darkMode, isDark, activeTrip, userSettings, settingsLoading, getUserSettings, setSnackbar}) {
     const [activeTab, setActiveTab] = useState("generalTab");
 
     function renderContent() {
-        if (activeTab === "generalTab") return <GeneralTab darkMode={darkMode} isDark={isDark}/>;
+        if (activeTab === "generalTab") {
+            if (settingsLoading) {
+                return (
+                    <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                        <CircularProgress aria-label="Ładowanie..." />
+                    </Box>
+                );
+            }
+            if (!userSettings) {
+                return <p className="text-text-main">Nie udało się pobrać ustawień.</p>;
+            }
+            return <GeneralTab darkMode={darkMode} isDark={isDark} userSettings={userSettings} getUserSettings={getUserSettings} setSnackbar={setSnackbar}/>;
+        }
         if (activeTab === "groupTab") return <TripTab activeTrip={activeTrip}/>;
         if (activeTab === "safetyTab") return <SafetyTab/>;
     }

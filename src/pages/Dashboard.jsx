@@ -62,9 +62,10 @@ export default function Dashboard({darkMode, isDark}) {
     const [snackbar, setSnackbar] = useState({open: false, message: '', severity: 'success'});
     // Websocket state's
     const [socketNotif, setSocketNotif] = useState([]);
-    // Setting's modal
+    // Setting's state
     const [openSettings, setOpenSettings] = useState(false);
-
+    const [userSettings, setUserSettings] = useState(null);
+    const [settingsLoading, setSettingsLoading] = useState(true);
     useEffect(() => {
         const token = localStorage.getItem('userToken') || sessionStorage.getItem('userToken');
 
@@ -93,6 +94,25 @@ export default function Dashboard({darkMode, isDark}) {
         };
 
     }, []);
+    async function getUserSettings(){
+        try {
+            const token = localStorage.getItem('userToken') || sessionStorage.getItem('userToken');
+            const res = await api.get('/api/users/settings', {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+            setUserSettings(res.data.data);
+        } catch (error) {
+            setSnackbar({
+                open: true,
+                message: error.response?.data?.message || 'Coś poszło nie tak!',
+                severity: 'error'
+            });
+        } finally {
+            setSettingsLoading(false)
+        }
+    }
 
     // Friendships functions
     async function friendNotification() {
@@ -625,6 +645,7 @@ export default function Dashboard({darkMode, isDark}) {
         // eslint-disable-next-line react-hooks/exhaustive-deps, react-hooks/set-state-in-effect
         getTrips();
         friendNotification()
+        getUserSettings()
         getUnreadNotif()
             .then((result) => setSocketNotif(prev => [...prev, ...result]))
 
@@ -750,7 +771,10 @@ export default function Dashboard({darkMode, isDark}) {
                              setSnackbar={setSnackbar}/>
             )}
             {openSettings && (
-                <UserSettingsWindow setOpenSettings={setOpenSettings} darkMode={darkMode} isDark={isDark} activeTrip={activeTrip}/>
+                <UserSettingsWindow setOpenSettings={setOpenSettings}
+                                    darkMode={darkMode} isDark={isDark} activeTrip={activeTrip}
+                                    userSettings={userSettings} settingsLoading={settingsLoading}
+                                    getUserSettings={getUserSettings} setSnackbar={setSnackbar}/>
             )}
             {newFriend && (
                 <CreateFriendship closeFriendForm={closeFriendForm} setSnackbar={setSnackbar}/>

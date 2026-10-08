@@ -5,31 +5,59 @@ import {useContext} from 'react';
 import {CurrencyContext} from '../api/CurrencyContext.jsx';
 import SettingsCard from './SettingsCard.jsx'
 import NotificationToggle from './NotificationToggle.jsx'
+import api from "../api/axios.js";
 
-export default function GeneralTab({darkMode, isDark}) {
+export default function GeneralTab({darkMode, isDark, userSettings, getUserSettings, setSnackbar}) {
 
     const currencyCodes = Intl.supportedValuesOf('currency');
     const currencyNames = new Intl.DisplayNames(['pl'], {type: 'currency'});
     const [checked, setChecked] = useState({
-        generalNotifs: true,
         friends: {
-            main: false,
-            removed: false,
-            request: false,
+            request: userSettings.notifyFriendshipRequest,
+            removed: userSettings.notifyFriendshipRemoved,
         },
         schedule: {
-            main: false,
-            updated: false,
-            added: false,
-            removed: false,
+            updated: userSettings.notifyScheduleItemUpdated,
+            added: userSettings.notifyScheduleItemAdded,
+            removed: userSettings.notifyScheduleItemDeleted,
         },
         group: {
-            main: false,
-            added: false,
-            removed: false,
+            added: userSettings.notifyGroupMemberAdded,
+            removed: userSettings.notifyGroupMemberRemoved,
         },
-        funds: false
+        funds: userSettings.notifyFundItemCostUpdated
     });
+    async function updateNotifications () {
+        try {
+            const token = localStorage.getItem('userToken') || sessionStorage.getItem('userToken');
+            await api.put(`/api/users/settings`,
+                {
+                    ...userSettings,
+                    isNotificationsEnabled: userSettings.notificationEnabled,
+                    notifyFriendshipRequest: checked.friends.request,
+                    notifyFriendshipRemoved: checked.friends.removed,
+                    notifyScheduleItemAdded: checked.schedule.added,
+                    notifyScheduleItemUpdated: checked.schedule.updated,
+                    notifyScheduleItemDeleted: checked.schedule.removed,
+                    notifyGroupMemberAdded: checked.group.added,
+                    notifyGroupMemberRemoved: checked.group.removed,
+                    notifyFundItemCostUpdated: checked.funds
+                },
+                {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    },
+                });
+            setSnackbar({open: true, message: 'Zapisano ustawienia powiadomień.', severity: 'success'});
+            getUserSettings();
+        } catch (error) {
+            setSnackbar({
+                open: true,
+                message: error.response?.data?.message || 'Coś poszło nie tak!',
+                severity: 'error'
+            });
+        }
+    }
 
     function updateChecked(category, field, value) {
         setChecked(prev => {
@@ -40,9 +68,6 @@ export default function GeneralTab({darkMode, isDark}) {
                     [field]: value
                 }
             };
-            if (value) {
-                updated.generalNotifs = true;
-            }
             return updated;
         });
     }
@@ -53,7 +78,6 @@ export default function GeneralTab({darkMode, isDark}) {
                 ...prev,
                 [category]: Object.fromEntries(fields.map(f => [f, value]))
             };
-            if (value) updated.generalNotifs = true;
             return updated;
         });
     }
@@ -123,13 +147,13 @@ export default function GeneralTab({darkMode, isDark}) {
                     <p className={"text-text-main"}>Dostosuj powiadomienia, które będziesz otrzymywać.</p>
                 </div>
                 <div className={"w-full flex flex-col gap-3 p-3"}>
-                    <NotificationToggle size={"lg"} checkedObj={checked.generalNotifs}
+                    <NotificationToggle size={"lg"} checkedObj={[...Object.values(checked.friends), ...Object.values(checked.schedule),
+                        ...Object.values(checked.group), checked.funds].some(Boolean)}
                                         onChange={(e) => {
                                             const value = e.target.checked;
                                             setChecked({
-                                                generalNotifs: value,
-                                                friends: {main: value, removed: value, request: value},
-                                                schedule: {main: value, added: value, updated: value, removed: value},
+                                                friends: {removed: value, request: value},
+                                                schedule: {added: value, updated: value, removed: value},
                                                 group: {added: value, removed: value},
                                                 funds: value
                                             });
@@ -140,61 +164,54 @@ export default function GeneralTab({darkMode, isDark}) {
                         <hr className={"w-2/4 h-1 border-2 border-border-col"}/>
                     </div>
                     <div className={"flex flex-col gap-1"}>
-                        <NotificationToggle size={"lg"} checkedObj={checked.friends.main}
+                        <NotificationToggle size={"lg"} checkedObj={Object.values(checked.friends).some(Boolean)}
                                             disabled={false}
-                                            onChange={(e) => updateCategoryMain("friends", ["main", "removed", "request"], e.target.checked)}
+                                            onChange={(e) => updateCategoryMain("friends", ["removed", "request"], e.target.checked)}
                                             label={"Powiadomienia o znajomych"}
                         />
                         <NotificationToggle size={"sm"} checkedObj={checked.friends.request} marginLeft={"20px"}
                                             onChange={(e) => updateChecked("friends", "request", e.target.checked)}
                                             label={"Nowe zaproszenia do grona znajomych"}
-                                            disabled={!checked.friends.main}
                         />
                         <NotificationToggle size={"sm"} checkedObj={checked.friends.removed} marginLeft={"20px"}
                                             onChange={(e) => updateChecked("friends", "removed", e.target.checked)}
                                             label={"Usunięcia ze znajomych"}
-                                            disabled={!checked.friends.main}
                         />
                         <div className={"w-full flex items-center justify-start m-1"}>
                             <hr className={"w-2/4 h-1 border-2 border-border-col"}/>
                         </div>
-                        <NotificationToggle size={"lg"} checkedObj={checked.schedule.main}
+                        <NotificationToggle size={"lg"} checkedObj={Object.values(checked.schedule).some(Boolean)}
                                             disabled={false}
-                                            onChange={(e) => updateCategoryMain("schedule", ["main", "added", "updated", "removed"], e.target.checked)}
+                                            onChange={(e) => updateCategoryMain("schedule", ["added", "updated", "removed"], e.target.checked)}
                                             label={"Powiadomienia harmonogramu"}
                         />
                         <NotificationToggle size={"sm"} checkedObj={checked.schedule.added} marginLeft={"20px"}
                                             onChange={(e) => updateChecked("schedule", "added", e.target.checked)}
                                             label={"Dodane wydarzenia"}
-                                            disabled={!checked.schedule.main}
                         />
                         <NotificationToggle size={"sm"} checkedObj={checked.schedule.updated} marginLeft={"20px"}
                                             onChange={(e) => updateChecked("schedule", "updated", e.target.checked)}
                                             label={"Zaktualizowanie wydarzenia"}
-                                            disabled={!checked.schedule.main}
                         />
                         <NotificationToggle size={"sm"} checkedObj={checked.schedule.removed} marginLeft={"20px"}
                                             onChange={(e) => updateChecked("schedule", "removed", e.target.checked)}
                                             label={"Usunięcie wydarzenia"}
-                                            disabled={!checked.schedule.main}
                         />
                         <div className={"w-full flex items-center justify-start m-1"}>
                             <hr className={"w-2/4 h-1 border-2 border-border-col"}/>
                         </div>
-                        <NotificationToggle size={"lg"} checkedObj={checked.group.main}
+                        <NotificationToggle size={"lg"} checkedObj={Object.values(checked.group).some(Boolean)}
                                             disabled={false}
-                                            onChange={(e) => updateCategoryMain("group", ["main", "added", "removed"], e.target.checked)}
+                                            onChange={(e) => updateCategoryMain("group", ["added", "removed"], e.target.checked)}
                                             label={"Powiadomienia grupy"}
                         />
                         <NotificationToggle size={"sm"} checkedObj={checked.group.added} marginLeft={"20px"}
                                             onChange={(e) => updateChecked("group", "added", e.target.checked)}
                                             label={"Dodanie członka grupy"}
-                                            disabled={!checked.group.main}
                         />
                         <NotificationToggle size={"sm"} checkedObj={checked.group.removed} marginLeft={"20px"}
                                             onChange={(e) => updateChecked("group", "removed", e.target.checked)}
                                             label={"Usunięcie członka grupy"}
-                                            disabled={!checked.group.main}
                         />
                     </div>
                     <div className={"w-full flex items-center justify-start m-1"}>
@@ -207,11 +224,16 @@ export default function GeneralTab({darkMode, isDark}) {
                                             setChecked(prev => ({
                                                 ...prev,
                                                 funds: value,
-                                                generalNotifs: value ? true : prev.generalNotifs
                                             }));
                                         }}
                                         label={"Aktualizacja kosztów podróży"}
                     />
+                    <div className="w-full flex justify-end">
+                        <button className={"w-24 h-12 border-2 border-green-600 text-white hover:border-green-700 " +
+                            "rounded-xl bg-green-500 hover:bg-green-600 transition duration-150 ease-out hover:ease-in"}
+                                onClick={() => updateNotifications()}>Zapisz
+                        </button>
+                    </div>
                 </div>
             </div>
         </>
