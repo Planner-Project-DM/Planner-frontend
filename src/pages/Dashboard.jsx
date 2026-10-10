@@ -94,6 +94,7 @@ export default function Dashboard({darkMode, isDark}) {
         };
 
     }, []);
+    // Fetch user settings
     async function getUserSettings(){
         try {
             const token = localStorage.getItem('userToken') || sessionStorage.getItem('userToken');
@@ -768,7 +769,7 @@ export default function Dashboard({darkMode, isDark}) {
             </main>
             {newTrip && (
                 <NewTripForm closeTripForm={closeTripForm} getTrips={getTrips} selectActiveTrip={selectActiveTrip}
-                             setSnackbar={setSnackbar}/>
+                             setSnackbar={setSnackbar} userSettings={userSettings}/>
             )}
             {openSettings && (
                 <UserSettingsWindow setOpenSettings={setOpenSettings}

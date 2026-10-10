@@ -6,11 +6,11 @@ import 'dayjs/locale/pl';
 import {useState} from "react";
 import api from '../api/axios.js';
 
-export default function NewTripForm({closeTripForm, getTrips, selectActiveTrip, setSnackbar}) {
+export default function NewTripForm({closeTripForm, getTrips, selectActiveTrip, setSnackbar, userSettings}) {
     const [tripForm, setTripForm] = useState({
         name: "",
         destination: "",
-        budget: 0,
+        budget: userSettings?.budgetLimit || 0,
         startDate: null,
         endDate: null
     });
@@ -43,9 +43,9 @@ export default function NewTripForm({closeTripForm, getTrips, selectActiveTrip, 
                 <div className={"flex flex-col gap-5"}>
                     <FormInput label="Nazwa podróży" id="tripName" placeholder="np. Japonia 2026"  maxLength={50} value={tripForm.name}
                                onChange={(e) => setTripForm({...tripForm, name: e.target.value})}/>
-                    <FormInput label="Destynacja" id="tripName" placeholder="np. Japonia" maxLength={20} value={tripForm.destination}
+                    <FormInput label="Destynacja" id="tripDestination" placeholder="np. Japonia" maxLength={20} value={tripForm.destination}
                     onChange={(e) => setTripForm({...tripForm, destination: e.target.value})}/>
-                    <FormInput label="Budżet" id="budget" placeholder="Podaj kwotę" type="number" max={9999999999} value={tripForm.budget}
+                    <FormInput label="Budżet" id="budget" placeholder="Podaj kwotę" type="number"  max={9999999999} value={tripForm.budget}
                     onChange={(e) => setTripForm({...tripForm, budget: e.target.value})}/>
                 </div>
                 <div className={"flex gap-5"}>

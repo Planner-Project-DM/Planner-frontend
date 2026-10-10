@@ -11,6 +11,37 @@ export default function GeneralTab({darkMode, isDark, userSettings, getUserSetti
 
     const currencyCodes = Intl.supportedValuesOf('currency');
     const currencyNames = new Intl.DisplayNames(['pl'], {type: 'currency'});
+    const [newBudget, setNewBudget] = useState(0);
+
+    async function updateBasicBudget () {
+        if (newBudget <= 0) return setSnackbar({
+            open: true,
+            message: 'Podaj kwotę większą od zera!',
+            severity: 'warning'
+        });
+        try {
+            const token = localStorage.getItem('userToken') || sessionStorage.getItem('userToken');
+            await api.put(`/api/users/settings`,
+                {
+                    ...userSettings,
+                    isNotificationsEnabled: userSettings.notificationEnabled,
+                    budgetLimit: newBudget,
+                },
+                {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    },
+                });
+            setSnackbar({open: true, message: 'Pomyślnie zmieniono budżet.', severity: 'success'});
+            getUserSettings();
+        } catch (error) {
+            setSnackbar({
+                open: true,
+                message: error.response?.data?.message || 'Coś poszło nie tak!',
+                severity: 'error'
+            });
+        }
+    }
     const [checked, setChecked] = useState({
         friends: {
             request: userSettings.notifyFriendshipRequest,
@@ -141,6 +172,13 @@ export default function GeneralTab({darkMode, isDark, userSettings, getUserSetti
                           selectValue={isDark ? "dark" : "light"}
                           onChange={changeTheme}
             />
+
+            <SettingsCard header={"Budżet podstawowy"} paragraph={"Ta kwota będzie podpowiadana przy tworzeniu nowej podróży."} showSelect={false}
+                          showButton={true} showInput={true} inputType={"number"} placeholder={userSettings.budgetLimit}
+                          min={0} name={"userBasicBudget"}
+                          onChange={(e) => setNewBudget(Number(e.target.value))}
+                          onClick={() => updateBasicBudget()}/>
+
             <div className={`bg-bg-funds-card rounded-2xl shadow-lg  w-full min-h-36 flex flex-col p-3 flex-shrink-0`}>
                 <div className={"flex flex-col"}>
                     <h2 className={"font-bold text-xl text-text-main"}>Powiadomienia</h2>

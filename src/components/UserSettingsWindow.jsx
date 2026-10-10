@@ -24,9 +24,9 @@ export default function UserSettingsWindow({setOpenSettings, darkMode, isDark, a
             if (!userSettings) {
                 return <p className="text-text-main">Nie udało się pobrać ustawień.</p>;
             }
-            return <GeneralTab darkMode={darkMode} isDark={isDark} userSettings={userSettings} getUserSettings={getUserSettings} setSnackbar={setSnackbar}/>;
+            return <GeneralTab darkMode={darkMode} isDark={isDark} userSettings={userSettings} getUserSettings={getUserSettings} setSnackbar={setSnackbar} activeTrip={activeTrip}/>;
         }
-        if (activeTab === "groupTab") return <TripTab activeTrip={activeTrip}/>;
+        if (activeTab === "groupTab") return <TripTab activeTrip={activeTrip} userSettings={userSettings} getUserSettings={getUserSettings} setSnackbar={setSnackbar}/>;
         if (activeTab === "safetyTab") return <SafetyTab/>;
     }
 

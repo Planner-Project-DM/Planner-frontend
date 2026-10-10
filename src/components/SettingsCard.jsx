@@ -21,7 +21,7 @@ export default function SettingsCard({header, paragraph, showButton, options, on
                     )}
                     {showInput && (
                         <input className={"rounded-xl h-12 bg-bg-funds-card text-text-main border-border-col border-2 flex-1 p-1"}
-                            type={inputType} placeholder={placeholder} min={min} name={name} maxLength={maxLength}></input>
+                            type={inputType} placeholder={placeholder} min={min} name={name} onChange={onChange} maxLength={maxLength}></input>
                     )}
                 </div>
                 {showButton && (
