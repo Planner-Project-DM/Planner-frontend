@@ -94,8 +94,9 @@ export default function Dashboard({darkMode, isDark}) {
         };
 
     }, []);
+
     // Fetch user settings
-    async function getUserSettings(){
+    async function getUserSettings() {
         try {
             const token = localStorage.getItem('userToken') || sessionStorage.getItem('userToken');
             const res = await api.get('/api/users/settings', {
@@ -253,6 +254,33 @@ export default function Dashboard({darkMode, isDark}) {
             setUserTrips(resp.data.data);
         } catch (error) {
             setSnackbar({open: true, message: error.response?.data?.message || 'Brak podróży!', severity: 'error'});
+        }
+    }
+
+    async function changeTripGroupName(name) {
+        try {
+            const token = localStorage.getItem('userToken') || sessionStorage.getItem('userToken');
+            await api.put(`/api/trips/${activeTrip.id}/group`,
+                {
+                        name: name,
+                }, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                })
+            setSnackbar({
+                open: true,
+                message: 'Zaktualizowano nazwę grupy!',
+                severity: 'success'
+            });
+            refreshActiveTrip()
+            getTrips();
+        } catch (error) {
+            setSnackbar({
+                open: true,
+                message: error.response?.data?.message || 'Coś poszło nie tak!',
+                severity: 'error'
+            });
         }
     }
 
@@ -724,7 +752,7 @@ export default function Dashboard({darkMode, isDark}) {
             <header className={"h-24 max-h-28 border-b-2 border-border-col"}>
                 <Navbar showTrips={showTrips} showNotif={showNotif} showSettings={showSettings}
                         addNewTrip={addNewTrip} getCityMap={getCityMap}
-                        pendingFriends={pendingFriends} getFriendsList={getFriendsList} socketNotif={socketNotif} />
+                        pendingFriends={pendingFriends} getFriendsList={getFriendsList} socketNotif={socketNotif}/>
             </header>
             <main className={"flex-1 flex flex-row relative overflow-hidden"}>
                 <aside className={"w-96 flex-shrink-0 border-r-2 border-border-col"}>
@@ -753,7 +781,8 @@ export default function Dashboard({darkMode, isDark}) {
                 )}
                 {mySettings && (
                     <UserSettings setNewFriend={setNewFriend} friends={friends} alertOpen={alertOpen}
-                                  setFriendToDelete={setFriendToDelete}  isDark={isDark} setOpenSettings={setOpenSettings} setMySettings={setMySettings}/>
+                                  setFriendToDelete={setFriendToDelete} isDark={isDark}
+                                  setOpenSettings={setOpenSettings} setMySettings={setMySettings}/>
                 )}
                 {activeMark !== "dayschedule" && (
                     <aside className={"w-96 flex-shrink-0 border-l-2 border-border-col"}>
@@ -775,7 +804,7 @@ export default function Dashboard({darkMode, isDark}) {
                 <UserSettingsWindow setOpenSettings={setOpenSettings}
                                     darkMode={darkMode} isDark={isDark} activeTrip={activeTrip}
                                     userSettings={userSettings} settingsLoading={settingsLoading}
-                                    getUserSettings={getUserSettings} setSnackbar={setSnackbar}/>
+                                    getUserSettings={getUserSettings} setSnackbar={setSnackbar} changeTripGroupName={changeTripGroupName}/>
             )}
             {newFriend && (
                 <CreateFriendship closeFriendForm={closeFriendForm} setSnackbar={setSnackbar}/>
