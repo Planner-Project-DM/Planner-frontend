@@ -28,7 +28,7 @@ export default function TripTab({activeTrip, changeTripGroupName, setSnackbar, u
                                   name={"tripNameChange"} maxLength={50}
                                   onChange={(e) => setTripInfo({...tripInfo, name: e.target.value})}
                                   onClick={() => {
-                                      if (tripInfo?.name?.trim() === "") return setSnackbar({
+                                      if (tripInfo?.name?.trim() === "" && tripInfo?.name?.trim() === null) return setSnackbar({
                                           open: true,
                                           message: 'Upewnij się ze wartość pola jest poprawna!',
                                           severity: 'warning'
@@ -87,6 +87,7 @@ export default function TripTab({activeTrip, changeTripGroupName, setSnackbar, u
                                     value={tripInfo.startDate}
                                     sx={pickerSx}
                                     onChange={(newValue) => setTripInfo({...tripInfo, startDate: newValue})}
+                                    disablePast
                                 />
                                 <DatePicker
                                     label="Data końcowa"
@@ -94,6 +95,7 @@ export default function TripTab({activeTrip, changeTripGroupName, setSnackbar, u
                                     sx={pickerSx}
                                     minDate={tripInfo.startDate}
                                     onChange={(newValue) => setTripInfo({...tripInfo, endDate: newValue})}
+                                    disablePast
                                 />
                             </LocalizationProvider>
                             <div className={"flex justify-end items-center w-full"}>
