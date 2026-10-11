@@ -262,7 +262,7 @@ export default function Dashboard({darkMode, isDark}) {
             const token = localStorage.getItem('userToken') || sessionStorage.getItem('userToken');
             await api.put(`/api/trips/${activeTrip.id}/group`,
                 {
-                        name: name,
+                    name: name,
                 }, {
                     headers: {
                         'Authorization': `Bearer ${token}`
@@ -274,6 +274,32 @@ export default function Dashboard({darkMode, isDark}) {
                 severity: 'success'
             });
             refreshActiveTrip()
+            getTrips();
+        } catch (error) {
+            setSnackbar({
+                open: true,
+                message: error.response?.data?.message || 'Coś poszło nie tak!',
+                severity: 'error'
+            });
+        }
+    }
+
+    async function updateTripInformation({key, value, note, body}) {
+        try {
+            const token = localStorage.getItem('userToken') || sessionStorage.getItem('userToken');
+            const resp = await api.patch(`/api/trips/${activeTrip.id}`,
+                body ?? {[key]: value},
+                {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                })
+            setSnackbar({
+                open: true,
+                message: note,
+                severity: 'success'
+            });
+            setActiveTrip(resp.data.data)
             getTrips();
         } catch (error) {
             setSnackbar({
@@ -804,7 +830,9 @@ export default function Dashboard({darkMode, isDark}) {
                 <UserSettingsWindow setOpenSettings={setOpenSettings}
                                     darkMode={darkMode} isDark={isDark} activeTrip={activeTrip}
                                     userSettings={userSettings} settingsLoading={settingsLoading}
-                                    getUserSettings={getUserSettings} setSnackbar={setSnackbar} changeTripGroupName={changeTripGroupName}/>
+                                    getUserSettings={getUserSettings} setSnackbar={setSnackbar}
+                                    changeTripGroupName={changeTripGroupName}
+                                    updateTripInformation={updateTripInformation}/>
             )}
             {newFriend && (
                 <CreateFriendship closeFriendForm={closeFriendForm} setSnackbar={setSnackbar}/>

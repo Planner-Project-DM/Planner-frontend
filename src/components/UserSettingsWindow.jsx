@@ -9,7 +9,8 @@ import SafetyTab from '../components/SafetyTab.jsx';
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
 
-export default function UserSettingsWindow({setOpenSettings, darkMode, isDark, activeTrip, userSettings, settingsLoading, getUserSettings, setSnackbar, changeTripGroupName}) {
+export default function UserSettingsWindow({setOpenSettings, darkMode, isDark, activeTrip, userSettings,
+                                               settingsLoading, getUserSettings, setSnackbar, changeTripGroupName, updateTripInformation}) {
     const [activeTab, setActiveTab] = useState("generalTab");
 
     function renderContent() {
@@ -26,7 +27,7 @@ export default function UserSettingsWindow({setOpenSettings, darkMode, isDark, a
             }
             return <GeneralTab darkMode={darkMode} isDark={isDark} userSettings={userSettings} getUserSettings={getUserSettings} setSnackbar={setSnackbar} activeTrip={activeTrip}/>;
         }
-        if (activeTab === "groupTab") return <TripTab activeTrip={activeTrip} setSnackbar={setSnackbar} changeTripGroupName={changeTripGroupName} />;
+        if (activeTab === "groupTab") return <TripTab key={activeTrip?.id} activeTrip={activeTrip} setSnackbar={setSnackbar} changeTripGroupName={changeTripGroupName} updateTripInformation={updateTripInformation}/>;
         if (activeTab === "safetyTab") return <SafetyTab/>;
     }
 
