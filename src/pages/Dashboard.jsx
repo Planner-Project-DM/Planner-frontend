@@ -775,16 +775,19 @@ export default function Dashboard({darkMode, isDark}) {
     return (
         <div className={"h-screen flex flex-col bg-bg-main font-playpen relative overflow-hidden"}>
 
-            <header className={"h-24 max-h-28 border-b-2 border-border-col"}>
+            <header className={"h-20 lg:h-24 max-h-28 border-b-2 border-border-col shrink-0"}>
                 <Navbar showTrips={showTrips} showNotif={showNotif} showSettings={showSettings}
                         addNewTrip={addNewTrip} getCityMap={getCityMap}
                         pendingFriends={pendingFriends} getFriendsList={getFriendsList} socketNotif={socketNotif}/>
             </header>
-            <main className={"flex-1 flex flex-row relative overflow-hidden"}>
-                <aside className={"w-96 flex-shrink-0 border-r-2 border-border-col"}>
+
+            <main className={"flex-1 flex flex-col lg:flex-row relative overflow-hidden"}>
+
+                <aside className={"w-full lg:w-96 flex-shrink-0 border-t-2 lg:border-t-0 lg:border-r-2 border-border-col order-last lg:order-none z-40 bg-bg-main"}>
                     <TripNavbar activeMark={activeMark} setActiveMark={setActiveMark} activeTrip={activeTrip}/>
                 </aside>
-                <div id="mainWindow" className={"flex-1 h-full overflow-hidden"}>
+
+                <div id="mainWindow" className={"flex-1 h-full overflow-hidden relative"}>
                     <MainBar activeMark={activeMark} tripItems={sortedItems} loading={loading}
                              setSelectedTripItem={setSelectedTripItem} selectedTripItem={selectedTripItem}
                              activeTrip={activeTrip}
@@ -795,23 +798,27 @@ export default function Dashboard({darkMode, isDark}) {
                              addSchedule={addSchedule} editSchedule={editSchedule} deleteSchedule={deleteSchedule}
                              isDark={isDark} refreshActiveTrip={refreshActiveTrip}/>
                 </div>
+
                 {myTrips && (
                     <UserTripsWindow userTrips={userTrips} selectActiveTrip={selectActiveTrip} activeTrip={activeTrip}
                                      showTrips={showTrips}/>
                 )}
+
                 {myNotif && (
                     <UserNotifications pendingFriends={pendingFriends} acceptFriend={acceptFriend}
                                        rejectFriend={rejectFriend} blockFriend={blockFriend} socketNotif={socketNotif}
                                        markAsRead={markAsRead}
                                        markAllAsRead={markAllAsRead}/>
                 )}
+
                 {mySettings && (
                     <UserSettings setNewFriend={setNewFriend} friends={friends} alertOpen={alertOpen}
                                   setFriendToDelete={setFriendToDelete} isDark={isDark}
                                   setOpenSettings={setOpenSettings} setMySettings={setMySettings}/>
                 )}
+
                 {activeMark !== "dayschedule" && (
-                    <aside className={"w-96 flex-shrink-0 border-l-2 border-border-col"}>
+                    <aside className={"hidden lg:block w-96 flex-shrink-0 border-l-2 border-border-col"}>
                         <SocialBar activeMark={activeMark} tripItems={sortedItems} selectedTripItem={selectedTripItem}
                                    setSelectedTripItem={setSelectedTripItem} activeTrip={activeTrip} loading={loading}
                                    setSelectedCategory={setSelectedCategory} selectedCategory={selectedCategory}
@@ -822,10 +829,12 @@ export default function Dashboard({darkMode, isDark}) {
                     </aside>
                 )}
             </main>
+
             {newTrip && (
                 <NewTripForm closeTripForm={closeTripForm} getTrips={getTrips} selectActiveTrip={selectActiveTrip}
                              setSnackbar={setSnackbar} userSettings={userSettings}/>
             )}
+
             {openSettings && (
                 <UserSettingsWindow setOpenSettings={setOpenSettings}
                                     darkMode={darkMode} isDark={isDark} activeTrip={activeTrip}
@@ -834,18 +843,22 @@ export default function Dashboard({darkMode, isDark}) {
                                     changeTripGroupName={changeTripGroupName}
                                     updateTripInformation={updateTripInformation}/>
             )}
+
             {newFriend && (
                 <CreateFriendship closeFriendForm={closeFriendForm} setSnackbar={setSnackbar}/>
             )}
+
             {addGroup && (
                 <GroupAdd closeGroupForm={closeGroupForm} setSnackbar={setSnackbar}
                           groupName={activeTrip?.tripGroup?.name} activeTrip={activeTrip}
                           refreshActiveTrip={refreshActiveTrip}/>
             )}
+
             <Snackbar open={snackbar.open} autoHideDuration={4000}
                       onClose={() => setSnackbar({...snackbar, open: false})}>
                 <Alert severity={snackbar.severity}>{snackbar.message}</Alert>
             </Snackbar>
+
             <Modal
                 open={alertDelete}
                 onClose={alertClose}
@@ -860,8 +873,8 @@ export default function Dashboard({darkMode, isDark}) {
                     bgcolor: 'var(--bg-input)',
                     borderRadius: 2,
                     boxShadow: 24,
-                    p: 4,
-                    width: 400
+                    p: { xs: 2, sm: 4 },
+                    width: { xs: '90%', sm: 400 }
                 }}>
                     <div className={"flex justify-between p-2 flex-col gap-5"}>
                         <Typography id="modal-modal-title" variant="h6" component="h2"
@@ -881,6 +894,7 @@ export default function Dashboard({darkMode, isDark}) {
                     </div>
                 </Box>
             </Modal>
+
             <Modal
                 open={memberDelete}
                 onClose={closeDelMem}
@@ -895,8 +909,8 @@ export default function Dashboard({darkMode, isDark}) {
                     bgcolor: 'var(--bg-input)',
                     borderRadius: 2,
                     boxShadow: 24,
-                    p: 4,
-                    width: 450
+                    p: { xs: 2, sm: 4 },
+                    width: { xs: '90%', sm: 450 }
                 }}>
                     <div className={"flex justify-between p-2 flex-col gap-5"}>
                         <Typography id="modal-modal-title" variant="h6" component="h2"

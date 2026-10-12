@@ -75,32 +75,36 @@ export default function TripTab({activeTrip, changeTripGroupName, setSnackbar, u
                                       changeTripGroupName(groupName.trim())
                                   }}
                     />
-                    <div className={"bg-bg-funds-card rounded-2xl shadow-lg w-full min-h-36 flex flex-col gap-5 p-3 shrink-0"}>
+                    <div className={"bg-bg-funds-card rounded-2xl shadow-lg w-full min-h-36 flex flex-col gap-4 lg:gap-5 p-4 lg:p-5 shrink-0"}>
                         <div className={"flex flex-col"}>
-                            <h2 className={"font-bold text-xl text-text-main"}>Daty podróży</h2>
-                            <p className={"text-text-main"}>Zmień datę początku i końca podróży.</p>
+                            <h2 className={"font-bold text-lg lg:text-xl text-text-main"}>Daty podróży</h2>
+                            <p className={"text-text-main text-sm lg:text-base"}>Zmień datę początku i końca podróży.</p>
                         </div>
-                        <div className={"flex items-center gap-5 flex-wrap "}>
-                            <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="pl">
-                                <DatePicker
-                                    label="Data początkowa"
-                                    value={tripInfo.startDate}
-                                    sx={pickerSx}
-                                    onChange={(newValue) => setTripInfo({...tripInfo, startDate: newValue})}
-                                    disablePast
-                                />
-                                <DatePicker
-                                    label="Data końcowa"
-                                    value={tripInfo.endDate}
-                                    sx={pickerSx}
-                                    minDate={tripInfo.startDate}
-                                    onChange={(newValue) => setTripInfo({...tripInfo, endDate: newValue})}
-                                    disablePast
-                                />
-                            </LocalizationProvider>
+                        <div className={"flex flex-col gap-4 sm:gap-5 w-full mt-2 lg:mt-0"}>
+                            <div className={"flex flex-col sm:flex-row gap-4 sm:gap-5 w-full"}>
+                                <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="pl">
+                                    <DatePicker
+                                        className="w-full"
+                                        label="Data początkowa"
+                                        value={tripInfo.startDate}
+                                        sx={pickerSx}
+                                        onChange={(newValue) => setTripInfo({...tripInfo, startDate: newValue})}
+                                        disablePast
+                                    />
+                                    <DatePicker
+                                        className="w-full"
+                                        label="Data końcowa"
+                                        value={tripInfo.endDate}
+                                        sx={pickerSx}
+                                        minDate={tripInfo.startDate}
+                                        onChange={(newValue) => setTripInfo({...tripInfo, endDate: newValue})}
+                                        disablePast
+                                    />
+                                </LocalizationProvider>
+                            </div>
                             <div className={"flex justify-end items-center w-full"}>
-                                <button className={"w-24 h-12 border-2 border-green-600 text-white hover:border-green-700 " +
-                                    "rounded-xl bg-green-500 hover:bg-green-600 transition duration-150 ease-out hover:ease-in "}
+                                <button className={"w-full sm:w-24 h-10 lg:h-12 border-2 border-green-600 text-white hover:border-green-700 " +
+                                    "rounded-xl bg-green-500 hover:bg-green-600 transition duration-150 ease-out hover:ease-in text-sm lg:text-base"}
                                         onClick={() => {
                                             const {startDate, endDate} = tripInfo;
                                             if (!startDate?.isValid() || !endDate?.isValid() || endDate.isBefore(startDate)) {
@@ -122,8 +126,8 @@ export default function TripTab({activeTrip, changeTripGroupName, setSnackbar, u
                 </>
             ) : (
                 <div
-                    className={"w-full h-full flex items-center justify-center bg-bg-funds-card rounded-2xl shadow-lg"}>
-                    <p className={"text-text-main text-2xl"}>Wybierz podróż!</p>
+                    className={"w-full h-full flex items-center justify-center bg-bg-funds-card rounded-2xl shadow-lg p-4 text-center"}>
+                    <p className={"text-text-main text-xl lg:text-2xl"}>Wybierz podróż!</p>
                 </div>
             )}
         </>

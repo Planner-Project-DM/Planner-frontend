@@ -112,8 +112,8 @@ export default function DaySchedule({activeTrip, schedules, editSchedule, addSch
     }
     const Theme = isDark ? WillowDark : Willow;
     return (
-        <div className={"w-full h-full overflow-hidden p-3 min-h-0 relative z-0"}>
-            <div className={"h-full w-full overflow-y-auto "}>
+        <div className={"w-full h-full overflow-hidden p-1 lg:p-3 min-h-0 relative z-0"}>
+            <div className={"h-full w-full overflow-y-auto"}>
                 <Theme>
                     <Calendar init={setApi} events={events} date={initialDate} views={[
                         {

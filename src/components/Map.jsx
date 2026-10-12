@@ -89,7 +89,7 @@ export default function Map({tripItems, setSelectedTripItem, selectedTripItem}) 
 
     return (
         <main className={"bg-bg-main w-full h-full relative"}>
-            <div className={"w-full h-full p-5 rounded-2xl"}>
+            <div className={"w-full h-full p-1 lg:p-5 rounded-none lg:rounded-2xl"}>
                 <MapContainer
                     center={startLocation}
                     zoom={13}
@@ -115,10 +115,10 @@ export default function Map({tripItems, setSelectedTripItem, selectedTripItem}) 
 
                             <Popup className={"bg-bg-input rounded-2xl"}
                                    offset={[5, 0]}>
-                                <div>
-                                    <p className="font-bold text-xl">{item.name || "Brak informacji"}</p>
+                                <div className={"text-sm lg:text-base"}>
+                                    <p className="font-bold text-lg lg:text-xl">{item.name || "Brak informacji"}</p>
                                     <p style={{minHeight: '30px', padding: '5px'}}
-                                       className={"bg-text-secondary text-white border border-border-col rounded "}>
+                                       className={"bg-text-secondary text-white border border-border-col rounded break-all"}>
                                         <p>Strona: {item.website ? <a href={item.website} target={"_blank"}
                                                                       style={{color: 'white'}}>{item.website}</a> : "Brak informacji"}</p>
                                     </p>

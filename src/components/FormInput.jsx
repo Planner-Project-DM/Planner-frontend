@@ -1,13 +1,13 @@
 export default function FormInput({ label, id, placeholder, type = "text" , maxLength, max, value, onChange, min, onBlur, shadow, maxh}) {
     return (
         <div className="flex flex-col gap-1">
-            <label htmlFor={id} className={"text-text-main"}>{label}</label>
+            <label htmlFor={id} className={"text-sm lg:text-base text-text-main"}>{label}</label>
             <input
                 min={min}
                 type={type}
                 placeholder={placeholder}
                 id={id}
-                className={`w-full bg-bg-input rounded-xl p-3 border border-border-col text-text-main ${shadow} ${maxh}`}
+                className={`w-full bg-bg-input rounded-xl p-2 lg:p-3 border border-border-col text-text-main text-sm lg:text-base ${shadow ? shadow : ""} ${maxh ? maxh : ""}`}
                 maxLength={maxLength}
                 max={max}
                 value={value}

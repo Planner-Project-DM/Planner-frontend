@@ -129,21 +129,23 @@ export default function GeneralTab({darkMode, isDark, userSettings, getUserSetti
 
     return (
         <>
-            <div className={`bg-bg-funds-card rounded-2xl shadow-lg  w-full min-h-36 flex flex-col gap-5 p-3`}>
+            <div className={`bg-bg-funds-card rounded-2xl shadow-lg w-full h-auto min-h-36 flex flex-col justify-between gap-4 lg:gap-5 p-4 lg:p-5 shrink-0`}>
                 <div className={"flex flex-col"}>
-                    <h2 className={"font-bold text-xl text-text-main"}>Waluta</h2>
-                    <p className={"text-text-main"}>Wybierz walutę, w której chcesz widzieć kwoty na stronie.</p>
+                    <h2 className={"font-bold text-lg lg:text-xl text-text-main"}>Waluta</h2>
+                    <p className={"text-text-main text-sm lg:text-base"}>Wybierz walutę, w której chcesz widzieć kwoty na stronie.</p>
                 </div>
-                <div className={"w-full flex justify-between"}>
-                    <div className={"w-full mr-5"}>
+                <div className={"w-full flex flex-col sm:flex-row justify-between gap-3 sm:gap-0 mt-auto"}>
+                    <div className={"w-full lg:mr-5 flex-1"}>
                         <Autocomplete
+                            fullWidth
+                            className="w-full"
                             options={currencyOptions}
-                            value={currencyOptions.find(e => e.value === currency)}
+                            value={currencyOptions.find(e => e.value === currency) || null}
                             getOptionLabel={(option) => option.label}
                             onChange={(event, newValue) => {
                                 if (newValue) setCurrency(newValue?.value);
                             }}
-                            renderInput={(params) => <TextField {...params} label="Waluta"/>}
+                            renderInput={(params) => <TextField {...params} label="Waluta" className="w-full" />}
                         />
                     </div>
                 </div>
@@ -179,12 +181,12 @@ export default function GeneralTab({darkMode, isDark, userSettings, getUserSetti
                           onChange={(e) => setNewBudget(Number(e.target.value))}
                           onClick={() => updateBasicBudget()}/>
 
-            <div className={`bg-bg-funds-card rounded-2xl shadow-lg  w-full min-h-36 flex flex-col p-3 flex-shrink-0`}>
+            <div className={`bg-bg-funds-card rounded-2xl shadow-lg w-full min-h-36 flex flex-col p-4 lg:p-5 flex-shrink-0`}>
                 <div className={"flex flex-col"}>
-                    <h2 className={"font-bold text-xl text-text-main"}>Powiadomienia</h2>
-                    <p className={"text-text-main"}>Dostosuj powiadomienia, które będziesz otrzymywać.</p>
+                    <h2 className={"font-bold text-lg lg:text-xl text-text-main"}>Powiadomienia</h2>
+                    <p className={"text-text-main text-sm lg:text-base"}>Dostosuj powiadomienia, które będziesz otrzymywać.</p>
                 </div>
-                <div className={"w-full flex flex-col gap-3 p-3"}>
+                <div className={"w-full flex flex-col gap-3 p-1 lg:p-3 mt-2 lg:mt-0"}>
                     <NotificationToggle size={"lg"} checkedObj={[...Object.values(checked.friends), ...Object.values(checked.schedule),
                         ...Object.values(checked.group), checked.funds].some(Boolean)}
                                         onChange={(e) => {
@@ -199,7 +201,7 @@ export default function GeneralTab({darkMode, isDark, userSettings, getUserSetti
                                         label={"Wszystkie powiadomienia"}
                     />
                     <div className={"w-full flex items-center justify-start m-1"}>
-                        <hr className={"w-2/4 h-1 border-2 border-border-col"}/>
+                        <hr className={"w-full lg:w-2/4 h-1 border-2 border-border-col"}/>
                     </div>
                     <div className={"flex flex-col gap-1"}>
                         <NotificationToggle size={"lg"} checkedObj={Object.values(checked.friends).some(Boolean)}
@@ -216,7 +218,7 @@ export default function GeneralTab({darkMode, isDark, userSettings, getUserSetti
                                             label={"Usunięcia ze znajomych"}
                         />
                         <div className={"w-full flex items-center justify-start m-1"}>
-                            <hr className={"w-2/4 h-1 border-2 border-border-col"}/>
+                            <hr className={"w-full lg:w-2/4 h-1 border-2 border-border-col"}/>
                         </div>
                         <NotificationToggle size={"lg"} checkedObj={Object.values(checked.schedule).some(Boolean)}
                                             disabled={false}
@@ -236,7 +238,7 @@ export default function GeneralTab({darkMode, isDark, userSettings, getUserSetti
                                             label={"Usunięcie wydarzenia"}
                         />
                         <div className={"w-full flex items-center justify-start m-1"}>
-                            <hr className={"w-2/4 h-1 border-2 border-border-col"}/>
+                            <hr className={"w-full lg:w-2/4 h-1 border-2 border-border-col"}/>
                         </div>
                         <NotificationToggle size={"lg"} checkedObj={Object.values(checked.group).some(Boolean)}
                                             disabled={false}
@@ -253,7 +255,7 @@ export default function GeneralTab({darkMode, isDark, userSettings, getUserSetti
                         />
                     </div>
                     <div className={"w-full flex items-center justify-start m-1"}>
-                        <hr className={"w-2/4 h-1 border-2 border-border-col"}/>
+                        <hr className={"w-full lg:w-2/4 h-1 border-2 border-border-col"}/>
                     </div>
                     <NotificationToggle size={"lg"} checkedObj={checked.funds}
                                         disabled={false}
@@ -266,8 +268,8 @@ export default function GeneralTab({darkMode, isDark, userSettings, getUserSetti
                                         }}
                                         label={"Aktualizacja kosztów podróży"}
                     />
-                    <div className="w-full flex justify-end">
-                        <button className={"w-24 h-12 border-2 border-green-600 text-white hover:border-green-700 " +
+                    <div className="w-full flex justify-end mt-4 lg:mt-0">
+                        <button className={"w-full lg:w-24 h-12 border-2 border-green-600 text-white hover:border-green-700 " +
                             "rounded-xl bg-green-500 hover:bg-green-600 transition duration-150 ease-out hover:ease-in"}
                                 onClick={() => updateNotifications()}>Zapisz
                         </button>

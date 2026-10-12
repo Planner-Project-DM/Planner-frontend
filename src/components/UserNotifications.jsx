@@ -36,41 +36,41 @@ export default function UserNotifications({pendingFriends, acceptFriend, rejectF
 
     return (
         <div
-            className="bg-bg-card border-2 border-accent text-white rounded-xl absolute w-80 h-114 right-20 shadow-gray-500 shadow-md flex flex-col overflow-hidden"
+            className="bg-bg-card border-2 border-accent text-white rounded-xl absolute w-[85vw] sm:w-80 h-[60vh] sm:h-114 right-[-2rem] sm:-right-2 lg:right-20 shadow-gray-500 shadow-md flex flex-col overflow-hidden z-50"
             onClick={e => e.stopPropagation()}>
             <div
-                className="w-full flex justify-between items-center px-5 py-3 border-b border-border-col bg-bg-main/50">
-                <h3 className="font-bold text-lg text-text-main">Powiadomienia</h3>
+                className="w-full flex justify-between items-center px-3 lg:px-5 py-2 lg:py-3 border-b border-border-col bg-bg-main/50 shrink-0">
+                <h3 className="font-bold text-base lg:text-lg text-text-main">Powiadomienia</h3>
                 <button
                     onClick={() => markAllAsRead()}
-                    className="flex items-center justify-center p-2 rounded-lg bg-bg-input text-text-main border border-border-col hover:bg-gray-500 hover:text-white transition-colors"
+                    className="flex items-center justify-center p-1.5 lg:p-2 rounded-lg bg-bg-input text-text-main border border-border-col hover:bg-gray-500 hover:text-white transition-colors"
                 >
-                    <MdMarkAsUnread size={20}/>
+                    <MdMarkAsUnread className="w-5 h-5 lg:w-[20px] lg:h-[20px]"/>
                 </button>
             </div>
 
-            <ul className={"overflow-y-auto flex-1 [&::-webkit-scrollbar]:hidden p-4 flex flex-col gap-4 w-full"}>
+            <ul className={"overflow-y-auto flex-1 [&::-webkit-scrollbar]:hidden p-2 lg:p-4 flex flex-col gap-3 lg:gap-4 w-full"}>
                 {allNotifications?.length > 0 ? (
                     (allNotifications || []).map((request) => {
                         if (request.type === "friendRequest") {
                             return (
                                 <li key={request.id}
-                                    className={"shrink-0 h-auto p-3 items-start flex flex-col border-2 rounded-2xl justify-between bg-bg-input text-text-main border-border-col"}>
+                                    className={"shrink-0 h-auto p-3 items-start flex flex-col border-2 rounded-2xl justify-between bg-bg-input text-text-main border-border-col gap-2 lg:gap-0"}>
                                     <div className={"flex flex-col w-full items-start"}>
-                                        <div className={"font-bold text-lg w-full flex justify-between"}>
+                                        <div className={"font-bold text-base lg:text-lg w-full flex justify-between gap-2"}>
                                             <div className={"break-words"}>{request.name} {request.surname}</div>
-                                            <p><FaUserFriends/></p></div>
-                                        <div className={"text-sm w-full flex items-start break-words"}>{request.email}</div>
+                                            <p className="shrink-0"><FaUserFriends/></p></div>
+                                        <div className={"text-xs lg:text-sm w-full flex items-start break-words"}>{request.email}</div>
                                     </div>
-                                    <div className={"flex justify-around w-full mt-2"}>
-                                        <button onClick={() => acceptFriend(request.id)}>
-                                            <IoMdCheckmark size={25} style={{color: 'green'}}/>
+                                    <div className={"flex justify-around w-full mt-1 lg:mt-2"}>
+                                        <button onClick={() => acceptFriend(request.id)} className="p-1">
+                                            <IoMdCheckmark className="w-6 h-6 lg:w-[25px] lg:h-[25px]" style={{color: 'green'}}/>
                                         </button>
-                                        <button onClick={() => rejectFriend(request.id)}>
-                                            <FaXmark size={25} style={{color: 'red'}}/>
+                                        <button onClick={() => rejectFriend(request.id)} className="p-1">
+                                            <FaXmark className="w-5 h-5 lg:w-[25px] lg:h-[25px]" style={{color: 'red'}}/>
                                         </button>
-                                        <button onClick={() => blockFriend(request.id)}>
-                                            <MdBlock size={25}/>
+                                        <button onClick={() => blockFriend(request.id)} className="p-1">
+                                            <MdBlock className="w-5 h-5 lg:w-[25px] lg:h-[25px]"/>
                                         </button>
                                     </div>
                                 </li>
@@ -79,10 +79,10 @@ export default function UserNotifications({pendingFriends, acceptFriend, rejectF
                             return (
                                 <li key={request.id} className={"shrink-0 h-auto p-3 items-start flex flex-col border-2 rounded-2xl justify-between bg-bg-input text-text-main border-border-col"}>
                                     <div className={"flex flex-col w-full items-start"}>
-                                        <div className={"font-bold text-lg w-full flex justify-start"}>
+                                        <div className={"font-bold text-base lg:text-lg w-full flex justify-start"}>
                                             <div className={"break-words"}>{translateNotification(request.title)}</div>
                                         </div>
-                                        <div className={"text-sm w-full flex items-start text-left mt-2 break-words"}>
+                                        <div className={"text-xs lg:text-sm w-full flex items-start text-left mt-1 lg:mt-2 break-words"}>
                                             {request.message}
                                         </div>
                                     </div>
@@ -90,7 +90,7 @@ export default function UserNotifications({pendingFriends, acceptFriend, rejectF
                                         <button className={"flex justify-center items-center bg-gray-600 border border-border-col " +
                                             "hover:bg-gray-500 text-white rounded-xl w-8 h-8 transition duration-150 ease-out hover:ease-in"}
                                                 onClick={() => markAsRead(request.id)}>
-                                            <GoRead />
+                                            <GoRead className="w-4 h-4 lg:w-auto lg:h-auto" />
                                         </button>
                                     </div>
                                 </li>

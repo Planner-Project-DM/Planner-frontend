@@ -32,28 +32,31 @@ export default function NewTripForm({closeTripForm, getTrips, selectActiveTrip, 
         }
     }
     return(
-        <div className="w-screen h-screen absolute bg-gray-800/80 top-0 left-0"  onClick={(e) => e.stopPropagation()}>
-            <div className="bg-bg-card border-2 border-accent rounded-xl absolute h-2/3 top-1/2 left-1/2 -translate-x-1/2
-                         -translate-y-1/2 shadow-gray-500 shadow-md flex flex-col w-144 p-10 justify-between">
-                <div className={"flex justify-between"}>
-                    <p className={"font-bold text-2xl text-text-main"}>Nowa podróż</p>
-                    <button className={"text-text-main"} onClick={(e) => {e.stopPropagation(); closeTripForm();}} >✕</button>
+        <div className="w-screen h-screen fixed sm:absolute bg-gray-800/80 top-0 left-0 z-50 flex justify-center items-center"  onClick={(e) => e.stopPropagation()}>
+            <div className="bg-bg-card border-2 border-accent rounded-xl relative sm:absolute h-auto
+            max-h-[90vh] lg:h-2/3 overflow-y-auto top-auto left-auto sm:top-1/2 sm:left-1/2
+            sm:-translate-x-1/2 sm:-translate-y-1/2 shadow-gray-500 shadow-md flex flex-col w-11/12 sm:w-144 p-5 sm:p-10 justify-between gap-4 sm:gap-0">
+                <div className={"flex justify-between items-center"}>
+                    <p className={"font-bold text-xl sm:text-2xl text-text-main"}>Nowa podróż</p>
+                    <button className={"text-text-main text-2xl"} onClick={(e) => {e.stopPropagation(); closeTripForm();}} >✕</button>
                 </div>
-                <hr/>
-                <div className={"flex flex-col gap-5"}>
+                <hr className={"my-2 sm:my-0"}/>
+                <div className={"flex flex-col gap-4 sm:gap-5"}>
                     <FormInput label="Nazwa podróży" id="tripName" placeholder="np. Japonia 2026"  maxLength={50} value={tripForm.name}
                                onChange={(e) => setTripForm({...tripForm, name: e.target.value})}/>
                     <FormInput label="Destynacja" id="tripDestination" placeholder="np. Japonia" maxLength={20} value={tripForm.destination}
-                    onChange={(e) => setTripForm({...tripForm, destination: e.target.value})}/>
+                               onChange={(e) => setTripForm({...tripForm, destination: e.target.value})}/>
                     <FormInput label="Budżet" id="budget" placeholder="Podaj kwotę" type="number"  max={9999999999} value={tripForm.budget}
-                    onChange={(e) => setTripForm({...tripForm, budget: e.target.value})}/>
+                               onChange={(e) => setTripForm({...tripForm, budget: e.target.value})}/>
                 </div>
-                <div className={"flex gap-5"}>
+                <div className={"flex flex-col sm:flex-row gap-4 sm:gap-5 w-full"}>
                     <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="pl">
                         <DatePicker
+                            className="w-full"
                             label="Wybierz datę początkową"
                             value={tripForm.startDate}
                             sx={{
+                                width: '100%',
                                 '& .MuiInputBase-input': { color: 'var(--text-main)' }, '& .MuiInputLabel-root': { color: 'var(--text-main)' },
                                 '& .MuiSvgIcon-root': { color: 'var(--text-main)' }, '& .MuiOutlinedInput-notchedOutline': { borderColor: 'var(--border)' }
                             }}
@@ -61,9 +64,11 @@ export default function NewTripForm({closeTripForm, getTrips, selectActiveTrip, 
                             disablePast
                         />
                         <DatePicker
+                            className="w-full"
                             label="Wybierz datę końcową"
                             value={tripForm.endDate}
                             sx={{
+                                width: '100%',
                                 '& .MuiInputBase-input': { color: 'var(--text-main)' }, '& .MuiInputLabel-root': { color: 'var(--text-main)' },
                                 '& .MuiSvgIcon-root': { color: 'var(--text-main)' }, '& .MuiOutlinedInput-notchedOutline': { borderColor: 'var(--border)' }
                             }}
@@ -73,12 +78,12 @@ export default function NewTripForm({closeTripForm, getTrips, selectActiveTrip, 
                         />
                     </LocalizationProvider>
                 </div>
-                <hr/>
-                <div className={"flex items-center justify-end gap-5"}>
+                <hr className={"my-2 sm:my-0"}/>
+                <div className={"flex flex-col-reverse sm:flex-row items-center justify-end gap-3 sm:gap-5"}>
                     <button onClick={(e) => {e.stopPropagation(); closeTripForm();}}
-                            className={"bg-gray-400 border border-border-col w-24 h-10 rounded-xl " +
-                        "hover:bg-gray-600 hover:text-white transition duration-150 ease-out hover:ease-in"}>Anuluj</button>
-                    <button onClick={sendTrip} className={"bg-accent border border-border-col w-40 h-10 rounded-xl " +
+                            className={"bg-gray-400 border border-border-col w-full sm:w-24 h-10 rounded-xl " +
+                                "hover:bg-gray-600 hover:text-white transition duration-150 ease-out hover:ease-in"}>Anuluj</button>
+                    <button onClick={sendTrip} className={"bg-accent border border-border-col w-full sm:w-40 h-10 rounded-xl " +
                         "hover:bg-accent-hover hover:text-white transition duration-150 ease-out hover:ease-in"}>Utwórz podróż</button>
                 </div>
             </div>
