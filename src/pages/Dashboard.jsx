@@ -778,7 +778,8 @@ export default function Dashboard({darkMode, isDark}) {
             <header className={"h-20 lg:h-24 max-h-28 border-b-2 border-border-col shrink-0"}>
                 <Navbar showTrips={showTrips} showNotif={showNotif} showSettings={showSettings}
                         addNewTrip={addNewTrip} getCityMap={getCityMap}
-                        pendingFriends={pendingFriends} getFriendsList={getFriendsList} socketNotif={socketNotif}/>
+                        pendingFriends={pendingFriends} getFriendsList={getFriendsList} socketNotif={socketNotif}
+                setSnackbar={setSnackbar}/>
             </header>
 
             <main className={"flex-1 flex flex-col lg:flex-row relative overflow-hidden"}>
