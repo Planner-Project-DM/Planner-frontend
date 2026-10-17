@@ -8,7 +8,7 @@ export default function SearchBar ({getCityMap}){
     return (
         <div className="relative w-full lg:w-144">
             <FaSearch onClick={() =>(
-                if (search === null) return setSnackbar({open: true, message: 'Odczytano wszystkie powiadomienia!', severity: 'success'});
+                // if (search === null) return setSnackbar({open: true, message: 'Odczytano wszystkie powiadomienia!', severity: 'success'});
                 getCityMap(search))}
                       className="absolute left-3 lg:left-4 top-1/2 -translate-y-1/2 cursor-pointer"/>
             <input value={search}
