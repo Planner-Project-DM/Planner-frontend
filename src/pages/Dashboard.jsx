@@ -779,16 +779,17 @@ export default function Dashboard({darkMode, isDark}) {
                 <Navbar showTrips={showTrips} showNotif={showNotif} showSettings={showSettings}
                         addNewTrip={addNewTrip} getCityMap={getCityMap}
                         pendingFriends={pendingFriends} getFriendsList={getFriendsList} socketNotif={socketNotif}
-                setSnackbar={setSnackbar}/>
+                        setSnackbar={setSnackbar}/>
             </header>
 
-            <main className={"flex-1 flex flex-col lg:flex-row relative overflow-hidden"}>
+            <main className={"flex-1 flex flex-col lg:flex-row relative overflow-y-auto lg:overflow-hidden"}>
 
-                <aside className={"w-full lg:w-96 flex-shrink-0 border-t-2 lg:border-t-0 lg:border-r-2 border-border-col order-last lg:order-none z-40 bg-bg-main"}>
+                <aside className={"w-full lg:w-96 flex-shrink-0 border-t-2 lg:border-t-0 lg:border-r-2 border-border-col " +
+                    "order-last lg:order-none z-40 bg-bg-main sticky bottom-0 lg:static"}>
                     <TripNavbar activeMark={activeMark} setActiveMark={setActiveMark} activeTrip={activeTrip}/>
                 </aside>
 
-                <div id="mainWindow" className={"flex-1 h-full overflow-hidden relative"}>
+                <div id="mainWindow" className={"h-[70vh] shrink-0 lg:h-full lg:flex-1 overflow-hidden relative"}>
                     <MainBar activeMark={activeMark} tripItems={sortedItems} loading={loading}
                              setSelectedTripItem={setSelectedTripItem} selectedTripItem={selectedTripItem}
                              activeTrip={activeTrip}
@@ -819,7 +820,7 @@ export default function Dashboard({darkMode, isDark}) {
                 )}
 
                 {activeMark !== "dayschedule" && (
-                    <aside className={"hidden lg:block w-96 flex-shrink-0 border-l-2 border-border-col"}>
+                    <aside className={"block w-full min-h-[50vh] lg:min-h-0 lg:w-96 flex-shrink-0 border-t-2 lg:border-t-0 lg:border-l-2 border-border-col"}>
                         <SocialBar activeMark={activeMark} tripItems={sortedItems} selectedTripItem={selectedTripItem}
                                    setSelectedTripItem={setSelectedTripItem} activeTrip={activeTrip} loading={loading}
                                    setSelectedCategory={setSelectedCategory} selectedCategory={selectedCategory}

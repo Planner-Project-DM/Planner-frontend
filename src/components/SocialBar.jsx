@@ -25,9 +25,10 @@ export default function SocialBar({tripItems, activeMark, selectedTripItem, setS
 
     const finalSum = (activeTrip?.actualCost / activeTrip?.budget) * 100;
     return (
-        <main className="bg-bg-card w-full h-full p-2 flex flex-col fixed lg:relative bottom-0 lg:bottom-auto z-20 lg:z-auto h-auto lg:h-full max-h-[80vh] lg:max-h-full rounded-t-3xl lg:rounded-none shadow-[0_-5px_20px_rgba(0,0,0,0.2)] lg:shadow-none">
+        <main className="bg-bg-card w-full p-2 flex flex-col relative h-auto lg:h-full">
 
-            <div className="w-full flex justify-center lg:hidden py-2">
+
+            <div className="flex flex-col flex-1 overflow-hidden lg:max-h-160">
                 <div className="w-12 h-1.5 bg-gray-400 rounded-full"></div>
             </div>
 

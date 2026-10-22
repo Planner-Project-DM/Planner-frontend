@@ -33,7 +33,7 @@ export default function MainBar({activeMark, tripItems, loading, setSelectedTrip
         )
     }else if (activeMark === "weather") {
         return (
-            <Weather activeTrip={activeTrip}/>
+            <Weather activeTrip={activeTrip} setSnackbar={setSnackbar}/>
         )
     }else if (activeMark === "summary") {
         return (

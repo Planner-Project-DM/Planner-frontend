@@ -6,7 +6,7 @@ import dayjs from "dayjs";
 const apiKey = import.meta.env.VITE_OPENWEATHER_KEY;
 
 
-export default function Weather({activeTrip}) {
+export default function Weather({activeTrip, setSnackbar}) {
     const [weatherData, setWeatherData] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
     const [weatherList, setWeatherList] = useState([]);
@@ -21,51 +21,73 @@ export default function Weather({activeTrip}) {
 
     async function geoCodeCity({city}) {
         const resp = await axios.get(`http://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=1&appid=${apiKey}`)
-        return {
-            lat: resp.data[0].lat,
-            lon: resp.data[0].lon,
+        if (resp.data.length === 0) {
+            return null;
+        } else {
+            return {
+                lat: resp.data[0].lat,
+                lon: resp.data[0].lon,
+            }
         }
     }
 
     async function handleCheckWeather() {
-        if (!weatherForm.city.trim()) return;
+        if (!weatherForm.city.trim()) return setSnackbar({
+            open: true,
+            message: 'Pole nie może byc puste!',
+            severity: 'warning'
+        });
 
         setIsLoading(true);
-        const coords = await geoCodeCity({city: weatherForm.city});
+        try {
+            const coords = await geoCodeCity({city: weatherForm.city});
+            if (!coords) return setSnackbar({
+                open: true,
+                message: 'Upewnij się że wpisane miasto jest poprawne!',
+                severity: 'warning'
+            });
 
-        const resp = await axios.get(`https://api.openweathermap.org/data/2.5/weather?lat=${coords.lat}&lon=${coords.lon}&appid=${apiKey}&units=metric&lang=pl`);
-        const forecastResp = await axios.get(`https://api.openweathermap.org/data/2.5/forecast?lat=${coords.lat}&lon=${coords.lon}&appid=${apiKey}&units=metric&lang=pl`);
+            const resp = await axios.get(`https://api.openweathermap.org/data/2.5/weather?lat=${coords.lat}&lon=${coords.lon}&appid=${apiKey}&units=metric&lang=pl`);
+            const forecastResp = await axios.get(`https://api.openweathermap.org/data/2.5/forecast?lat=${coords.lat}&lon=${coords.lon}&appid=${apiKey}&units=metric&lang=pl`);
 
-        const dailyForecast = forecastResp.data.list.filter((el) => el.dt_txt.includes("15:00:00"));
+            const dailyForecast = forecastResp.data.list.filter((el) => el.dt_txt.includes("15:00:00"));
 
-        const mappedData = {
-            current: {
-                date: 'Dzisiaj',
-                description: resp.data.weather[0].description,
-                icon: resp.data.weather[0].icon,
-                temperature: {
-                    current: String(Math.round(resp.data.main.temp)),
-                    min: String(Math.round(resp.data.main.temp_min)),
-                    max: String(Math.round(resp.data.main.temp_max)),
+            const mappedData = {
+                current: {
+                    date: 'Dzisiaj',
+                    description: resp.data.weather[0].description,
+                    icon: resp.data.weather[0].icon,
+                    temperature: {
+                        current: String(Math.round(resp.data.main.temp)),
+                        min: String(Math.round(resp.data.main.temp_min)),
+                        max: String(Math.round(resp.data.main.temp_max)),
+                    },
+                    wind: String(Math.round(resp.data.wind.speed)),
+                    humidity: resp.data.main.humidity,
                 },
-                wind: String(Math.round(resp.data.wind.speed)),
-                humidity: resp.data.main.humidity,
-            },
-            forecast: dailyForecast.map(el => ({
-                date: el.dt_txt.split(' ')[0],
-                description: el.weather[0].description,
-                icon: el.weather[0].icon,
-                temperature: {
-                    min: String(Math.round(el.main.temp_min)),
-                    max: String(Math.round(el.main.temp_max)),
-                },
-                wind: String(Math.round(el.wind.speed)),
-                humidity: el.main.humidity,
-            }))
-        };
-        setWeatherList(forecastResp.data.list)
-        setWeatherData(mappedData);
-        setIsLoading(false);
+                forecast: dailyForecast.map(el => ({
+                    date: el.dt_txt.split(' ')[0],
+                    description: el.weather[0].description,
+                    icon: el.weather[0].icon,
+                    temperature: {
+                        min: String(Math.round(el.main.temp_min)),
+                        max: String(Math.round(el.main.temp_max)),
+                    },
+                    wind: String(Math.round(el.wind.speed)),
+                    humidity: el.main.humidity,
+                }))
+            };
+            setWeatherList(forecastResp.data.list)
+            setWeatherData(mappedData);
+        } catch (error) {
+            setSnackbar({
+                open: true,
+                message: error.response?.data?.message || 'Nie udało się pobrać pogody!',
+                severity: 'error'
+            });
+        } finally {
+            setIsLoading(false);
+        }
     }
 
     const hourly = useMemo(() => {
