@@ -14,7 +14,7 @@ export default function Navbar({showTrips, showNotif, showSettings, addNewTrip, 
                     <p className="text-sm lg:text-base">LOGO</p>
                 </div>
             </div>
-            <div className={"flex justify-center items-center flex-1 gap-2 lg:gap-4 min-w-0"}>
+            <div className={"flex flex-row-reverse sm:flex-row justify-center items-center flex-1 gap-2 lg:gap-4 min-w-0"}>
                 <div className="flex-1 flex min-w-0 max-w-2xl [&>div]:w-full lg:[&>div]:w-full">
                     <SearchBar getCityMap={getCityMap} setSnackbar={setSnackbar} />
                 </div>

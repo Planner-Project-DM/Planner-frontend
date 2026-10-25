@@ -145,6 +145,18 @@ export default function GeneralTab({darkMode, isDark, userSettings, getUserSetti
                             onChange={(event, newValue) => {
                                 if (newValue) setCurrency(newValue?.value);
                             }}
+                            sx={{
+                                '& .MuiInputBase-input': { color: 'var(--text-main)' },
+                                '& .MuiInputLabel-root': { color: 'var(--text-main)' },
+                                '& .MuiInputLabel-root.Mui-focused': { color: 'var(--text-main)' },
+                                '& .MuiOutlinedInput-notchedOutline': { borderColor: 'var(--border-col)' },
+                                '& .MuiSvgIcon-root': { color: 'var(--text-main)' },
+                            }}
+                            slotProps={{
+                                paper: {
+                                    sx: { bgcolor: 'var(--bg-input)', color: 'var(--text-main)' }
+                                }
+                            }}
                             renderInput={(params) => <TextField {...params} label="Waluta" className="w-full" />}
                         />
                     </div>

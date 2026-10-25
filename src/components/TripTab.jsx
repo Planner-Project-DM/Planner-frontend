@@ -16,9 +16,22 @@ export default function TripTab({activeTrip, changeTripGroupName, setSnackbar, u
         endDate: activeTrip?.endDate ? dayjs(activeTrip.endDate) : null
     })
     const pickerSx = {
-        '& .MuiInputBase-input': {color: 'var(--text-main)'}, '& .MuiInputLabel-root': {color: 'var(--text-main)'},
-        '& .MuiSvgIcon-root': {color: 'var(--text-main)'}, '& .MuiOutlinedInput-notchedOutline': {borderColor: 'var(--border)'}
+        '& .MuiInputBase-input': { color: 'var(--text-main)' },
+        '& .MuiInputLabel-root': { color: 'var(--text-main)' },
+        '& .MuiInputLabel-root.Mui-focused': { color: 'var(--text-main)' },
+        '& .MuiOutlinedInput-notchedOutline': { borderColor: 'var(--border-col)' },
+        '& .MuiSvgIcon-root': { color: 'var(--text-main)' },
+        '& .MuiPickersInputBase-root': { color: 'var(--text-main)' },
+        '& .MuiPickersSectionList-root': { color: 'var(--text-main)' },
+        '& .MuiPickersInputBase-sectionContent': { color: 'var(--text-main)' },
+        '& .MuiPickersInputBase-sectionBefore, & .MuiPickersInputBase-sectionAfter': { color: 'var(--text-main)' },
     }
+    const popperSx = {
+        '& .MuiPaper-root': { bgcolor: 'var(--bg-input)', color: 'var(--text-main)' },
+        '& .MuiPickersDay-root': { color: 'var(--text-main)' },
+        '& .MuiDayCalendar-weekDayLabel': { color: 'var(--text-main)' },
+        '& .MuiPickersCalendarHeader-root, & .MuiIconButton-root': { color: 'var(--text-main)' },
+    };
     return (
         <>
             {activeTrip ? (
@@ -88,6 +101,14 @@ export default function TripTab({activeTrip, changeTripGroupName, setSnackbar, u
                                         label="Data początkowa"
                                         value={tripInfo.startDate}
                                         sx={pickerSx}
+                                        slotProps={{
+                                            popper: { sx: popperSx },
+                                            mobilePaper: { sx: popperSx },
+                                            day: {
+                                                sx: { color: 'var(--text-main)' },
+                                            },
+                                        }}
+
                                         onChange={(newValue) => setTripInfo({...tripInfo, startDate: newValue})}
                                         disablePast
                                     />
@@ -96,6 +117,13 @@ export default function TripTab({activeTrip, changeTripGroupName, setSnackbar, u
                                         label="Data końcowa"
                                         value={tripInfo.endDate}
                                         sx={pickerSx}
+                                        slotProps={{
+                                            popper: { sx: popperSx },
+                                            mobilePaper: { sx: popperSx },
+                                            day: {
+                                                sx: { color: 'var(--text-main)' },
+                                            },
+                                        }}
                                         minDate={tripInfo.startDate}
                                         onChange={(newValue) => setTripInfo({...tripInfo, endDate: newValue})}
                                         disablePast
