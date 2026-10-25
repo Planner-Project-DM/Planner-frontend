@@ -26,12 +26,6 @@ export default function SocialBar({tripItems, activeMark, selectedTripItem, setS
     const finalSum = (activeTrip?.actualCost / activeTrip?.budget) * 100;
     return (
         <main className="bg-bg-card w-full p-2 flex flex-col relative h-auto lg:h-full">
-
-
-            <div className="flex flex-col flex-1 overflow-hidden lg:max-h-160">
-                <div className="w-12 h-1.5 bg-gray-400 rounded-full"></div>
-            </div>
-
             <div className="flex flex-col flex-1 overflow-hidden lg:max-h-160">
                 {activeMark === "map" ? (
                     loading ? (

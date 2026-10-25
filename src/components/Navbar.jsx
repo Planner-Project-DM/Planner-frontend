@@ -9,7 +9,7 @@ export default function Navbar({showTrips, showNotif, showSettings, addNewTrip, 
 
     return (
         <main className={"flex flex-row justify-between items-center bg-bg-card w-full h-full font-bold text-text-main px-3 lg:px-6 gap-3 lg:gap-5 overflow-visible"}>
-            <div className={"flex shrink-0"}>
+            <div className={"shrink-0 hidden sm:block"}>
                 <div className={"bg-bg-input flex items-center h-10 lg:h-12 rounded-2xl px-4 lg:px-6 justify-center border border-border-col"}>
                     <p className="text-sm lg:text-base">LOGO</p>
                 </div>

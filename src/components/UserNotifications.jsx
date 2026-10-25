@@ -36,7 +36,8 @@ export default function UserNotifications({pendingFriends, acceptFriend, rejectF
 
     return (
         <div
-            className="bg-bg-card border-2 border-accent text-white rounded-xl absolute w-[85vw] sm:w-80 h-[60vh] sm:h-114 right-[-2rem] sm:-right-2 lg:right-20 shadow-gray-500 shadow-md flex flex-col overflow-hidden z-50"
+            className="bg-bg-card border-2 border-accent text-white rounded-xl absolute w-[85vw] sm:w-80 h-[60vh] sm:h-114 left-1/2
+            -translate-x-1/2 sm:left-auto sm:translate-x-0 sm:-right-2 lg:right-20 shadow-gray-500 shadow-md flex flex-col overflow-hidden z-50"
             onClick={e => e.stopPropagation()}>
             <div
                 className="w-full flex justify-between items-center px-3 lg:px-5 py-2 lg:py-3 border-b border-border-col bg-bg-main/50 shrink-0">
