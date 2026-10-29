@@ -66,6 +66,7 @@ export default function Dashboard({darkMode, isDark}) {
     const [openSettings, setOpenSettings] = useState(false);
     const [userSettings, setUserSettings] = useState(null);
     const [settingsLoading, setSettingsLoading] = useState(true);
+    const [userInfo, setUserInfo] = useState(null);
     useEffect(() => {
         const token = localStorage.getItem('userToken') || sessionStorage.getItem('userToken');
 
@@ -685,6 +686,21 @@ export default function Dashboard({darkMode, isDark}) {
             });
         }
     }
+    async function getUserInfo() {
+        try {
+            const token = localStorage.getItem('userToken') || sessionStorage.getItem('userToken');
+
+            const resp = await api.get(`/api/users/me`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                },
+            });
+            setUserInfo(resp.data.data)
+
+        } catch (error) {
+            setSnackbar({open: true, message: error.response?.data?.message || 'Błąd pobierania!', severity: 'error'});
+        }
+    }
 
     useEffect(() => {
         const lastTrip = localStorage.getItem('activeTripId');
@@ -703,6 +719,7 @@ export default function Dashboard({darkMode, isDark}) {
         getUserSettings()
         getUnreadNotif()
             .then((result) => setSocketNotif(prev => [...prev, ...result]))
+        getUserInfo()
 
     }, [])
 
@@ -771,7 +788,6 @@ export default function Dashboard({darkMode, isDark}) {
         window.addEventListener('click', handleClick);
         return () => window.removeEventListener('click', handleClick)
     }, []);
-
     return (
         <div className={"h-screen flex flex-col bg-bg-main font-playpen relative overflow-hidden"}>
 
@@ -843,7 +859,7 @@ export default function Dashboard({darkMode, isDark}) {
                                     userSettings={userSettings} settingsLoading={settingsLoading}
                                     getUserSettings={getUserSettings} setSnackbar={setSnackbar}
                                     changeTripGroupName={changeTripGroupName}
-                                    updateTripInformation={updateTripInformation}/>
+                                    updateTripInformation={updateTripInformation} userInfo={userInfo} getUserInfo={getUserInfo}/>
             )}
 
             {newFriend && (
