@@ -2,6 +2,7 @@ import SettingsCard from './SettingsCard'
 import {useState} from "react";
 import api from "../api/axios.js";
 import ConfirmModal from './ConfirmModal.jsx'
+import PasswordCard from './PasswordCard.jsx'
 
 export default function SafetyTab({userInfo, setSnackbar, getUserInfo}) {
     const [tempUsr, setTempUsr] = useState({
@@ -60,12 +61,19 @@ export default function SafetyTab({userInfo, setSnackbar, getUserInfo}) {
             <SettingsCard showButton={true} showSelect={false} showInput={true} header={"Zmień nazwisko"} paragraph={"Zmień swoję nazwisko, " +
                 "w razie jakiejkolwiek pomyłki."} inputType={"text"} placeholder={userInfo?.lastName || "Nazwisko"} name={"lastName"} maxLength={25}
                           onChange={handleChange} onClick={() => handleSave("lastName")} />
-            <SettingsCard showButton={true} showSelect={false} showInput={true} header={"Adres e-mail"} paragraph={"Zmień swój adres e-mail."}
-                          inputType={"text"} placeholder={userInfo?.email || "E-mail"} name={"email"} maxLength={40}
-                          onChange={handleChange} onClick={() => handleSave("email")} />
-            <SettingsCard showButton={true} showSelect={false} showInput={true} header={"Numer telefonu"} paragraph={"Zmień swój numer telefonu."}
-                          inputType={"text"} placeholder={userInfo?.phoneNumber || "Numer telefonu"} name={"phoneNumber"} maxLength={25}
-                          onChange={handleChange} onClick={() => handleSave("phoneNumber")} />
+
+                <SettingsCard showButton={true} showSelect={false} showInput={true} header={"Numer telefonu"} paragraph={"Zmień swój numer telefonu."}
+                              inputType={"text"} placeholder={userInfo?.phoneNumber || "Numer telefonu"} name={"phoneNumber"} maxLength={25}
+                              onChange={handleChange} onClick={() => handleSave("phoneNumber")} />
+            <div className={"flex flex-col gap-1 mt-3"}>
+                <label htmlFor={"dangerZone"} className={"text-text-main text-2xl font-bold"}>Strefa niebezpieczna</label>
+                <div id={"dangerZone"} className={"flex flex-col h-full w-full bg-red-500 p-5 rounded-xl gap-5"}>
+                    <SettingsCard showButton={true} showSelect={false} showInput={true} header={"Adres e-mail"} paragraph={"Zmień swój adres e-mail."}
+                                  inputType={"text"} placeholder={userInfo?.email || "E-mail"} name={"email"} maxLength={40}
+                                  onChange={handleChange} onClick={() => handleSave("email")} />
+                    <PasswordCard setSnackbar={setSnackbar} />
+                </div>
+            </div>
             <ConfirmModal
                 open={confirmOpen}
                 onClose={() => setConfirmOpen(false)}
