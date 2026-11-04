@@ -61,7 +61,6 @@ export default function SafetyTab({userInfo, setSnackbar, getUserInfo}) {
             <SettingsCard showButton={true} showSelect={false} showInput={true} header={"Zmień nazwisko"} paragraph={"Zmień swoję nazwisko, " +
                 "w razie jakiejkolwiek pomyłki."} inputType={"text"} placeholder={userInfo?.lastName || "Nazwisko"} name={"lastName"} maxLength={25}
                           onChange={handleChange} onClick={() => handleSave("lastName")} />
-
                 <SettingsCard showButton={true} showSelect={false} showInput={true} header={"Numer telefonu"} paragraph={"Zmień swój numer telefonu."}
                               inputType={"text"} placeholder={userInfo?.phoneNumber || "Numer telefonu"} name={"phoneNumber"} maxLength={25}
                               onChange={handleChange} onClick={() => handleSave("phoneNumber")} />
