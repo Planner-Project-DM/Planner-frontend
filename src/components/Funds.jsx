@@ -29,7 +29,6 @@ export default function Funds({activeTrip, setMemberBalance, downloadFundsReport
         <div className={"flex flex-col gap-5 justify-center items-center w-full h-full overflow-hidden"}>
             <div
                 className={"overflow-y-scroll h-full w-full [&::-webkit-scrollbar]:hidden flex flex-col items-center pb-20 lg:pb-0"}>
-
                 <div
                     className={"flex flex-col lg:flex-row p-3 lg:gap-5 h-auto lg:h-96 bg-bg-funds-card w-11/12 lg:w-11/12 justify-center items-center mt-5 rounded-2xl shadow-md"}>
                     <div className={"text-text-main w-full lg:w-1/2 flex justify-center mb-5 lg:mb-0"}>
@@ -62,11 +61,11 @@ export default function Funds({activeTrip, setMemberBalance, downloadFundsReport
                     </div>
                     <div className={"w-full lg:w-1/2 flex flex-col gap-3"}>
                         <div
-                            className={"flex justify-center font-bold text-xl lg:text-3xl text-text-main pb-2 lg:pb-5"}>
+                            className={"flex justify-center font-bold text-xl lg:text-3xl text-text-main lg:pb-2"}>
                             Top 3 wydatków:
                         </div>
                         <div>
-                            <ul className={"flex flex-col gap-3"}>
+                            <ul className={"flex flex-col gap-3 pb-3"}>
                                 {sortedSpends.map((item) => (
                                     <li key={item.tripItem.id}
                                         className={"w-full h-auto lg:h-12 flex flex-col justify-center items-center text-center p-2"}>
@@ -87,11 +86,11 @@ export default function Funds({activeTrip, setMemberBalance, downloadFundsReport
                 <div className={"font-bold text-xl lg:text-2xl m-3 text-text-main text-center"}>
                     Podział wydatków:
                 </div>
-                <div className={"h-auto lg:h-114 bg-bg-funds-card w-11/12 justify-center rounded-2xl mb-5 shadow-md p-3 lg:p-5"}>
+                <div className={"h-auto lg:h-128 bg-bg-funds-card w-11/12 justify-center rounded-2xl mb-5 shadow-md p-3 lg:p-5"}>
                     <ul className={"max-h-96 overflow-y-scroll grid grid-cols-1 lg:grid-cols-2 gap-3 lg:gap-5 [&::-webkit-scrollbar]:hidden p-1 lg:p-3"}>
                         {activeTrip?.tripGroup?.groupUsers?.map((member) => (
                             <li key={member.user.email}
-                                className={"flex flex-col sm:flex-row justify-between items-center sm:items-center shadow-md rounded-2xl h-auto min-h-[4rem] border border-border-col p-3 gap-3 sm:gap-0"}>
+                                className={"flex flex-col sm:flex-row md:flex-col justify-between items-center sm:items-center shadow-md rounded-2xl h-auto min-h-[4rem] border border-border-col p-3 gap-3 sm:gap-0"}>
                                 <div className={"flex gap-2 items-center w-full sm:w-auto"}>
                                     <div>
                                         <div
@@ -119,9 +118,9 @@ export default function Funds({activeTrip, setMemberBalance, downloadFundsReport
                             </li>
                         ))}
                     </ul>
-                    <div className={"w-full flex justify-center lg:justify-end items-end mt-4 lg:mt-0"}>
+                    <div className={"w-full flex justify-center lg:justify-end items-end mt-5 lg:mt-0"}>
                         <button
-                            className={"w-full lg:w-36 h-12 border-2 border-green-600 text-white hover:border-green-700 " +
+                            className={"w-full lg:w-36 h-12 border-2 mt-5 border-green-600 text-white hover:border-green-700 " +
                                 "rounded-xl bg-green-500 hover:bg-green-600 transition duration-150 ease-out hover:ease-in text-sm lg:text-base"}
                             onClick={() => {
                                 const members = activeTrip.tripGroup?.groupUsers?.map((member) => (
