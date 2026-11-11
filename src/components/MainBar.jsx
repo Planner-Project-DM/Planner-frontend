@@ -21,7 +21,7 @@ export default function MainBar({activeMark, tripItems, loading, setSelectedTrip
         )
     }else if (activeMark === "notes") {
         return (
-            <Notes/>
+            <Notes isDark={isDark} activeTrip={activeTrip}/>
         )
     }else if (activeMark === "funds") {
         return (
