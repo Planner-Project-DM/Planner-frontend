@@ -89,7 +89,7 @@ export default function Notes({ activeTrip, isDark, setSnackbar }) {
     return (
         <div className="w-full h-full relative isolate z-0 overflow-hidden">
             <Tldraw
-                licenseKey={import.meta.env.VITE_TLDRAW_LICENSE_KEY}
+                licenseKey={import.meta.env['VITE_TLDRAW_LICENSE_KEY']}
                 onMount={(editorInstance) => {
                     setEditor(editorInstance);
                     editorInstance.user.updateUserPreferences({
