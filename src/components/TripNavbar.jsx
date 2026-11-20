@@ -3,11 +3,11 @@ export default function TripNavbar({activeMark, setActiveMark, activeTrip}) {
 
     return (
         <main className={"bg-bg-card w-full h-auto lg:h-full flex flex-row lg:flex-col shadow-[0_-5px_15px_rgba(0,0,0,0.1)] lg:shadow-none"}>
-            <div className={"lg:p-10 flex flex-row lg:flex-col lg:gap-10 lg:flex-1 lg:min-h-0 w-full items-center"}>
+            <div className={"lg:px-10 lg:pt-10 lg:pb-4 flex flex-row lg:flex-col lg:gap-10 lg:min-h-0 w-full items-center"}>
                 <h1 className={"hidden lg:flex justify-center text-xl items-center text-text-main"}>ZAKŁADKI</h1>
                 <hr className={"hidden lg:block border w-full"}/>
-                <div className={"lg:flex-1 lg:min-h-0 w-full flex items-center lg:block"}>
-                    <div className={"flex flex-row lg:flex-col gap-2 lg:gap-5 overflow-y-auto lg:h-full [&::-webkit-scrollbar]:hidden p-3 lg:p-0 w-full"}>
+                <div className={"lg:min-h-0 w-full flex items-center lg:block"}>
+                    <div className={"flex flex-row lg:flex-col gap-2 lg:gap-5 overflow-y-auto [&::-webkit-scrollbar]:hidden p-3 lg:p-0 w-full"}>
                         <TabButton label="Mapa" tabName="map" activeMark={activeMark} setActiveMark={setActiveMark} />
                         <TabButton label="Harmonogram" tabName="dayschedule" activeMark={activeMark} setActiveMark={setActiveMark} />
                         <TabButton label="Notatki" tabName="notes" activeMark={activeMark} setActiveMark={setActiveMark} />
@@ -17,9 +17,9 @@ export default function TripNavbar({activeMark, setActiveMark, activeTrip}) {
                         <TabButton label="Podsumowanie" tabName="summary" activeMark={activeMark} setActiveMark={setActiveMark} />
                     </div>
                 </div>
-                <hr className={"hidden lg:block border w-full"}/>
+                <hr className={"hidden lg:block border w-full lg:mb-5"}/>
             </div>
-            <div className={"hidden lg:flex flex-col items-center gap-3"}>
+            <div className={"hidden lg:flex flex-col justify-center items-center gap-3"}>
                 <p className={"text-2xl text-text-main shrink-0"}>Podróż:</p>
                 <div className={"text-xl p-1 break-words max-w-[200px] text-center text-text-main"}>
                     {activeTrip?.name || "Brak aktywnej podróży" }

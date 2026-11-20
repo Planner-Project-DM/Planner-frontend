@@ -1,9 +1,9 @@
-import { Tldraw, getSnapshot, loadSnapshot } from 'tldraw';
+import {Tldraw, getSnapshot, loadSnapshot} from 'tldraw';
 import 'tldraw/tldraw.css';
-import { useEffect, useState, useRef } from 'react';
+import {useEffect, useState, useRef} from 'react';
 import api from '../api/axios.js';
 
-export default function Notes({ activeTrip, isDark, setSnackbar }) {
+export default function Notes({activeTrip, isDark, setSnackbar}) {
     const [editor, setEditor] = useState(null);
     const saveTimeoutRef = useRef(null);
     const isLoadingRef = useRef(false);
@@ -22,7 +22,7 @@ export default function Notes({ activeTrip, isDark, setSnackbar }) {
             try {
                 const token = localStorage.getItem('userToken') || sessionStorage.getItem('userToken');
                 const resp = await api.get(`/api/trips/${activeTrip.id}/notes`, {
-                    headers: { 'Authorization': `Bearer ${token}` }
+                    headers: {'Authorization': `Bearer ${token}`}
                 });
 
                 const savedData = resp.data?.data;
@@ -54,12 +54,17 @@ export default function Notes({ activeTrip, isDark, setSnackbar }) {
 
                 saveTimeoutRef.current = setTimeout(async () => {
                     try {
-                        const { document } = getSnapshot(editor.store);
+                        const {document} = getSnapshot(editor.store);
                         const token = localStorage.getItem('userToken') || sessionStorage.getItem('userToken');
 
                         await api.put(`/api/trips/${activeTrip.id}/notes`,
-                            { notesData: JSON.stringify(document) },
-                            { headers: { 'Authorization': `Bearer ${token}` } }
+                            {
+                                content: JSON.stringify(document),
+                                version: 0
+                            },
+                            {
+                                headers: {'Authorization': `Bearer ${token}`}
+                            }
                         );
                     } catch (error) {
                         if (setSnackbar) {
@@ -72,7 +77,7 @@ export default function Notes({ activeTrip, isDark, setSnackbar }) {
                     }
                 }, 1500);
             },
-            { scope: 'document', source: 'user' }
+            {scope: 'document', source: 'user'}
         );
         return () => {
             unsubscribe();
