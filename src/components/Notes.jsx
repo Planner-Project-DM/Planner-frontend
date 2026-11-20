@@ -14,71 +14,71 @@ export default function Notes({ activeTrip, isDark, setSnackbar }) {
             });
         }
     }, [isDark, editor]);
-    // useEffect(() => {
-    //     if (!editor || !activeTrip?.id) return;
-    //
-    //     async function fetchBoard() {
-    //         isLoadingRef.current = true;
-    //         try {
-    //             const token = localStorage.getItem('userToken') || sessionStorage.getItem('userToken');
-    //             const resp = await api.get(`/api/trips/${activeTrip.id}/notes`, {
-    //                 headers: { 'Authorization': `Bearer ${token}` }
-    //             });
-    //
-    //             const savedData = resp.data?.data;
-    //             if (savedData) {
-    //                 const parsedSnapshot = typeof savedData === 'string' ? JSON.parse(savedData) : savedData;
-    //                 loadSnapshot(editor.store, parsedSnapshot);
-    //             } else {
-    //                 editor.selectAll().deleteShapes(editor.getSelectedShapeIds());
-    //             }
-    //         } catch (error) {
-    //             console.error('Błąd pobierania notatek:', error);
-    //         } finally {
-    //             isLoadingRef.current = false;
-    //         }
-    //     }
-    //
-    //     fetchBoard();
-    // }, [editor, activeTrip?.id]);
-    // useEffect(() => {
-    //     if (!editor || !activeTrip?.id) return;
-    //
-    //     const unsubscribe = editor.store.listen(
-    //         () => {
-    //             if (isLoadingRef.current) return;
-    //
-    //             if (saveTimeoutRef.current) {
-    //                 clearTimeout(saveTimeoutRef.current);
-    //             }
-    //
-    //             saveTimeoutRef.current = setTimeout(async () => {
-    //                 try {
-    //                     const { document } = getSnapshot(editor.store);
-    //                     const token = localStorage.getItem('userToken') || sessionStorage.getItem('userToken');
-    //
-    //                     await api.put(`/api/trips/${activeTrip.id}/notes`,
-    //                         { notesData: JSON.stringify(document) },
-    //                         { headers: { 'Authorization': `Bearer ${token}` } }
-    //                     );
-    //                 } catch (error) {
-    //                     if (setSnackbar) {
-    //                         setSnackbar({
-    //                             open: true,
-    //                             message: 'Nie udało się zapisać tablicy!',
-    //                             severity: 'error'
-    //                         });
-    //                     }
-    //                 }
-    //             }, 1500);
-    //         },
-    //         { scope: 'document', source: 'user' }
-    //     );
-    //     return () => {
-    //         unsubscribe();
-    //         if (saveTimeoutRef.current) clearTimeout(saveTimeoutRef.current);
-    //     };
-    // }, [editor, activeTrip?.id, setSnackbar]);
+    useEffect(() => {
+        if (!editor || !activeTrip?.id) return;
+
+        async function fetchBoard() {
+            isLoadingRef.current = true;
+            try {
+                const token = localStorage.getItem('userToken') || sessionStorage.getItem('userToken');
+                const resp = await api.get(`/api/trips/${activeTrip.id}/notes`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+
+                const savedData = resp.data?.data;
+                if (savedData) {
+                    const parsedSnapshot = typeof savedData === 'string' ? JSON.parse(savedData) : savedData;
+                    loadSnapshot(editor.store, parsedSnapshot);
+                } else {
+                    editor.selectAll().deleteShapes(editor.getSelectedShapeIds());
+                }
+            } catch (error) {
+                console.error('Błąd pobierania notatek:', error);
+            } finally {
+                isLoadingRef.current = false;
+            }
+        }
+
+        fetchBoard();
+    }, [editor, activeTrip?.id]);
+    useEffect(() => {
+        if (!editor || !activeTrip?.id) return;
+
+        const unsubscribe = editor.store.listen(
+            () => {
+                if (isLoadingRef.current) return;
+
+                if (saveTimeoutRef.current) {
+                    clearTimeout(saveTimeoutRef.current);
+                }
+
+                saveTimeoutRef.current = setTimeout(async () => {
+                    try {
+                        const { document } = getSnapshot(editor.store);
+                        const token = localStorage.getItem('userToken') || sessionStorage.getItem('userToken');
+
+                        await api.put(`/api/trips/${activeTrip.id}/notes`,
+                            { notesData: JSON.stringify(document) },
+                            { headers: { 'Authorization': `Bearer ${token}` } }
+                        );
+                    } catch (error) {
+                        if (setSnackbar) {
+                            setSnackbar({
+                                open: true,
+                                message: 'Nie udało się zapisać tablicy!',
+                                severity: 'error'
+                            });
+                        }
+                    }
+                }, 1500);
+            },
+            { scope: 'document', source: 'user' }
+        );
+        return () => {
+            unsubscribe();
+            if (saveTimeoutRef.current) clearTimeout(saveTimeoutRef.current);
+        };
+    }, [editor, activeTrip?.id, setSnackbar]);
     if (!activeTrip) {
         return (
             <div className="w-full h-full flex items-center justify-center text-text-main font-bold">
