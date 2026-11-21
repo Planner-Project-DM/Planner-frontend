@@ -7,6 +7,7 @@ export default function Notes({activeTrip, isDark, setSnackbar}) {
     const [editor, setEditor] = useState(null);
     const saveTimeoutRef = useRef(null);
     const isLoadingRef = useRef(false);
+    const versionRef = useRef(0);
     useEffect(() => {
         if (editor) {
             editor.user.updateUserPreferences({
@@ -25,7 +26,8 @@ export default function Notes({activeTrip, isDark, setSnackbar}) {
                     headers: {'Authorization': `Bearer ${token}`}
                 });
 
-                const savedData = resp.data?.data;
+                const savedData = resp.data?.data?.content;
+                versionRef.current = resp.data?.data?.version ?? 0;
                 if (savedData) {
                     const parsedSnapshot = typeof savedData === 'string' ? JSON.parse(savedData) : savedData;
                     loadSnapshot(editor.store, parsedSnapshot);
@@ -57,15 +59,16 @@ export default function Notes({activeTrip, isDark, setSnackbar}) {
                         const {document} = getSnapshot(editor.store);
                         const token = localStorage.getItem('userToken') || sessionStorage.getItem('userToken');
 
-                        await api.put(`/api/trips/${activeTrip.id}/notes`,
+                        const res = await api.put(`/api/trips/${activeTrip.id}/notes`,
                             {
                                 content: JSON.stringify(document),
-                                version: 0
+                                version: versionRef.current
                             },
                             {
                                 headers: {'Authorization': `Bearer ${token}`}
                             }
                         );
+                        versionRef.current = res.data?.data?.version ?? (versionRef.current + 1);
                     } catch (error) {
                         if (setSnackbar) {
                             setSnackbar({
